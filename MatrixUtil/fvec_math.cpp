@@ -1,6 +1,7 @@
 #include "fvec_math.h"
 
 #include <cmath>
+#include <smmintrin.h>
 #include "f_math.h"
 
 using namespace mutil;
@@ -117,7 +118,18 @@ Vector3 MUTIL_EXPORT mutil::abs(Vector3 const &vec)
 
 float mutil::dot(Vector4 const &first, Vector4 const &second)
 {
+#ifdef USE_SIMD
+	//__m128 _mm_load_ps1 (float const* mem_addr)
+	//__m128 _mm_dp_ps (__m128 a, __m128 b, const int imm8)
+	static const int MASK = 0xf1;
+
+	__m128 reg1 = _mm_loadu_ps((float *)&first);
+	__m128 reg2 = _mm_loadu_ps((float *)&second);
+	__m128 resultReg = _mm_dp_ps(reg1, reg2, MASK);
+	return _mm_cvtss_f32(resultReg);
+#else
 	return (first.x * second.x) + (first.y * second.y) + (first.z * second.z) + (first.w * second.w);
+#endif
 }
 
 float mutil::length(Vector4 const &vec)

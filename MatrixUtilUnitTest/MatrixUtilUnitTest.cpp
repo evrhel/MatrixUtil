@@ -235,6 +235,30 @@ namespace MatrixUtilUnitTest
 
 			Assert::AreEqual(expected, result);
 		}
+
+		TEST_METHOD(TestVectorDot)
+		{
+			Vector4 vec1 = Vector4(1, 2, 3, 4);
+			Vector4 vec2 = Vector4(5, 6, 7, 8);
+
+			float result = mutil::dot(vec1, vec2);
+			float expected = 70.0f;
+
+			Assert::AreEqual(expected, result);
+		}
+
+		TEST_METHOD(TestVectorDotSpeed)
+		{
+			Vector4 vec1 = Vector4(1, 2, 3, 4);
+			Vector4 vec2 = Vector4(5, 6, 7, 8);
+		
+			for (long long i = 0; i < 1000000000; i++)
+			{
+				mutil::dot(vec1, vec2);
+			}
+
+			Assert::IsTrue(true);
+		}
 	};
 
 	TEST_CLASS(MatrixUtilMatrixTests)
@@ -358,6 +382,33 @@ namespace MatrixUtilUnitTest
 			);
 
 			Assert::AreEqual(expected, inverse);
+		}
+
+		TEST_METHOD(TestMatrix4Multiplication)
+		{
+			Matrix4 first = Matrix4(
+				Vector4(30, 4, 5, 3),
+				Vector4(8, 33, 0, 5),
+				Vector4(4, 9, 2, 10),
+				Vector4(2, 3, 4, 1)
+			);
+
+			Matrix4 second = Matrix4(
+				Vector4(3, 2, 7, 0),
+				Vector4(4, 0, 1, 5),
+				Vector4(7, 1, 5, 5),
+				Vector4(3, 0, 10, 7)
+			);
+
+			Matrix4 result = first * second;
+			Matrix4 expected = Matrix4(
+				Vector4(134, 141, 29, 89),
+				Vector4(124, 25, 22, 22),
+				Vector4(248, 121, 65, 81),
+				Vector4(144, 123, 63, 116)
+			);
+
+			Assert::AreEqual(expected, result);
 		}
 	};
 
