@@ -248,20 +248,17 @@ Matrix4 mutil::operator -(Matrix4 const &first, Matrix4 const &second)
 Matrix4 mutil::operator*(Matrix4 const &first, Matrix4 const &second)
 {
 #ifdef USE_SIMD
-	static const int	MASK0 = 0xf1,
-						MASK1 = 0xd2,
-						MASK2 = 0xf4,
-						MASK3 = 0xf8;
+	static const int MASK0 = 0xf1, MASK1 = 0xf2, MASK2 = 0xf4, MASK3 = 0xf8;
 
 	__m128 rc0 = _mm_loadu_ps((float *)&second.columns[0]);
 	__m128 rc1 = _mm_loadu_ps((float *)&second.columns[1]);
 	__m128 rc2 = _mm_loadu_ps((float *)&second.columns[2]);
 	__m128 rc3 = _mm_loadu_ps((float *)&second.columns[3]);
 
-	__m128 lr0 = _mm_set_ps(first.columns[0].x, first.columns[1].x, first.columns[2].x, first.columns[3].x);
-	__m128 lr1 = _mm_set_ps(first.columns[0].y, first.columns[1].y, first.columns[2].y, first.columns[3].y);
-	__m128 lr2 = _mm_set_ps(first.columns[0].z, first.columns[1].z, first.columns[2].z, first.columns[3].z);
-	__m128 lr3 = _mm_set_ps(first.columns[0].w, first.columns[1].w, first.columns[2].w, first.columns[3].w);
+	__m128 lr0 = _mm_set_ps(first.columns[3].x, first.columns[2].x, first.columns[1].x, first.columns[0].x);
+	__m128 lr1 = _mm_set_ps(first.columns[3].y, first.columns[2].y, first.columns[1].y, first.columns[0].y);
+	__m128 lr2 = _mm_set_ps(first.columns[3].z, first.columns[2].z, first.columns[1].z, first.columns[0].z);
+	__m128 lr3 = _mm_set_ps(first.columns[3].w, first.columns[2].w, first.columns[1].w, first.columns[0].w);
 	
 
 	__m128 resultReg0, resultReg1, resultReg2, resultReg3;
