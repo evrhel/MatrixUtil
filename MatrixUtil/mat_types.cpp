@@ -253,7 +253,6 @@ Matrix4 mutil::operator*(Matrix4 const &first, Matrix4 const &second)
 						MASK2 = 0xf4,
 						MASK3 = 0xf8;
 
-
 	__m128 rc0 = _mm_loadu_ps((float *)&second.columns[0]);
 	__m128 rc1 = _mm_loadu_ps((float *)&second.columns[1]);
 	__m128 rc2 = _mm_loadu_ps((float *)&second.columns[2]);
@@ -263,28 +262,46 @@ Matrix4 mutil::operator*(Matrix4 const &first, Matrix4 const &second)
 	__m128 lr1 = _mm_set_ps(first.columns[0].y, first.columns[1].y, first.columns[2].y, first.columns[3].y);
 	__m128 lr2 = _mm_set_ps(first.columns[0].z, first.columns[1].z, first.columns[2].z, first.columns[3].z);
 	__m128 lr3 = _mm_set_ps(first.columns[0].w, first.columns[1].w, first.columns[2].w, first.columns[3].w);
+	
 
 	__m128 resultReg0, resultReg1, resultReg2, resultReg3;
+	__m128 tempReg0, tempReg1, tempReg2, tempReg3;
 
-	resultReg0 = _mm_dp_ps(lr0, rc0, MASK0);
-	resultReg0 = _mm_dp_ps(lr1, rc0, MASK1);
-	resultReg0 = _mm_dp_ps(lr2, rc0, MASK2);
-	resultReg0 = _mm_dp_ps(lr3, rc0, MASK3);
+	tempReg0 = _mm_dp_ps(lr0, rc0, MASK0);
+	tempReg1 = _mm_dp_ps(lr1, rc0, MASK1);
+	tempReg2 = _mm_dp_ps(lr2, rc0, MASK2);
+	tempReg3 = _mm_dp_ps(lr3, rc0, MASK3);
 
-	resultReg1 = _mm_dp_ps(lr0, rc1, MASK0);
-	resultReg1 = _mm_dp_ps(lr1, rc1, MASK1);
-	resultReg1 = _mm_dp_ps(lr2, rc1, MASK2);
-	resultReg1 = _mm_dp_ps(lr3, rc1, MASK3);
+	tempReg0 = _mm_or_ps(tempReg0, tempReg1);
+	tempReg2 = _mm_or_ps(tempReg2, tempReg3);
+	resultReg0 = _mm_or_ps(tempReg0, tempReg2);
 
-	resultReg2 = _mm_dp_ps(lr0, rc2, MASK0);
-	resultReg2 = _mm_dp_ps(lr1, rc2, MASK1);
-	resultReg2 = _mm_dp_ps(lr2, rc2, MASK2);
-	resultReg2 = _mm_dp_ps(lr3, rc2, MASK3);
+	tempReg0 = _mm_dp_ps(lr0, rc1, MASK0);
+	tempReg1 = _mm_dp_ps(lr1, rc1, MASK1);
+	tempReg2 = _mm_dp_ps(lr2, rc1, MASK2);
+	tempReg3 = _mm_dp_ps(lr3, rc1, MASK3);
 
-	resultReg3 = _mm_dp_ps(lr0, rc3, MASK0);
-	resultReg3 = _mm_dp_ps(lr1, rc3, MASK1);
-	resultReg3 = _mm_dp_ps(lr2, rc3, MASK2);
-	resultReg3 = _mm_dp_ps(lr3, rc3, MASK3);
+	tempReg0 = _mm_or_ps(tempReg0, tempReg1);
+	tempReg2 = _mm_or_ps(tempReg2, tempReg3);
+	resultReg1 = _mm_or_ps(tempReg0, tempReg2);
+
+	tempReg0 = _mm_dp_ps(lr0, rc2, MASK0);
+	tempReg1 = _mm_dp_ps(lr1, rc2, MASK1);
+	tempReg2 = _mm_dp_ps(lr2, rc2, MASK2);
+	tempReg3 = _mm_dp_ps(lr3, rc2, MASK3);
+
+	tempReg0 = _mm_or_ps(tempReg0, tempReg1);
+	tempReg2 = _mm_or_ps(tempReg2, tempReg3);
+	resultReg2 = _mm_or_ps(tempReg0, tempReg2);
+
+	tempReg0 = _mm_dp_ps(lr0, rc3, MASK0);
+	tempReg1 = _mm_dp_ps(lr1, rc3, MASK1);
+	tempReg2 = _mm_dp_ps(lr2, rc3, MASK2);
+	tempReg3 = _mm_dp_ps(lr3, rc3, MASK3);
+
+	tempReg0 = _mm_or_ps(tempReg0, tempReg1);
+	tempReg2 = _mm_or_ps(tempReg2, tempReg3);
+	resultReg3 = _mm_or_ps(tempReg0, tempReg2);
 
 	Matrix4 mat;
 

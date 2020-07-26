@@ -403,7 +403,7 @@ namespace MatrixUtilUnitTest
 			Matrix4 result = first * second;
 			Matrix4 expected = Matrix4(
 				Vector4(134, 141, 29, 89),
-				Vector4(124, 25, 22, 22),
+				Vector4(134, 40, 42, 27),
 				Vector4(248, 121, 65, 81),
 				Vector4(144, 123, 63, 116)
 			);
