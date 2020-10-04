@@ -172,7 +172,7 @@ namespace mutil
 	@param normal The normal of the refracting surface.
 	@param index The ratio between two indicies of refraction.
 	*/
-	Vector3 MUTIL_EXPORT	refract(Vector3 const &vec, Vector3 const &normal, float const &ratio);
+	Vector3 MUTIL_EXPORT	refract(Vector3 const &vec, Vector3 const &normal, float ratio);
 
 	/*!
 	Converts a Vector3 containing angles in degrees to radians.

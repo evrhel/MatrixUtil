@@ -94,7 +94,7 @@ Vector3 mutil::reflect(Vector3 const &vec, Vector3 const &normal)
 	return 2.0f * dot(normal, vec) * normal - vec;
 }
 
-Vector3 mutil::refract(Vector3 const &vec, Vector3 const &normal, float const &ratio)
+Vector3 mutil::refract(Vector3 const &vec, Vector3 const &normal, float ratio)
 {
 	return (ratio * (cross(normal, cross(-normal, vec)))) - (normal * sqrtf(1 - (ratio * ratio) * dot(cross(normal, vec), cross(normal, vec))));
 }
