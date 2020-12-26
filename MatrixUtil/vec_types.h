@@ -215,7 +215,7 @@ namespace mutil
 		inline Vector4(const float x, const float y, const float z, const float w) : x(x), y(y), z(z), w(w) { }
 		explicit inline Vector4(const Vector2 &first, const Vector2 &second) : x(first.x), y(first.y), z(second.x), w(second.y) { }
 		explicit inline Vector4(const Vector3 &vec, const float w) : x(vec.x), y(vec.y), z(vec.z), w(w) { }
-		explicit inline Vector4(const IntVector4 &vec) : x(vec.x), y(vec.y), z(vec.z), z(vec.w) { }
+		explicit inline Vector4(const IntVector4 &vec) : x(vec.x), y(vec.y), z(vec.z), w(vec.w) { }
 
 		/*!
 		Constructs a Vector4 with the x and y components of
@@ -266,16 +266,16 @@ namespace mutil
 	inline Vector4 operator -(const Vector4 &first, const Vector4 &second) { return Vector4(first.x - second.x, first.y - second.y, first.z - second.z, first.w - second.w); }
 	inline Vector4 operator *(const Vector4 &first, const Vector4 &second) { return Vector4(first.x * second.x, first.y * second.y, first.z * second.z, first.w * second.w); }
 	inline Vector4 operator *(const Vector4 &first, const float scalar) { return Vector4(first.x * scalar, first.y * scalar, first.z * scalar, first.w * scalar); }
-	inline Vector4 operator /(Vector4 &first, Vector4 &second) { return Vector4(first.x / second.x, first.y / second.y, first.z / second.z, first.w / second.w); }
-	inline Vector4 operator /(Vector4 &first, float scalar) { return Vector4(first.x / scalar, first.y / scalar, first.z / scalar, first.w * scalar); }
+	inline Vector4 operator /(const Vector4 &first, const Vector4 &second) { return Vector4(first.x / second.x, first.y / second.y, first.z / second.z, first.w / second.w); }
+	inline Vector4 operator /(const Vector4 &first, const float scalar) { return Vector4(first.x / scalar, first.y / scalar, first.z / scalar, first.w * scalar); }
 
-	inline Vector4 operator -(Vector4 const &vec) { return Vector4(-vec.x, -vec.y, -vec.z, -vec.w); };
-	inline bool operator ==(Vector4 const &first, Vector4 const &second) { return first.x == second.x && first.y == second.y && first.z == second.z && first.w == second.w; }
-	inline bool operator !=(Vector4 const &first, Vector4 const &second) { return !operator==(first, second); }
+	inline Vector4 operator -(const Vector4 &vec) { return Vector4(-vec.x, -vec.y, -vec.z, -vec.w); };
+	inline bool operator ==(const Vector4 &first, const Vector4 &second) { return first.x == second.x && first.y == second.y && first.z == second.z && first.w == second.w; }
+	inline bool operator !=(const Vector4 &first, const Vector4 &second) { return !operator==(first, second); }
 
 	// 32-bit Integer Vectors
 
-	class MUTIL_EXPORT IntVector2
+	class IntVector2
 	{
 	public:
 		union
@@ -285,10 +285,10 @@ namespace mutil
 			struct { int32_t s, t; };
 		};
 
-		IntVector2();
-		explicit IntVector2(int32_t const scalar);
-		IntVector2(int32_t const x, int32_t const y);
-		explicit IntVector2(Vector2 const &vec2);
+		inline IntVector2() : x(0), y(0) { }
+		explicit inline IntVector2(const int32_t scalar) : x(scalar), y(scalar) { }
+		inline IntVector2(const int32_t x, const int32_t y) : x(x), y(y) { }
+		explicit inline IntVector2(const Vector2 &vec) : x((int32_t)vec.x), y((int32_t)vec.y) { }
 
 		/*!
 		Constructs an IntVector2 with only the x and y components of
@@ -296,7 +296,7 @@ namespace mutil
 
 		@param vec A vector.
 		*/
-		IntVector2(IntVector3 const &vec);
+		explicit inline IntVector2(const IntVector3 &vec) : x(vec.x), y(vec.y) { }
 
 		/*!
 		Constructs an IntVector2 with only the x and y components of
@@ -304,28 +304,50 @@ namespace mutil
 
 		@param vec A vector.
 		*/
-		IntVector2(IntVector4 const &vec);
+		explicit inline IntVector2(const IntVector4 &vec) : x(vec.x), y(vec.y) { }
 
-		inline IntVector2 &operator +=(IntVector2 const &first);
-		inline IntVector2 &operator -=(IntVector2 const &first);
-		inline IntVector2 &operator *=(IntVector2 const &first);
-		inline IntVector2 &operator /=(IntVector2 const &first);
+		inline IntVector2 &operator +=(const IntVector2 &first)
+		{
+			IntVector2 result = operator+(*this, first);
+			memcpy(this, &result, 2 * sizeof(float));
+			return *this;
+		}
+
+		inline IntVector2 &operator -=(const IntVector2 &first)
+		{
+			IntVector2 result = operator-(*this, first);
+			memcpy(this, &result, 2 * sizeof(float));
+			return *this;
+		}
+
+		inline IntVector2 &operator *=(const IntVector2 &first)
+		{
+			IntVector2 result = operator*(*this, first);
+			memcpy(this, &result, 2 * sizeof(float));
+			return *this;
+		}
+
+		inline IntVector2 &operator /=(const IntVector2 &first)
+		{
+			IntVector2 result = operator/(*this, first);
+			memcpy(this, &result, 2 * sizeof(float));
+			return *this;
+		}
 	};
 
-	inline IntVector2 MUTIL_EXPORT operator +(IntVector2 const &first, IntVector2 const &second);
-	inline IntVector2 MUTIL_EXPORT operator -(IntVector2 const &first, IntVector2 const &second);
-	inline IntVector2 MUTIL_EXPORT operator *(IntVector2 const &first, IntVector2 const &second);
-	inline IntVector2 MUTIL_EXPORT operator *(IntVector2 const &first, int32_t const &scalar);
-	inline IntVector2 MUTIL_EXPORT operator *(int32_t const &scalar, IntVector2 const &vec);
-	inline IntVector2 MUTIL_EXPORT operator /(IntVector2 const &first, IntVector2 const &second);
-	inline IntVector2 MUTIL_EXPORT operator /(IntVector2 const &first, int32_t const &scalar);
+	inline IntVector2 operator +(const IntVector2 &first, const IntVector2 &second) { return IntVector2(first.x + second.x, first.y + second.y); }
+	inline IntVector2 operator -(const IntVector2 &first, const IntVector2 &second) { return IntVector2(first.x - second.x, first.y - second.y); }
+	inline IntVector2 operator *(const IntVector2 &first, const IntVector2 &second) { return IntVector2(first.x * second.x, first.y * second.y); }
+	inline IntVector2 operator *(const IntVector2 &first, const int32_t scalar) { return IntVector2(first.x * scalar, first.y * scalar); }
+	inline IntVector2 operator /(const IntVector2 &first, const IntVector2 &second) { return IntVector2(first.x / second.x, first.y / second.y); }
+	inline IntVector2 operator /(const IntVector2 &first, const int32_t &scalar) { return IntVector2(first.x / scalar, first.y / scalar); }
 
-	inline IntVector2 MUTIL_EXPORT operator -(IntVector2 const &vec);
+	inline IntVector2 operator -(const IntVector2 &vec) { return IntVector2(-vec.x, -vec.y); };
 
-	inline bool MUTIL_EXPORT operator ==(IntVector2 const &first, IntVector2 const &second);
-	inline bool MUTIL_EXPORT operator !=(IntVector2 const &first, IntVector2 const &second);
+	inline bool operator ==(const IntVector2 &first, const IntVector2 &second) { return first.x == second.x && first.y == second.y; }
+	inline bool operator !=(const IntVector2 &first, const IntVector2 &second) { return !operator==(first, second); }
 
-	class MUTIL_EXPORT IntVector3
+	class IntVector3
 	{
 	public:
 		union
@@ -335,11 +357,11 @@ namespace mutil
 			struct { int32_t s, t, b; };
 		};
 
-		IntVector3();
-		explicit IntVector3(int32_t const scalar);
-		IntVector3(int32_t const x, int32_t const y, int32_t const z);
-		explicit IntVector3(IntVector2 const &vec2, int32_t const s);
-		explicit IntVector3(Vector3 const &vec3);
+		inline IntVector3() : x(0), y(0), z(0) { }
+		explicit inline IntVector3(const int32_t scalar) : x(scalar), y(scalar), z(scalar) { }
+		inline IntVector3(const int32_t x, const int32_t y, const int32_t z) : x(x), y(y), z(z) { }
+		explicit inline IntVector3(const IntVector2 &vec, const int32_t z) : x(vec.x), y(vec.y), z(z) { }
+		explicit inline IntVector3(const Vector3 &vec) : x((int32_t)vec.x), y((int32_t)vec.y), z((int32_t)vec.z) { }
 
 		/*!
 		Constructs an IntVector3 with the x and y components of
@@ -347,7 +369,7 @@ namespace mutil
 
 		@param vec A vector.
 		*/
-		IntVector3(IntVector2 const &vec);
+		explicit inline IntVector3(const IntVector2 &vec) : x(vec.x), y(vec.x), z(0) { }
 
 		/*!
 		Constructs an IntVector3 with only the x and y components of
@@ -355,28 +377,50 @@ namespace mutil
 
 		@param vec A vector.
 		*/
-		IntVector3(IntVector4 const &vec);
+		explicit inline IntVector3(const IntVector4 &vec) : x(vec.x), y(vec.y), z(vec.z) { }
 
-		inline IntVector3 &operator +=(IntVector3 const &first);
-		inline IntVector3 &operator -=(IntVector3 const &first);
-		inline IntVector3 &operator *=(IntVector3 const &first);
-		inline IntVector3 &operator /=(IntVector3 const &first);
+		inline IntVector3 &operator +=(const IntVector3 &first)
+		{
+			IntVector3 result = operator+(*this, first);
+			memcpy(this, &result, 3 * sizeof(float));
+			return *this;
+		}
+
+		inline IntVector3 &operator -=(const IntVector3 &first)
+		{
+			IntVector3 result = operator-(*this, first);
+			memcpy(this, &result, 3 * sizeof(float));
+			return *this;
+		}
+
+		inline IntVector3 &operator *=(const IntVector3 &first)
+		{
+			IntVector3 result = operator*(*this, first);
+			memcpy(this, &result, 3 * sizeof(float));
+			return *this;
+		}
+
+		inline IntVector3 &operator /=(const IntVector3 &first)
+		{
+			IntVector3 result = operator/(*this, first);
+			memcpy(this, &result, 3 * sizeof(float));
+			return *this;
+		}
 	};
 
-	inline IntVector3 MUTIL_EXPORT operator +(IntVector3 const &first, IntVector3 const &second);
-	inline IntVector3 MUTIL_EXPORT operator -(IntVector3 const &first, IntVector3 const &second);
-	inline IntVector3 MUTIL_EXPORT operator *(IntVector3 const &first, IntVector3 const &second);
-	inline IntVector3 MUTIL_EXPORT operator *(IntVector3 const &first, int32_t const &scalar);
-	inline IntVector3 MUTIL_EXPORT operator *(int32_t const &scalar, IntVector3 const &vec);
-	inline IntVector3 MUTIL_EXPORT operator /(IntVector3 const &first, IntVector3 const &second);
-	inline IntVector3 MUTIL_EXPORT operator /(IntVector3 const &first, int32_t const &scalar);
+	inline IntVector3 operator +(const IntVector3 &first, const IntVector3 &second) { return IntVector3(first.x + second.x, first.y + second.y, first.z + second.z); }
+	inline IntVector3 operator -(const IntVector3 &first, const IntVector3 &second) { return IntVector3(first.x - second.x, first.y - second.y, first.z - second.z); }
+	inline IntVector3 operator *(const IntVector3 &first, const IntVector3 &second) { return IntVector3(first.x * second.x, first.y * second.y, first.z * second.z); }
+	inline IntVector3 operator *(const IntVector3 &first, const int32_t scalar) { return IntVector3(first.x * scalar, first.y * scalar, first.z * scalar); }
+	inline IntVector3 operator /(const IntVector3 &first, const IntVector3 &second) { return IntVector3(first.x / second.x, first.y / second.y, first.z / second.z); }
+	inline IntVector3 operator /(const IntVector3 &first, const int32_t scalar) { return IntVector3(first.x / scalar, first.y / scalar, first.z * scalar); }
 
-	inline IntVector3 MUTIL_EXPORT operator -(IntVector3 const &vec);
+	inline IntVector3 operator -(const IntVector3 &vec) { return IntVector3(-vec.x, -vec.y, -vec.z); };
 
-	inline bool MUTIL_EXPORT operator ==(IntVector3 const &first, IntVector3 const &second);
-	inline bool MUTIL_EXPORT operator !=(IntVector3 const &first, IntVector3 const &second);
+	inline bool operator ==(const IntVector3 &first, const IntVector3 &second) { return first.x == second.x && first.y == second.y && first.z == second.z; }
+	inline bool operator !=(const IntVector3 &first, const IntVector3 &second) { return !operator==(first, second); }
 
-	class MUTIL_EXPORT IntVector4
+	class IntVector4
 	{
 	public:
 		union
@@ -386,12 +430,12 @@ namespace mutil
 			struct { int32_t s, t, p, q; };
 		};
 
-		IntVector4();
-		explicit IntVector4(int32_t const scalar);
-		IntVector4(int32_t const x, int32_t const y, int32_t const z, int32_t const w);
-		explicit IntVector4(IntVector2 const &first, IntVector2 const &second);
-		explicit IntVector4(IntVector3 const &vec3, int32_t const w);
-		explicit IntVector4(Vector4 const &vec4);
+		inline IntVector4() : x(0), y(0), z(0), w(0) { }
+		explicit inline IntVector4(const int32_t scalar) : x(scalar), y(scalar), z(scalar), w(scalar) { }
+		inline IntVector4(const int32_t x, const int32_t y, const int32_t z, const int32_t w) : x(x), y(y), z(z), w(w) { }
+		explicit inline IntVector4(const IntVector2 &first, const IntVector2 &second) : x(first.x), y(first.y), z(second.x), w(second.y) { }
+		explicit inline IntVector4(const IntVector3 &vec, const int32_t w) : x(vec.x), y(vec.y), z(vec.z), w(w) { }
+		explicit inline IntVector4(const Vector4 &vec) : x((int32_t)vec.x), y((int32_t)vec.y), z((int32_t)vec.z), w((int32_t)vec.w) { }
 
 		/*!
 		Constructs an IntVector4 with the x and y components of
@@ -399,7 +443,7 @@ namespace mutil
 
 		@param vec A vector.
 		*/
-		IntVector4(IntVector2 const &vec);
+		explicit inline IntVector4(const IntVector2 &vec) : x(vec.x), y(vec.y), z(0), w(0) { }
 
 		/*!
 		Constructs an IntVector4 with the x, y, and z components of
@@ -407,26 +451,48 @@ namespace mutil
 
 		@param vec A vector.
 		*/
-		IntVector4(IntVector3 const &vec);
+		explicit inline IntVector4(const IntVector3 &vec) : x(vec.x), y(vec.y), z(vec.z), w(0) { }
 
-		inline IntVector4 &operator +=(IntVector4 const &first);
-		inline IntVector4 &operator -=(IntVector4 const &first);
-		inline IntVector4 &operator *=(IntVector4 const &first);
-		inline IntVector4 &operator /=(IntVector4 const &first);
+		inline IntVector4 &operator +=(const IntVector4 &first)
+		{
+			IntVector4 result = operator+(*this, first);
+			memcpy(this, &result, 4 * sizeof(float));
+			return *this;
+		}
+
+		inline IntVector4 &operator -=(const IntVector4 &first)
+		{
+			IntVector4 result = operator-(*this, first);
+			memcpy(this, &result, 4 * sizeof(float));
+			return *this;
+		}
+
+		inline IntVector4 &operator *=(const IntVector4 &first)
+		{
+			IntVector4 result = operator*(*this, first);
+			memcpy(this, &result, 4 * sizeof(float));
+			return *this;
+		}
+
+		inline IntVector4 &operator /=(const IntVector4 &first)
+		{
+			IntVector4 result = operator/(*this, first);
+			memcpy(this, &result, 4 * sizeof(float));
+			return *this;
+		}
 	};
 
-	inline IntVector4 MUTIL_EXPORT operator +(IntVector4 const &first, IntVector4 const &second);
-	inline IntVector4 MUTIL_EXPORT operator -(IntVector4 const &first, IntVector4 const &second);
-	inline IntVector4 MUTIL_EXPORT operator *(IntVector4 const &first, IntVector4 const &second);
-	inline IntVector4 MUTIL_EXPORT operator *(IntVector4 const &first, int32_t const &scalar);
-	inline IntVector4 MUTIL_EXPORT operator *(int32_t const &scalar, IntVector4 const &vec);
-	inline IntVector4 MUTIL_EXPORT operator /(IntVector4 const &first, IntVector4 const &second);
-	inline IntVector4 MUTIL_EXPORT operator /(IntVector4 const &first, int32_t const &scalar);
+	inline IntVector4 operator +(const IntVector4 &first, const IntVector4 &second) { return IntVector4(first.x + second.x, first.y + second.y, first.z + second.z, first.w + second.w); }
+	inline IntVector4 operator -(const IntVector4 &first, const IntVector4 &second) { return IntVector4(first.x - second.x, first.y - second.y, first.z - second.z, first.w - second.w); }
+	inline IntVector4 operator *(const IntVector4 &first, const IntVector4 &second) { return IntVector4(first.x * second.x, first.y * second.y, first.z * second.z, first.w * second.w); }
+	inline IntVector4 operator *(const IntVector4 &first, const int32_t scalar) { return IntVector4(first.x * scalar, first.y * scalar, first.z * scalar, first.w * scalar); }
+	inline IntVector4 operator /(const IntVector4 &first, const IntVector4 &second) { return IntVector4(first.x / second.x, first.y / second.y, first.z / second.z, first.w / second.w); }
+	inline IntVector4 operator /(const IntVector4 &first, const int32_t scalar) { return IntVector4(first.x / scalar, first.y / scalar, first.z * scalar, first.w / scalar); }
 
-	inline IntVector4 MUTIL_EXPORT operator -(IntVector4 const &vec);
+	inline IntVector4 operator -(IntVector4 const &vec) { return IntVector4(-vec.x, -vec.y, -vec.z, -vec.w); };
 
-	inline bool MUTIL_EXPORT operator ==(IntVector4 const &first, IntVector4 const &second);
-	inline bool MUTIL_EXPORT operator !=(IntVector4 const &first, IntVector4 const &second);
+	inline bool operator ==(IntVector4 const &first, IntVector4 const &second) { return first.x == second.x && first.y == second.y && first.z == second.z && first.w == second.w; }
+	inline bool operator !=(IntVector4 const &first, IntVector4 const &second) { return !operator==(first, second); }
 }
 
 #endif
