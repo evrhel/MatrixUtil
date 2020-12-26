@@ -11,10 +11,22 @@ Contains methods for performing operations on floating-point vectors.
 #include "settings.h"
 #include "vec_types.h"
 
+#include <cmath>
+#include "f_math.h"
+
+#if defined(USE_SIMD)
+#include <smmintrin.h>
+#endif
+
 namespace mutil
 {
+	constexpr float inverseSqrt(const float num)
+	{
+		return 1.0f / sqrtf(num);
+	}
+
 	// Vector2 operations
-	
+
 	/*!
 	Returns the dot product of two Vector2's.
 
@@ -23,7 +35,10 @@ namespace mutil
 
 	@return The dot product.
 	*/
-	float MUTIL_EXPORT		dot(Vector2 const &first, Vector2 const &second);
+	inline float dot(const Vector2 &first, const Vector2 &second)
+	{
+		return (first.x * second.x) + (first.y * second.y);
+	}
 
 	/*!
 	Returns the cross product of two Vector2's.  This treats each Vector2 as if
@@ -37,7 +52,10 @@ namespace mutil
 
 	@return The magnitude of the z component of the result of the cross product.
 	*/
-	float MUTIL_EXPORT		cross(Vector2 const &first, Vector2 const &second);
+	inline float cross(const Vector2 &first, const Vector2 &second)
+	{
+		return cross(Vector3(first, 0.0f), Vector3(second, 0.0f)).z;
+	}
 
 	/*!
 	Returns the length of a Vector2.
@@ -46,7 +64,10 @@ namespace mutil
 
 	@return The length.
 	*/
-	float MUTIL_EXPORT		length(Vector2 const &vec);
+	inline float length(const Vector2 &vec)
+	{
+		return sqrtf(vec.x * vec.x + vec.y * vec.y);
+	}
 
 	/*!
 	Finds the distance between two Vector2's.
@@ -56,7 +77,10 @@ namespace mutil
 
 	@return The distance between the two vectors.
 	*/
-	float MUTIL_EXPORT		distance(Vector2 const &first, Vector2 const &second);
+	inline float distance(const Vector2 &first, const Vector2 &second)
+	{
+		return length(second - first);
+	}
 
 	/*!
 	Normalizes a Vector2, making its length 1.
@@ -65,7 +89,11 @@ namespace mutil
 
 	@return The normalized vector.
 	*/
-	Vector2 MUTIL_EXPORT	normalize(Vector2 const &vec);
+	inline Vector2 normalize(const Vector2 &vec)
+	{
+		return vec * inverseSqrt(dot(vec, vec));
+	}
+
 
 	/*!
 	Reflects a Vector2 over a normal, returning the reflected vector.
@@ -75,7 +103,10 @@ namespace mutil
 
 	@return The reflected vector.
 	*/
-	Vector2 MUTIL_EXPORT	reflect(Vector2 const &vec, Vector2 const &normal);
+	inline Vector2 reflect(const Vector2 &vec, const Vector2 &normal)
+	{
+		return 2.0f * dot(normal, vec) * normal - vec;
+	}
 
 	/*!
 	Converts a Vector2 containing angles in degrees to radians.
@@ -84,7 +115,10 @@ namespace mutil
 
 	@return The same vector in radians.
 	*/
-	Vector2 MUTIL_EXPORT	radians(Vector2 const &vec);
+	inline Vector2 radians(const Vector2 &vec)
+	{
+		return Vector2(radians(vec.x), radians(vec.y));
+	}
 
 	/*!
 	Converts a Vector2 containing angles in radians to degrees.
@@ -93,7 +127,11 @@ namespace mutil
 
 	@return The same vector in degrees.
 	*/
-	Vector2 MUTIL_EXPORT	degrees(Vector2 const &vec);
+	inline Vector2 degrees(const Vector2 &vec)
+	{
+		return Vector2(degrees(vec.x), degrees(vec.y));
+	}
+
 
 	/*!
 	Returns a Vector2 with each component being the absolute value of
@@ -103,7 +141,10 @@ namespace mutil
 
 	@return The absolute value.
 	*/
-	Vector2 MUTIL_EXPORT	abs(Vector2 const &vec);
+	inline Vector2 abs(const Vector2 &vec)
+	{
+		return Vector2(fabsf(vec.x), fabsf(vec.y));
+	}
 
 	// Vector3 operations
 
@@ -115,7 +156,10 @@ namespace mutil
 
 	@return The dot product.
 	*/
-	float MUTIL_EXPORT		dot(Vector3 const &first, Vector3 const &second);
+	inline float dot(const Vector3 &first, const Vector3 &second)
+	{
+		return (first.x * second.x) + (first.y * second.y) + (first.z * second.z);
+	}
 
 	/*!
 	Returns the cross product of two Vector3's.
@@ -125,7 +169,14 @@ namespace mutil
 
 	@return The result of the cross product.
 	*/
-	Vector3 MUTIL_EXPORT	cross(Vector3 const &first, Vector3 const &second);
+	inline Vector3 cross(const Vector3 &first, const Vector3 &second)
+	{
+		return Vector3(
+			(first.y * second.z - second.y * first.z),
+			(first.z * second.x - second.z * first.x),
+			(first.x * second.y - second.x * first.y)
+		);
+	}
 
 	/*!
 	Returns the length of a Vector3.
@@ -134,7 +185,10 @@ namespace mutil
 
 	@return The length.
 	*/
-	float MUTIL_EXPORT		length(Vector3 const &vec);
+	inline float length(const Vector3 &vec)
+	{
+		return sqrtf(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
+	}
 
 	/*!
 	Finds the distance between two Vector3's.
@@ -144,7 +198,10 @@ namespace mutil
 
 	@return The distance between the two vectors.
 	*/
-	float MUTIL_EXPORT		distance(Vector3 const &first, Vector3 const &second);
+	inline float distance(const Vector3 &first, const Vector3 &second)
+	{
+		return length(second - first);
+	}
 
 	/*!
 	Normalizes a Vector3, making its length 1.
@@ -153,7 +210,10 @@ namespace mutil
 
 	@return The normalized vector.
 	*/
-	Vector3 MUTIL_EXPORT	normalize(Vector3 const &vec);
+	inline Vector3 normalize(const Vector3 &vec)
+	{
+		return vec * inverseSqrt(dot(vec, vec));
+	}
 
 	/*!
 	Reflects a Vector3 over a normal, returning the reflected vector.
@@ -163,7 +223,10 @@ namespace mutil
 
 	@return The reflected vector.
 	*/
-	Vector3 MUTIL_EXPORT	reflect(Vector3 const &vec, Vector3 const &normal);
+	inline Vector3 reflect(const Vector3 &vec, const Vector3 &normal)
+	{
+		return 2.0f * dot(normal, vec) * normal - vec;
+	}
 
 	/*!
 	Refracts a Vector3 and returns the resultant vector.
@@ -172,7 +235,10 @@ namespace mutil
 	@param normal The normal of the refracting surface.
 	@param index The ratio between two indicies of refraction.
 	*/
-	Vector3 MUTIL_EXPORT	refract(Vector3 const &vec, Vector3 const &normal, float ratio);
+	inline Vector3 refract(const Vector3 &vec, const Vector3 &normal, const float ratio)
+	{
+		return (ratio * (cross(normal, cross(-normal, vec)))) - (normal * sqrtf(1 - (ratio * ratio) * dot(cross(normal, vec), cross(normal, vec))));
+	}
 
 	/*!
 	Converts a Vector3 containing angles in degrees to radians.
@@ -181,7 +247,10 @@ namespace mutil
 
 	@return The same vector in radians.
 	*/
-	Vector3 MUTIL_EXPORT	radians(Vector3 const &vec);
+	inline Vector3 radians(const Vector3 &vec)
+	{
+		return Vector3(radians(vec.x), radians(vec.y), radians(vec.z));
+	}
 
 	/*!
 	Converts a Vector3 containing angles in radians to degrees.
@@ -190,7 +259,10 @@ namespace mutil
 
 	@return The same vector in degrees.
 	*/
-	Vector3 MUTIL_EXPORT	degrees(Vector3 const &vec);
+	inline Vector3 degrees(const Vector3 &vec)
+	{
+		return Vector3(degrees(vec.x), degrees(vec.y), degrees(vec.z));
+	}
 
 	/*!
 	Returns a Vector3 with each component being the absolute value of
@@ -200,7 +272,10 @@ namespace mutil
 
 	@return The absolute value.
 	*/
-	Vector3 MUTIL_EXPORT	abs(Vector3 const &vec);
+	inline Vector3 abs(const Vector3 &vec)
+	{
+		return Vector3(fabsf(vec.x), fabsf(vec.y), fabs(vec.z));
+	}
 
 	// Vector4 operations
 
@@ -212,7 +287,21 @@ namespace mutil
 
 	@return The dot product.
 	*/
-	float MUTIL_EXPORT		dot(Vector4 const &first, Vector4 const &second);
+	inline float dot(const Vector4 &first, const Vector4 &second)
+	{
+#if defined(USE_SIMD)
+		//__m128 _mm_load_ps1 (float const* mem_addr)
+		//__m128 _mm_dp_ps (__m128 a, __m128 b, const int imm8)
+		static const int MASK = 0xf1;
+
+		__m128 reg1 = _mm_loadu_ps((float *)&first);
+		__m128 reg2 = _mm_loadu_ps((float *)&second);
+		__m128 resultReg = _mm_dp_ps(reg1, reg2, MASK);
+		return _mm_cvtss_f32(resultReg);
+#else
+		return (first.x * second.x) + (first.y * second.y) + (first.z * second.z) + (first.w * second.w);
+#endif
+	}
 
 	/*!
 	Returns the length of a Vector4.
@@ -221,7 +310,10 @@ namespace mutil
 
 	@return The length.
 	*/
-	float MUTIL_EXPORT		length(Vector4 const &vec);
+	inline float length(const Vector4 &vec)
+	{
+		return sqrtf(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z + vec.w * vec.w);
+	}
 
 	/*!
 	Finds the distance between two Vector4's.
@@ -231,7 +323,10 @@ namespace mutil
 
 	@return The distance between the two vectors.
 	*/
-	float MUTIL_EXPORT		distance(Vector4 const &first, Vector4 const &second);
+	inline float distance(const Vector4 &first, const Vector4 &second)
+	{
+		return length(second - first);
+	}
 
 	/*!
 	Normalizes a Vector4, making its length 1.
@@ -240,7 +335,10 @@ namespace mutil
 
 	@return The normalized vector.
 	*/
-	Vector4 MUTIL_EXPORT	normalize(Vector4 const &vec);
+	inline Vector4 normalize(const Vector4 &vec)
+	{
+		return vec * inverseSqrt(dot(vec, vec));
+	}
 
 	/*!
 	Reflects a Vector4 over a normal, returning the reflected vector.
@@ -250,7 +348,10 @@ namespace mutil
 
 	@return The reflected vector.
 	*/
-	Vector4 MUTIL_EXPORT	reflect(Vector4 const &vec, Vector4 const &normal);
+	inline Vector4 reflect(const Vector4 &vec, const Vector4 &normal)
+	{
+		return 2.0f * dot(normal, vec) * normal - vec;
+	}
 
 	/*!
 	Converts a Vector4 containing angles in degrees to radians.
@@ -259,7 +360,10 @@ namespace mutil
 
 	@return The same vector in radians.
 	*/
-	Vector4 MUTIL_EXPORT	radians(Vector4 const &vec);
+	inline Vector4 radians(const Vector4 &vec)
+	{
+		return Vector4(radians(vec.x), radians(vec.y), radians(vec.z), degrees(vec.w));
+	}
 
 	/*!
 	Converts a Vector3 containing angles in radians to degrees.
@@ -268,7 +372,10 @@ namespace mutil
 
 	@return The same vector in degrees.
 	*/
-	Vector4 MUTIL_EXPORT	degrees(Vector4 const &vec);
+	inline Vector4 degrees(const Vector4 &vec)
+	{
+		return Vector4(degrees(vec.x), degrees(vec.y), degrees(vec.z), degrees(vec.w));
+	}
 
 	/*!
 	Returns a Vector4 with each component being the absolute value of
@@ -278,7 +385,10 @@ namespace mutil
 
 	@return The absolute value.
 	*/
-	Vector4 MUTIL_EXPORT	abs(Vector4 const &vec);
+	inline Vector4 abs(const Vector4 &vec)
+	{
+		return Vector4(fabsf(vec.x), fabsf(vec.y), fabs(vec.z), fabs(vec.w));
+	}
 }
 
 #endif

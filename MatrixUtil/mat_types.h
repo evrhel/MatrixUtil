@@ -11,6 +11,11 @@ Contains classes for handling different types of matrices.
 #include "settings.h"
 #include "vec_types.h"
 
+#include <memory>
+#if defined(USE_SIMD)
+#include <smmintrin.h>
+#endif
+
 namespace mutil
 {
 	typedef class Matrix2 Matrix2;
@@ -24,7 +29,7 @@ namespace mutil
 	/*!
 	Class wrapping a 2x2 matrix of floats.
 	*/
-	class MUTIL_EXPORT Matrix2
+	class Matrix2
 	{
 	public:
 
@@ -36,7 +41,7 @@ namespace mutil
 		/*!
 		Constructs the identity matrix.
 		*/
-		Matrix2();
+		inline Matrix2() : Matrix2(1.0f) { }
 
 		/*!
 		Constructs a matrix with a value along its diagnol, and all elements being
@@ -44,7 +49,11 @@ namespace mutil
 
 		@param The value of the diagnol.
 		*/
-		explicit Matrix2(float const diagonal);
+		explicit inline Matrix2(const float diagonal)
+		{
+			columns[0] = Vector2(diagonal, 0.0f);
+			columns[1] = Vector2(0.0f, diagonal);
+		}
 
 		/*!
 		Constructs a matrix with two explicitly given columns.
@@ -52,14 +61,22 @@ namespace mutil
 		@param column1 The first column.
 		@param column2 The second column.
 		*/
-		explicit Matrix2(Vector2 const &column1, Vector2 const &column2);
+		explicit inline Matrix2(const Vector2 &column1, const Vector2 &column2)
+		{
+			memcpy(&columns[0], &column1, sizeof(Vector2));
+			memcpy(&columns[1], &column2, sizeof(Vector2));
+		}
 
 		/*!
 		Constructs a matrix by casting it from a 32-bit integer matrix.
 
 		@param mat2 The matrix to cast from.
 		*/
-		explicit Matrix2(IntMatrix2 const &mat2);
+		explicit inline Matrix2(const IntMatrix2 &mat)
+		{
+			columns[0] = Vector2(mat.columns[0]);
+			columns[1] = Vector2(mat.columns[1]);
+		}
 
 		/*!
 		Constructs a matrix by filling this matrix with the upper-left portion
@@ -67,7 +84,11 @@ namespace mutil
 
 		@param mat A matrix.
 		*/
-		explicit Matrix2(Matrix3 const &mat);
+		explicit inline Matrix2(const Matrix3 &mat)
+		{
+			columns[0] = Vector2(mat.columns[0]);
+			columns[1] = Vector2(mat.columns[1]);
+		}
 
 		/*!
 		Constructs a matrix by filling this matrix with the upper-left portion
@@ -75,22 +96,61 @@ namespace mutil
 
 		@param mat A matrix.
 		*/
-		explicit Matrix2(Matrix4 const &mat);
+		explicit inline Matrix2(const Matrix4 &mat)
+		{
+			columns[0] = Vector2(mat.columns[0]);
+			columns[1] = Vector2(mat.columns[1]);
+		}
 
-		inline Matrix2 &operator *=(Matrix2 const &other);
+		inline Matrix2 &operator *=(const Matrix2 &other)
+		{
+			Matrix2 result = operator*(*this, other);
+			memcpy(&columns[0], &result.columns[0], sizeof(Vector2) * 2);
+			return *this;
+		}
 	};
 
-	inline Matrix2 MUTIL_EXPORT operator +(Matrix2 const &first, Matrix2 const &second);
-	inline Matrix2 MUTIL_EXPORT operator -(Matrix2 const &first, Matrix2 const &second);
-	inline Matrix2 MUTIL_EXPORT operator *(Matrix2 const &first, Matrix2 const &second);
-	inline Vector2 MUTIL_EXPORT operator *(Matrix2 const &first, Vector2 const &second);
+	inline Matrix2 operator +(const Matrix2 &first, const Matrix2 &second)
+	{
+		return Matrix2(first.columns[0] + second.columns[0], first.columns[1] + second.columns[1]);
+	}
 
-	inline bool MUTIL_EXPORT operator ==(Matrix2 const &first, Matrix2 const &second);
+	inline Matrix2 operator -(const Matrix2 &first, const Matrix2 &second)
+	{
+		return Matrix2(first.columns[0] - second.columns[0], first.columns[1] - second.columns[1]);
+	}
+
+	inline Matrix2 operator *(const Matrix2 &first, const Matrix2 &second)
+	{
+		return Matrix2(
+			Vector2(
+				(first.columns[0].x * second.columns[0].x) + (first.columns[1].x * second.columns[0].y),
+				(first.columns[0].y * second.columns[0].x) + (first.columns[1].y * second.columns[0].y)
+			),
+			Vector2(
+				(first.columns[0].x * second.columns[1].x) + (first.columns[1].x * second.columns[1].y),
+				(first.columns[0].y * second.columns[1].x) + (first.columns[1].y * second.columns[1].y)
+			)
+		);
+	}
+
+	inline Vector2 operator *(const Matrix2 &first, const Vector2 &second)
+	{
+		return Vector2(
+			first.columns[0].x * second.x + first.columns[1].x * second.y,
+			first.columns[0].y * second.x + first.columns[1].y * second.y
+		);
+	}
+
+	inline bool operator ==(const Matrix2 &first, const Matrix2 &second)
+	{
+		return first.columns[0] == second.columns[0] && first.columns[1] == second.columns[1];
+	}
 
 	/*!
 	Class wrapping a 3x3 matrix of floats.
 	*/
-	class MUTIL_EXPORT Matrix3
+	class Matrix3
 	{
 	public:
 
@@ -102,7 +162,7 @@ namespace mutil
 		/*!
 		Constructs the identity matrix.
 		*/
-		Matrix3();
+		inline Matrix3() : Matrix3(1.0f) { }
 
 		/*!
 		Constructs a matrix with a value along its diagnol, and all elements being
@@ -110,7 +170,12 @@ namespace mutil
 
 		@param The value of the diagnol.
 		*/
-		explicit Matrix3(float const diagonal);
+		explicit inline Matrix3(const float diagonal)
+		{
+			columns[0] = Vector3(diagonal, 0.0f, 0.0f);
+			columns[1] = Vector3(0.0f, diagonal, 0.0f);
+			columns[2] = Vector3(0.0f, 0.0f, diagonal);
+		}
 
 		/*!
 		Constructs a matrix with three explicitly given columns.
@@ -119,14 +184,24 @@ namespace mutil
 		@param column2 The second column.
 		@param column3 The third column.
 		*/
-		explicit Matrix3(Vector3 const &column1, Vector3 const &column2, Vector3 const &column3);
+		explicit inline Matrix3(const Vector3 &column1, const Vector3 &column2, const Vector3 &column3)
+		{
+			columns[0] = Vector3(column1);
+			columns[1] = Vector3(column2);
+			columns[2] = Vector3(column3);
+		}
 
 		/*!
 		Constructs a matrix by casting it from a 32-bit integer matrix.
 
 		@param mat3 The matrix to cast from.
 		*/
-		explicit Matrix3(IntMatrix3 const &mat3);
+		explicit inline Matrix3(const IntMatrix3 &mat)
+		{
+			columns[0] = Vector3(mat.columns[0]);
+			columns[1] = Vector3(mat.columns[1]);
+			columns[2] = Vector3(mat.columns[2]);
+		}
 
 		/*!
 		Constructs a matrix by filling the upper left portion with input input matrix and
@@ -134,7 +209,12 @@ namespace mutil
 
 		@param mat A matrix.
 		*/
-		explicit Matrix3(Matrix2 const &mat);
+		explicit inline Matrix3(const Matrix2 &mat)
+		{
+			columns[0] = Vector3(mat.columns[0]);
+			columns[1] = Vector3(mat.columns[1]);
+			columns[2] = Vector3(0.0f, 0.0f, 1.0f);
+		}
 
 		/*!
 		Constructs a matrix by filling this matrix with the upper-left portion
@@ -142,22 +222,70 @@ namespace mutil
 
 		@param mat A matrix.
 		*/
-		explicit Matrix3(Matrix4 const &mat);
+		explicit inline Matrix3(const Matrix4 &mat)
+		{
+			columns[0] = Vector3(mat.columns[0]);
+			columns[1] = Vector3(mat.columns[1]);
+			columns[2] = Vector3(mat.columns[2]);
+		}
 
-		inline Matrix3 &operator *=(Matrix3 const &other);
+		inline Matrix3 &operator *=(const Matrix3 &other)
+		{
+			Matrix3 result = operator*(*this, other);
+			memcpy(&columns[0], &result.columns[0], sizeof(Vector3) * 3);
+			return *this;
+		}
 	};
 
-	inline Matrix3 MUTIL_EXPORT operator +(Matrix3 const &first, Matrix3 const &second);
-	inline Matrix3 MUTIL_EXPORT operator -(Matrix3 const &first, Matrix3 const &second);
-	inline Matrix3 MUTIL_EXPORT operator *(Matrix3 const &first, Matrix3 const &second);
-	inline Vector3 MUTIL_EXPORT operator *(Matrix3 const &first, Vector3 const &second);
+	inline Matrix3 operator +(const Matrix3 &first, const Matrix3 &second)
+	{
+		return Matrix3(first.columns[0] + second.columns[0], first.columns[1] + second.columns[1], first.columns[2] + second.columns[2]);
+	}
 
-	inline bool MUTIL_EXPORT operator ==(Matrix3 const &first, Matrix3 const &second);
+	inline Matrix3 operator -(const Matrix3 &first, const Matrix3 &second)
+	{
+		return Matrix3(first.columns[0] - second.columns[0], first.columns[1] - second.columns[1], first.columns[2] - second.columns[2]);
+	}
+
+	inline Matrix3 operator *(const Matrix3 &first, const Matrix3 &second)
+	{
+		return Matrix3(
+			Vector3(
+				(first.columns[0].x * second.columns[0].x) + (first.columns[1].x * second.columns[0].y) + (first.columns[2].x * second.columns[0].z),
+				(first.columns[0].y * second.columns[0].x) + (first.columns[1].y * second.columns[0].y) + (first.columns[2].y * second.columns[0].z),
+				(first.columns[0].z * second.columns[0].x) + (first.columns[1].z * second.columns[0].y) + (first.columns[2].z * second.columns[0].z)
+			),
+			Vector3(
+				(first.columns[0].x * second.columns[1].x) + (first.columns[1].x * second.columns[1].y) + (first.columns[2].x * second.columns[1].z),
+				(first.columns[0].y * second.columns[1].x) + (first.columns[1].y * second.columns[1].y) + (first.columns[2].y * second.columns[1].z),
+				(first.columns[0].z * second.columns[1].x) + (first.columns[1].z * second.columns[1].y) + (first.columns[2].z * second.columns[1].z)
+			),
+			Vector3(
+				(first.columns[0].x * second.columns[2].x) + (first.columns[1].x * second.columns[2].y) + (first.columns[2].x * second.columns[2].z),
+				(first.columns[0].y * second.columns[2].x) + (first.columns[1].y * second.columns[2].y) + (first.columns[2].y * second.columns[2].z),
+				(first.columns[0].z * second.columns[2].x) + (first.columns[1].z * second.columns[2].y) + (first.columns[2].z * second.columns[2].z)
+			)
+		);
+	}
+
+	inline Vector3 operator *(const Matrix3 &first, const Vector3 &second)
+	{
+		return Vector3(
+			first.columns[0].x * second.x + first.columns[1].x * second.y + first.columns[2].x * second.z,
+			first.columns[0].y * second.x + first.columns[1].y * second.y + first.columns[2].y * second.z,
+			first.columns[0].z * second.x + first.columns[1].z * second.y + first.columns[2].z * second.z
+		);
+	}
+
+	inline bool operator ==(const Matrix3 &first, const Matrix3 &second)
+	{
+		return first.columns[0] == second.columns[0] && first.columns[1] == second.columns[1] && first.columns[2] == second.columns[2];
+	}
 
 	/*!
 	Class wrapping a 4x4 matrix of floats.
 	*/
-	class MUTIL_EXPORT Matrix4
+	class Matrix4
 	{
 	public:
 
@@ -169,7 +297,7 @@ namespace mutil
 		/*!
 		Constructs the identity matrix.
 		*/
-		Matrix4();
+		inline Matrix4() : Matrix4(1.0f) { }
 
 		/*!
 		Constructs a matrix with a value along its diagnol, and all elements being
@@ -177,7 +305,13 @@ namespace mutil
 
 		@param The value of the diagnol.
 		*/
-		explicit Matrix4(float const diagonal);
+		explicit inline Matrix4(const float diagonal)
+		{
+			columns[0] = Vector4(diagonal, 0.0f, 0.0f, 0.0f);
+			columns[1] = Vector4(0.0f, diagonal, 0.0f, 0.0f);
+			columns[2] = Vector4(0.0f, 0.0f, diagonal, 0.0f);
+			columns[3] = Vector4(0.0f, 0.0f, 0.0f, diagonal);
+		}
 
 		/*!
 		Constructs a matrix with four explicitly given columns.
@@ -187,14 +321,26 @@ namespace mutil
 		@param column3 The third column.
 		@param column4 The fourth column.
 		*/
-		explicit Matrix4(Vector4 const &column1, Vector4 const &column2, Vector4 const &column3, Vector4 const &column4);
+		explicit inline Matrix4(const Vector4 &column1, const Vector4 &column2, const Vector4 &column3, const Vector4 &column4)
+		{
+			columns[0] = Vector4(column1);
+			columns[1] = Vector4(column2);
+			columns[2] = Vector4(column3);
+			columns[3] = Vector4(column4);
+		}
 
 		/*!
 		Constructs a matrix by casting it from a 32-bit integer matrix.
 
 		@param mat4 The matrix to cast from.
 		*/
-		explicit Matrix4(IntMatrix4 const &mat4);
+		explicit inline Matrix4(const IntMatrix4 &mat)
+		{
+			columns[0] = Vector4(mat.columns[0]);
+			columns[1] = Vector4(mat.columns[1]);
+			columns[2] = Vector4(mat.columns[2]);
+			columns[3] = Vector4(mat.columns[3]);
+		}
 
 		/*!
 		Constructs a matrix by filling the upper left portion with input input matrix and
@@ -202,7 +348,13 @@ namespace mutil
 
 		@param mat A matrix.
 		*/
-		explicit Matrix4(Matrix2 const &mat);
+		explicit inline Matrix4(const Matrix2 &mat)
+		{
+			columns[0] = Vector4(mat.columns[0]);
+			columns[1] = Vector4(mat.columns[1]);
+			columns[2] = Vector4(0.0f, 0.0f, 1.0f, 0.0f);
+			columns[3] = Vector4(0.0f, 0.0f, 0.0f, 1.0f);
+		}
 
 		/*!
 		Constructs a matrix by filling the upper left portion with input input matrix and
@@ -210,22 +362,144 @@ namespace mutil
 
 		@param mat A matrix.
 		*/
-		explicit Matrix4(Matrix3 const &mat);
+		explicit inline Matrix4(const Matrix3 &mat)
+		{
+			columns[0] = Vector4(mat.columns[0]);
+			columns[1] = Vector4(mat.columns[1]);
+			columns[2] = Vector4(mat.columns[2]);
+			columns[3] = Vector4(0.0f, 0.0f, 0.0f, 1.0f);
+		}
 
-		inline Matrix4 &operator *=(Matrix4 const &other);
+		inline Matrix4 &operator *=(const Matrix4 &other)
+		{
+			Matrix4 result = operator*(*this, other);
+			memcpy(&columns[0], &result.columns[0], sizeof(Vector4) * 4);
+			return *this;
+		}
 	};
 
-	inline Matrix4 MUTIL_EXPORT operator +(Matrix4 const &first, Matrix4 const &second);
-	inline Matrix4 MUTIL_EXPORT operator -(Matrix4 const &first, Matrix4 const &second);
-	inline Matrix4 MUTIL_EXPORT operator *(Matrix4 const &first, Matrix4 const &second);
-	inline Vector4 MUTIL_EXPORT operator *(Matrix4 const &first, Vector4 const &second);
+	inline Matrix4 operator +(const Matrix4 &first, const Matrix4 &second)
+	{
+		return Matrix4(first.columns[0] + second.columns[0], first.columns[1] + second.columns[1], first.columns[2] + second.columns[2], first.columns[3] + second.columns[3]);
+	}
 
-	inline bool MUTIL_EXPORT operator ==(Matrix4 const &first, Matrix4 const &second);
+	inline Matrix4 operator -(const Matrix4 &first, const Matrix4 &second)
+	{
+		return Matrix4(first.columns[0] - second.columns[0], first.columns[1] - second.columns[1], first.columns[2] - second.columns[2], first.columns[3] - second.columns[3]);
+	}
+
+	inline Matrix4 operator *(const Matrix4 &first, const Matrix4 &second)
+	{
+#if defined(USE_SIMD)
+		static const int MASK0 = 0xf1, MASK1 = 0xf2, MASK2 = 0xf4, MASK3 = 0xf8;
+
+		__m128 rc0 = _mm_loadu_ps((float *)&second.columns[0]);
+		__m128 rc1 = _mm_loadu_ps((float *)&second.columns[1]);
+		__m128 rc2 = _mm_loadu_ps((float *)&second.columns[2]);
+		__m128 rc3 = _mm_loadu_ps((float *)&second.columns[3]);
+
+		__m128 lr0 = _mm_set_ps(first.columns[3].x, first.columns[2].x, first.columns[1].x, first.columns[0].x);
+		__m128 lr1 = _mm_set_ps(first.columns[3].y, first.columns[2].y, first.columns[1].y, first.columns[0].y);
+		__m128 lr2 = _mm_set_ps(first.columns[3].z, first.columns[2].z, first.columns[1].z, first.columns[0].z);
+		__m128 lr3 = _mm_set_ps(first.columns[3].w, first.columns[2].w, first.columns[1].w, first.columns[0].w);
+
+
+		__m128 resultReg0, resultReg1, resultReg2, resultReg3;
+		__m128 tempReg0, tempReg1, tempReg2, tempReg3;
+
+		tempReg0 = _mm_dp_ps(lr0, rc0, MASK0);
+		tempReg1 = _mm_dp_ps(lr1, rc0, MASK1);
+		tempReg2 = _mm_dp_ps(lr2, rc0, MASK2);
+		tempReg3 = _mm_dp_ps(lr3, rc0, MASK3);
+
+		tempReg0 = _mm_or_ps(tempReg0, tempReg1);
+		tempReg2 = _mm_or_ps(tempReg2, tempReg3);
+		resultReg0 = _mm_or_ps(tempReg0, tempReg2);
+
+		tempReg0 = _mm_dp_ps(lr0, rc1, MASK0);
+		tempReg1 = _mm_dp_ps(lr1, rc1, MASK1);
+		tempReg2 = _mm_dp_ps(lr2, rc1, MASK2);
+		tempReg3 = _mm_dp_ps(lr3, rc1, MASK3);
+
+		tempReg0 = _mm_or_ps(tempReg0, tempReg1);
+		tempReg2 = _mm_or_ps(tempReg2, tempReg3);
+		resultReg1 = _mm_or_ps(tempReg0, tempReg2);
+
+		tempReg0 = _mm_dp_ps(lr0, rc2, MASK0);
+		tempReg1 = _mm_dp_ps(lr1, rc2, MASK1);
+		tempReg2 = _mm_dp_ps(lr2, rc2, MASK2);
+		tempReg3 = _mm_dp_ps(lr3, rc2, MASK3);
+
+		tempReg0 = _mm_or_ps(tempReg0, tempReg1);
+		tempReg2 = _mm_or_ps(tempReg2, tempReg3);
+		resultReg2 = _mm_or_ps(tempReg0, tempReg2);
+
+		tempReg0 = _mm_dp_ps(lr0, rc3, MASK0);
+		tempReg1 = _mm_dp_ps(lr1, rc3, MASK1);
+		tempReg2 = _mm_dp_ps(lr2, rc3, MASK2);
+		tempReg3 = _mm_dp_ps(lr3, rc3, MASK3);
+
+		tempReg0 = _mm_or_ps(tempReg0, tempReg1);
+		tempReg2 = _mm_or_ps(tempReg2, tempReg3);
+		resultReg3 = _mm_or_ps(tempReg0, tempReg2);
+
+		Matrix4 mat;
+
+		_mm_storeu_ps((float *)&mat.columns[0], resultReg0);
+		_mm_storeu_ps((float *)&mat.columns[1], resultReg1);
+		_mm_storeu_ps((float *)&mat.columns[2], resultReg2);
+		_mm_storeu_ps((float *)&mat.columns[3], resultReg3);
+
+		return mat;
+#else
+		return Matrix4(
+			Vector4(
+				(first.columns[0].x * second.columns[0].x) + (first.columns[1].x * second.columns[0].y) + (first.columns[2].x * second.columns[0].z) + (first.columns[3].x * second.columns[0].w),
+				(first.columns[0].y * second.columns[0].x) + (first.columns[1].y * second.columns[0].y) + (first.columns[2].y * second.columns[0].z) + (first.columns[3].y * second.columns[0].w),
+				(first.columns[0].z * second.columns[0].x) + (first.columns[1].z * second.columns[0].y) + (first.columns[2].z * second.columns[0].z) + (first.columns[3].z * second.columns[0].w),
+				(first.columns[0].w * second.columns[0].x) + (first.columns[1].w * second.columns[0].y) + (first.columns[2].w * second.columns[0].z) + (first.columns[3].w * second.columns[0].w)
+			),
+			Vector4(
+				(first.columns[0].x * second.columns[1].x) + (first.columns[1].x * second.columns[1].y) + (first.columns[2].x * second.columns[1].z) + (first.columns[3].x * second.columns[1].w),
+				(first.columns[0].y * second.columns[1].x) + (first.columns[1].y * second.columns[1].y) + (first.columns[2].y * second.columns[1].z) + (first.columns[3].y * second.columns[1].w),
+				(first.columns[0].z * second.columns[1].x) + (first.columns[1].z * second.columns[1].y) + (first.columns[2].z * second.columns[1].z) + (first.columns[3].z * second.columns[1].w),
+				(first.columns[0].w * second.columns[1].x) + (first.columns[1].w * second.columns[1].y) + (first.columns[2].w * second.columns[1].z) + (first.columns[3].w * second.columns[1].w)
+			),
+			Vector4(
+				(first.columns[0].x * second.columns[2].x) + (first.columns[1].x * second.columns[2].y) + (first.columns[2].x * second.columns[2].z) + (first.columns[3].x * second.columns[2].w),
+				(first.columns[0].y * second.columns[2].x) + (first.columns[1].y * second.columns[2].y) + (first.columns[2].y * second.columns[2].z) + (first.columns[3].y * second.columns[2].w),
+				(first.columns[0].z * second.columns[2].x) + (first.columns[1].z * second.columns[2].y) + (first.columns[2].z * second.columns[2].z) + (first.columns[3].z * second.columns[2].w),
+				(first.columns[0].w * second.columns[2].x) + (first.columns[1].w * second.columns[2].y) + (first.columns[2].w * second.columns[2].z) + (first.columns[3].w * second.columns[2].w)
+			),
+			Vector4(
+				(first.columns[0].x * second.columns[3].x) + (first.columns[1].x * second.columns[3].y) + (first.columns[2].x * second.columns[3].z) + (first.columns[3].x * second.columns[3].w),
+				(first.columns[0].y * second.columns[3].x) + (first.columns[1].y * second.columns[3].y) + (first.columns[2].y * second.columns[3].z) + (first.columns[3].y * second.columns[3].w),
+				(first.columns[0].z * second.columns[3].x) + (first.columns[1].z * second.columns[3].y) + (first.columns[2].z * second.columns[3].z) + (first.columns[3].z * second.columns[3].w),
+				(first.columns[0].w * second.columns[3].x) + (first.columns[1].w * second.columns[3].y) + (first.columns[2].w * second.columns[3].z) + (first.columns[3].w * second.columns[3].w)
+			)
+		);
+#endif
+	}
+
+	inline Vector4 operator *(const Matrix4 &first, const Vector4 &second)
+	{
+		return Vector4(
+			first.columns[0].x * second.x + first.columns[1].x * second.y + first.columns[2].x * second.z + first.columns[3].x * second.w,
+			first.columns[0].y * second.x + first.columns[1].y * second.y + first.columns[2].y * second.z + first.columns[3].y * second.w,
+			first.columns[0].z * second.x + first.columns[1].z * second.y + first.columns[2].z * second.z + first.columns[3].z * second.w,
+			first.columns[0].w * second.x + first.columns[1].w * second.y + first.columns[2].w * second.z + first.columns[3].w * second.w
+		);
+	}
+
+	inline bool operator ==(const Matrix4 &first, const Matrix4 &second)
+	{
+		return first.columns[0] == second.columns[0] && first.columns[1] == second.columns[1] && first.columns[2] == second.columns[2] && first.columns[3] == second.columns[3];
+	}
 
 	/*!
 	Class wrapping a 2x2 matrix of 32-bit integers.
 	*/
-	class MUTIL_EXPORT IntMatrix2
+	class IntMatrix2
 	{
 	public:
 
@@ -237,7 +511,7 @@ namespace mutil
 		/*!
 		Constructs the identity matrix.
 		*/
-		IntMatrix2();
+		inline IntMatrix2() : IntMatrix2(1) { }
 
 		/*!
 		Constructs a matrix with a value along its diagnol, and all elements being
@@ -245,7 +519,11 @@ namespace mutil
 
 		@param The value of the diagnol.
 		*/
-		explicit IntMatrix2(int32_t const diagonal);
+		explicit inline IntMatrix2(const int32_t diagonal)
+		{
+			columns[0] = IntVector2(diagonal, 0);
+			columns[1] = IntVector2(0, diagonal);
+		}
 
 		/*!
 		Constructs a matrix with two explicitly given columns.
@@ -253,14 +531,22 @@ namespace mutil
 		@param column1 The first column.
 		@param column2 The second column.
 		*/
-		explicit IntMatrix2(IntVector2 const &column1, IntVector2 const &column2);
+		explicit inline IntMatrix2(const IntVector2 &column1, const IntVector2 &column2)
+		{
+			columns[0] = column1;
+			columns[1] = column2;
+		}
 
 		/*!
 		Constructs a matrix by casting it from a floating point matrix.
 
 		@param mat2 The matrix to cast from.
 		*/
-		explicit IntMatrix2(Matrix2 const &mat2);
+		explicit inline IntMatrix2(const Matrix2 &mat)
+		{
+			columns[0] = IntVector2(mat.columns[0]);
+			columns[1] = IntVector2(mat.columns[1]);
+		}
 
 		/*!
 		Constructs a matrix by filling this matrix with the upper-left portion
@@ -268,7 +554,11 @@ namespace mutil
 
 		@param mat A matrix.
 		*/
-		explicit IntMatrix2(IntMatrix3 const &mat);
+		explicit inline IntMatrix2(const IntMatrix3 &mat)
+		{
+			columns[0] = IntVector2(mat.columns[0]);
+			columns[1] = IntVector2(mat.columns[1]);
+		}
 
 		/*!
 		Constructs a matrix by filling this matrix with the upper-left portion
@@ -276,22 +566,61 @@ namespace mutil
 
 		@param mat A matrix.
 		*/
-		explicit IntMatrix2(IntMatrix4 const &mat);
+		explicit inline IntMatrix2(const IntMatrix4 &mat)
+		{
+			columns[0] = IntVector2(mat.columns[0]);
+			columns[1] = IntVector2(mat.columns[1]);
+		}
 
-		inline IntMatrix2 &operator *=(IntMatrix2 const &other);
+		inline IntMatrix2 &operator *=(const IntMatrix2 &other)
+		{
+			IntMatrix2 result = operator*(*this, other);
+			memcpy(&columns[0], &result.columns[0], sizeof(IntVector2) * 2);
+			return *this;
+		}
 	};
 
-	inline IntMatrix2 MUTIL_EXPORT operator +(IntMatrix2 const &first, IntMatrix2 const &second);
-	inline IntMatrix2 MUTIL_EXPORT operator -(IntMatrix2 const &first, IntMatrix2 const &second);
-	inline IntMatrix2 MUTIL_EXPORT operator *(IntMatrix2 const &first, IntMatrix2 const &second);
-	inline IntVector2 MUTIL_EXPORT operator *(IntMatrix2 const &first, IntVector2 const &second);
+	inline IntMatrix2 operator +(const IntMatrix2 &first, const IntMatrix2 &second)
+	{
+		return IntMatrix2(first.columns[0] + second.columns[0], first.columns[1] + second.columns[1]);
+	}
 
-	inline bool MUTIL_EXPORT operator ==(IntMatrix2 const &first, IntMatrix2 const &second);
+	inline IntMatrix2 operator -(const IntMatrix2 &first, const IntMatrix2 &second)
+	{
+		return IntMatrix2(first.columns[0] - second.columns[0], first.columns[1] - second.columns[1]);
+	}
+
+	inline IntMatrix2 operator *(const IntMatrix2 &first, const IntMatrix2 &second)
+	{
+		return IntMatrix2(
+			IntVector2(
+				(first.columns[0].x * second.columns[0].x) + (first.columns[1].x * second.columns[0].y),
+				(first.columns[0].y * second.columns[0].x) + (first.columns[1].y * second.columns[0].y)
+			),
+			IntVector2(
+				(first.columns[0].x * second.columns[1].x) + (first.columns[1].x * second.columns[1].y),
+				(first.columns[0].y * second.columns[1].x) + (first.columns[1].y * second.columns[1].y)
+			)
+		);
+	}
+
+	inline IntVector2 operator *(const IntMatrix2 &first, const IntVector2 &second)
+	{
+		return IntVector2(
+			first.columns[0].x * second.x + first.columns[1].x * second.y,
+			first.columns[0].y * second.x + first.columns[1].y * second.y
+		);
+	}
+
+	inline bool operator ==(const IntMatrix2 &first, const IntMatrix2 &second)
+	{
+		return first.columns[0] == second.columns[0] && first.columns[1] == second.columns[1];
+	}
 
 	/*!
 	Class wrapping a 3x3 matrix of 32-bit integers.
 	*/
-	class MUTIL_EXPORT IntMatrix3
+	class IntMatrix3
 	{
 	public:
 
@@ -303,7 +632,7 @@ namespace mutil
 		/*!
 		Constructs the identity matrix.
 		*/
-		IntMatrix3();
+		inline IntMatrix3() : IntMatrix3(1) { }
 
 		/*!
 		Constructs a matrix with a value along its diagnol, and all elements being
@@ -311,7 +640,12 @@ namespace mutil
 
 		@param The value of the diagnol.
 		*/
-		explicit IntMatrix3(int32_t const diagonal);
+		explicit inline IntMatrix3(const int32_t diagonal)
+		{
+			columns[0] = IntVector3(diagonal, 0, 0);
+			columns[1] = IntVector3(0, diagonal, 0);
+			columns[2] = IntVector3(0, 0, diagonal);
+		}
 
 		/*!
 		Constructs a matrix with three explicitly given columns.
@@ -320,14 +654,24 @@ namespace mutil
 		@param column2 The second column.
 		@param column3 The third column.
 		*/
-		explicit IntMatrix3(IntVector3 const &column1, IntVector3 const &column2, IntVector3 const &column3);
+		explicit inline IntMatrix3(const IntVector3 &column1, const IntVector3 &column2, const IntVector3 &column3)
+		{
+			columns[0] = column1;
+			columns[1] = column2;
+			columns[2] = column3;
+		}
 
 		/*!
 		Constructs a matrix by casting it from a floating point matrix.
 
 		@param mat3 The matrix to cast from.
 		*/
-		explicit IntMatrix3(Matrix3 const &mat3);
+		explicit inline IntMatrix3(const Matrix3 &mat)
+		{
+			columns[0] = IntVector3(mat.columns[0]);
+			columns[1] = IntVector3(mat.columns[1]);
+			columns[2] = IntVector3(mat.columns[2]);
+		}
 
 		/*!
 		Constructs a matrix by filling the upper left portion with input input matrix and
@@ -335,7 +679,12 @@ namespace mutil
 
 		@param mat A matrix.
 		*/
-		explicit IntMatrix3(IntMatrix2 const &mat);
+		explicit inline IntMatrix3(const IntMatrix2 &mat)
+		{
+			columns[0] = IntVector3(mat.columns[0], 0);
+			columns[1] = IntVector3(mat.columns[1], 0);
+			columns[2] = IntVector3(0, 0, 1);
+		}
 
 		/*!
 		Constructs a matrix by filling this matrix with the upper-left portion
@@ -343,22 +692,70 @@ namespace mutil
 
 		@param mat A matrix.
 		*/
-		explicit IntMatrix3(IntMatrix4 const &mat);
+		explicit inline IntMatrix3(const IntMatrix4 &mat)
+		{
+			columns[0] = IntVector3(mat.columns[0]);
+			columns[1] = IntVector3(mat.columns[1]);
+			columns[2] = IntVector3(mat.columns[2]);
+		}
 
-		inline IntMatrix3 &operator *=(IntMatrix3 const &other);
+		inline IntMatrix3 &operator *=(const IntMatrix3 &other)
+		{
+			IntMatrix3 result = operator*(*this, other);
+			memcpy(&columns[0], &result.columns[0], sizeof(IntVector3) * 3);
+			return *this;
+		}
 	};
 
-	inline IntMatrix3 MUTIL_EXPORT operator +(IntMatrix3 const &first, IntMatrix3 const &second);
-	inline IntMatrix3 MUTIL_EXPORT operator -(IntMatrix3 const &first, IntMatrix3 const &second);
-	inline IntMatrix3 MUTIL_EXPORT operator *(IntMatrix3 const &first, IntMatrix3 const &second);
-	inline IntVector3 MUTIL_EXPORT operator *(IntMatrix3 const &first, IntVector3 const &second);
+	inline IntMatrix3 operator +(const IntMatrix3 &first, const IntMatrix3 &second)
+	{
+		return IntMatrix3(first.columns[0] + second.columns[0], first.columns[1] + second.columns[1], first.columns[2] + second.columns[2]);
+	}
 
-	inline bool MUTIL_EXPORT operator ==(IntMatrix3 const &first, IntMatrix3 const &second);
+	inline IntMatrix3 operator -(const IntMatrix3 &first, const IntMatrix3 &second)
+	{
+		return IntMatrix3(first.columns[0] - second.columns[0], first.columns[1] - second.columns[1], first.columns[2] - second.columns[2]);
+	}
+
+	inline IntMatrix3 operator *(const IntMatrix3 &first, const IntMatrix3 &second)
+	{
+		return IntMatrix3(
+			IntVector3(
+				(first.columns[0].x * second.columns[0].x) + (first.columns[1].x * second.columns[0].y) + (first.columns[2].x * second.columns[0].z),
+				(first.columns[0].y * second.columns[0].x) + (first.columns[1].y * second.columns[0].y) + (first.columns[2].y * second.columns[0].z),
+				(first.columns[0].z * second.columns[0].x) + (first.columns[1].z * second.columns[0].y) + (first.columns[2].z * second.columns[0].z)
+			),
+			IntVector3(
+				(first.columns[0].x * second.columns[1].x) + (first.columns[1].x * second.columns[1].y) + (first.columns[2].x * second.columns[1].z),
+				(first.columns[0].y * second.columns[1].x) + (first.columns[1].y * second.columns[1].y) + (first.columns[2].y * second.columns[1].z),
+				(first.columns[0].z * second.columns[1].x) + (first.columns[1].z * second.columns[1].y) + (first.columns[2].z * second.columns[1].z)
+			),
+			IntVector3(
+				(first.columns[0].x * second.columns[2].x) + (first.columns[1].x * second.columns[2].y) + (first.columns[2].x * second.columns[2].z),
+				(first.columns[0].y * second.columns[2].x) + (first.columns[1].y * second.columns[2].y) + (first.columns[2].y * second.columns[2].z),
+				(first.columns[0].z * second.columns[2].x) + (first.columns[1].z * second.columns[2].y) + (first.columns[2].z * second.columns[2].z)
+			)
+		);
+	}
+
+	inline IntVector3 operator *(const IntMatrix3 &first, const IntVector3 &second)
+	{
+		return IntVector3(
+			first.columns[0].x * second.x + first.columns[1].x * second.y + first.columns[2].x * second.z,
+			first.columns[0].y * second.x + first.columns[1].y * second.y + first.columns[2].y * second.z,
+			first.columns[0].z * second.x + first.columns[1].z * second.y + first.columns[2].z * second.z
+		);
+	}
+
+	inline bool operator ==(const IntMatrix3 &first, const IntMatrix3 &second)
+	{
+		return first.columns[0] == second.columns[0] && first.columns[1] == second.columns[1] && first.columns[2] == second.columns[2];
+	}
 
 	/*!
 	Class wrapping a 4x4 matrix of 32-bit integers.
 	*/
-	class MUTIL_EXPORT IntMatrix4
+	class IntMatrix4
 	{
 	public:
 
@@ -370,7 +767,7 @@ namespace mutil
 		/*!
 		Constructs the identity matrix.
 		*/
-		IntMatrix4();
+		inline IntMatrix4() : IntMatrix4(1) { }
 
 		/*!
 		Constructs a matrix with a value along its diagnol, and all elements being
@@ -378,7 +775,13 @@ namespace mutil
 
 		@param The value of the diagnol.
 		*/
-		explicit IntMatrix4(int32_t const diagonal);
+		explicit inline IntMatrix4(const int32_t diagonal)
+		{
+			columns[0] = IntVector4(diagonal, 0, 0, 0);
+			columns[1] = IntVector4(0, diagonal, 0, 0);
+			columns[2] = IntVector4(0, 0, diagonal, 0);
+			columns[3] = IntVector4(0, 0, 0, diagonal);
+		}
 
 		/*!
 		Constructs a matrix with four explicitly given columns.
@@ -388,14 +791,26 @@ namespace mutil
 		@param column3 The third column.
 		@param column4 The fourth column.
 		*/
-		explicit IntMatrix4(IntVector4 const &column1, IntVector4 const &column2, IntVector4 const &column3, IntVector4 const &column4);
+		explicit inline IntMatrix4(const IntVector4 &column1, const IntVector4 &column2, const IntVector4 &column3, const IntVector4 &column4)
+		{
+			columns[0] = column1;
+			columns[1] = column2;
+			columns[2] = column3;
+			columns[3] = column4;
+		}
 
 		/*!
 		Constructs a matrix by casting it from a floating point matrix.
 
 		@param mat4 The matrix to cast from.
 		*/
-		explicit IntMatrix4(Matrix4 const &mat4);
+		explicit inline IntMatrix4(const Matrix4 &mat)
+		{
+			columns[0] = IntVector4(mat.columns[0]);
+			columns[1] = IntVector4(mat.columns[1]);
+			columns[2] = IntVector4(mat.columns[2]);
+			columns[3] = IntVector4(mat.columns[3]);
+		}
 
 		/*!
 		Constructs a matrix by filling the upper left portion with input input matrix and
@@ -403,7 +818,13 @@ namespace mutil
 
 		@param mat A matrix.
 		*/
-		explicit IntMatrix4(IntMatrix2 const &mat);
+		explicit inline IntMatrix4(const IntMatrix2 &mat)
+		{
+			columns[0] = IntVector4(mat.columns[0]);
+			columns[1] = IntVector4(mat.columns[1]);
+			columns[2] = IntVector4(mat.columns[2]);
+			columns[3] = IntVector4(0, 0, 0, 1);
+		}
 
 		/*!
 		Constructs a matrix by filling the upper left portion with input input matrix and
@@ -411,17 +832,76 @@ namespace mutil
 
 		@param mat A matrix.
 		*/
-		explicit IntMatrix4(IntMatrix3 const &mat);
+		explicit inline IntMatrix4(const IntMatrix3 &mat)
+		{
+			columns[0] = IntVector4(mat.columns[0]);
+			columns[1] = IntVector4(mat.columns[1]);
+			columns[2] = IntVector4(0, 0, 1, 0);
+			columns[3] = IntVector4(0, 0, 0, 1);
+		}
 
-		inline IntMatrix4 &operator *=(IntMatrix4 const &other);
+		inline IntMatrix4 &operator *=(const IntMatrix4 &other)
+		{
+			IntMatrix4 result = operator*(*this, other);
+			memcpy(&columns[0], &result.columns[0], sizeof(IntVector4) * 4);
+			return *this;
+		}
 	};
 
-	inline IntMatrix4 MUTIL_EXPORT operator +(IntMatrix4 const &first, IntMatrix4 const &second);
-	inline IntMatrix4 MUTIL_EXPORT operator -(IntMatrix4 const &first, IntMatrix4 const &second);
-	inline IntMatrix4 MUTIL_EXPORT operator *(IntMatrix4 const &first, IntMatrix4 const &second);
-	inline IntVector4 MUTIL_EXPORT operator *(IntMatrix4 const &first, IntVector4 const &second);
+	inline IntMatrix4 operator +(const IntMatrix4 &first, const IntMatrix4 &second)
+	{
+		return IntMatrix4(first.columns[0] + second.columns[0], first.columns[1] + second.columns[1], first.columns[2] + second.columns[2], first.columns[3] + second.columns[3]);
+	}
 
-	inline bool MUTIL_EXPORT operator ==(IntMatrix4 const &first, IntMatrix4 const &second);
+	inline IntMatrix4 operator -(const IntMatrix4 &first, const IntMatrix4 &second)
+	{
+		return IntMatrix4(first.columns[0] - second.columns[0], first.columns[1] - second.columns[1], first.columns[2] - second.columns[2], first.columns[3] - second.columns[3]);
+	}
+
+	inline IntMatrix4 operator *(const IntMatrix4 &first, const IntMatrix4 &second)
+	{
+		return IntMatrix4(
+			IntVector4(
+				(first.columns[0].x * second.columns[0].x) + (first.columns[1].x * second.columns[0].y) + (first.columns[2].x * second.columns[0].z) + (first.columns[3].x * second.columns[0].w),
+				(first.columns[0].y * second.columns[0].x) + (first.columns[1].y * second.columns[0].y) + (first.columns[2].y * second.columns[0].z) + (first.columns[3].y * second.columns[0].w),
+				(first.columns[0].z * second.columns[0].x) + (first.columns[1].z * second.columns[0].y) + (first.columns[2].z * second.columns[0].z) + (first.columns[3].z * second.columns[0].w),
+				(first.columns[0].w * second.columns[0].x) + (first.columns[1].w * second.columns[0].y) + (first.columns[2].w * second.columns[0].z) + (first.columns[3].w * second.columns[0].w)
+			),
+			IntVector4(
+				(first.columns[0].x * second.columns[1].x) + (first.columns[1].x * second.columns[1].y) + (first.columns[2].x * second.columns[1].z) + (first.columns[3].x * second.columns[1].w),
+				(first.columns[0].y * second.columns[1].x) + (first.columns[1].y * second.columns[1].y) + (first.columns[2].y * second.columns[1].z) + (first.columns[3].y * second.columns[1].w),
+				(first.columns[0].z * second.columns[1].x) + (first.columns[1].z * second.columns[1].y) + (first.columns[2].z * second.columns[1].z) + (first.columns[3].z * second.columns[1].w),
+				(first.columns[0].w * second.columns[1].x) + (first.columns[1].w * second.columns[1].y) + (first.columns[2].w * second.columns[1].z) + (first.columns[3].w * second.columns[1].w)
+			),
+			IntVector4(
+				(first.columns[0].x * second.columns[2].x) + (first.columns[1].x * second.columns[2].y) + (first.columns[2].x * second.columns[2].z) + (first.columns[3].x * second.columns[2].w),
+				(first.columns[0].y * second.columns[2].x) + (first.columns[1].y * second.columns[2].y) + (first.columns[2].y * second.columns[2].z) + (first.columns[3].y * second.columns[2].w),
+				(first.columns[0].z * second.columns[2].x) + (first.columns[1].z * second.columns[2].y) + (first.columns[2].z * second.columns[2].z) + (first.columns[3].z * second.columns[2].w),
+				(first.columns[0].w * second.columns[2].x) + (first.columns[1].w * second.columns[2].y) + (first.columns[2].w * second.columns[2].z) + (first.columns[3].w * second.columns[2].w)
+			),
+			IntVector4(
+				(first.columns[0].x * second.columns[3].x) + (first.columns[1].x * second.columns[3].y) + (first.columns[2].x * second.columns[3].z) + (first.columns[3].x * second.columns[3].w),
+				(first.columns[0].y * second.columns[3].x) + (first.columns[1].y * second.columns[3].y) + (first.columns[2].y * second.columns[3].z) + (first.columns[3].y * second.columns[3].w),
+				(first.columns[0].z * second.columns[3].x) + (first.columns[1].z * second.columns[3].y) + (first.columns[2].z * second.columns[3].z) + (first.columns[3].z * second.columns[3].w),
+				(first.columns[0].w * second.columns[3].x) + (first.columns[1].w * second.columns[3].y) + (first.columns[2].w * second.columns[3].z) + (first.columns[3].w * second.columns[3].w)
+			)
+		);
+	}
+
+	inline IntVector4 operator *(const IntMatrix4 &first, const  IntVector4 &second)
+	{
+		return IntVector4(
+			first.columns[0].x * second.x + first.columns[1].x * second.y + first.columns[2].x * second.z + first.columns[3].x * second.w,
+			first.columns[0].y * second.x + first.columns[1].y * second.y + first.columns[2].y * second.z + first.columns[3].y * second.w,
+			first.columns[0].z * second.x + first.columns[1].z * second.y + first.columns[2].z * second.z + first.columns[3].z * second.w,
+			first.columns[0].w * second.x + first.columns[1].w * second.y + first.columns[2].w * second.z + first.columns[3].w * second.w
+		);
+	}
+
+	inline bool operator ==(const IntMatrix4 &first, const IntMatrix4 &second)
+	{
+		return first.columns[0] == second.columns[0] && first.columns[1] == second.columns[1] && first.columns[2] == second.columns[2] && first.columns[3] == second.columns[3];
+	}
 }
 
 #endif

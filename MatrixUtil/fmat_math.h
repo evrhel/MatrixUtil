@@ -11,6 +11,12 @@ Contains methods for performing operations on floating-point matrices.
 #include "settings.h"
 #include "mat_types.h"
 
+#include "fmat_math.h"
+#include "matrix.h"
+
+#include <memory>
+
+
 namespace mutil
 {
 	// Matrix2 operations
@@ -24,7 +30,28 @@ namespace mutil
 
 	@return The inverted matrix, or the input matrix if no inverse exists.
 	*/
-	Matrix2	MUTIL_EXPORT	inverse(Matrix2 const &mat2, bool *exists = nullptr);
+	inline Matrix2 inverse(const Matrix2 &mat2, bool *exists = nullptr)
+	{
+		matrix *mat = matrix::matrix_from_array((float *)&mat2, 2, 2);
+		matrix *inv = matrix::matrix_invert(mat);
+		delete mat;
+		if (inv == NULL)
+		{
+			if (exists)
+				*exists = false;
+			delete inv;
+			return mat2;
+		}
+		else
+		{
+			if (exists)
+				*exists = true;
+			Matrix2 result;
+			inv->get_elements((float *)&result);
+			delete inv;
+			return result;
+		}
+	}
 
 	// Matrix3 operations
 
@@ -37,7 +64,28 @@ namespace mutil
 
 	@return The inverted matrix, or the input matrix if no inverse exists.
 	*/
-	Matrix3 MUTIL_EXPORT	inverse(Matrix3 const &mat3, bool *exists = nullptr);
+	inline Matrix3 inverse(const Matrix3 &mat3, bool *exists = nullptr)
+	{
+		matrix *mat = matrix::matrix_from_array((float *)&mat3, 3, 3);
+		matrix *inv = matrix::matrix_invert(mat);
+		delete mat;
+		if (inv == NULL)
+		{
+			if (exists)
+				*exists = false;
+			delete inv;
+			return mat3;
+		}
+		else
+		{
+			if (exists)
+				*exists = true;
+			Matrix3 result;
+			inv->get_elements((float *)&result);
+			delete inv;
+			return result;
+		}
+	}
 
 	// Matrix4 operations
 
@@ -50,7 +98,29 @@ namespace mutil
 
 	@return The inverted matrix, or the input matrix if no inverse exists.
 	*/
-	Matrix4 MUTIL_EXPORT	inverse(Matrix4 const &mat4, bool *exists = nullptr);
+	inline Matrix4 inverse(const Matrix4 &mat4, bool *exists = nullptr)
+	{
+		matrix *mat = matrix::matrix_from_array((float *)&mat4, 4, 4);
+		matrix *inv = matrix::matrix_invert(mat);
+		delete mat;
+		if (inv == NULL)
+		{
+			if (exists)
+				*exists = false;
+			delete inv;
+			return mat4;
+		}
+		else
+		{
+			if (exists)
+				*exists = true;
+			Matrix4 result;
+			inv->get_elements((float *)&result);
+			delete inv;
+			return result;
+		}
+	}
+
 }
 
 #endif

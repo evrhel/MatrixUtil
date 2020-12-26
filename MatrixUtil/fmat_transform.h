@@ -13,6 +13,10 @@ matrices, and transformation matrices.
 #include "fmat_math.h"
 #include "vec_types.h"
 
+#include <cmath>
+
+#include "fvec_math.h"
+
 namespace mutil
 {
 	/*!
@@ -24,7 +28,19 @@ namespace mutil
 
 	@return The look matrix.
 	*/
-	Matrix4	MUTIL_EXPORT	lookAt(Vector3 const &eye, Vector3 const &at, Vector3 const &up);
+	inline Matrix4 lookAt(const Vector3 &eye, const Vector3 &at, const Vector3 &up)
+	{
+		Vector3 const f = normalize(at - eye);
+		Vector3 const r = normalize(cross(f, up));
+		Vector3 const u = cross(r, f);
+
+		return Matrix4(
+			Vector4(r.x, u.x, -f.x, 0.0f),
+			Vector4(r.y, u.y, -f.y, 0.0f),
+			Vector4(r.z, u.z, -f.z, 0.0f),
+			Vector4(-dot(r, eye), -dot(u, eye), dot(f, eye), 1.0f)
+		);
+	}
 
 	/*!
 	Returns a 4x4 orthographic projection matrix.
@@ -38,7 +54,15 @@ namespace mutil
 
 	@return The orthographic projection matrix.
 	*/
-	Matrix4	MUTIL_EXPORT	ortho(float const &left, float const &right, float const &bottom, float const &top, float const &zNear, float const &zFar);
+	inline Matrix4 ortho(float left, float right, float bottom, float top, float zNear, float zFar)
+	{
+		return Matrix4(
+			Vector4(2.0f / (right - left), 0.0f, 0.0f, 0.0f),
+			Vector4(0.0f, 2.0f / (top - bottom), 0.0f, 0.0f),
+			Vector4(0.0f, 0.0f, -2.0f / (zFar - zNear), 0.0f),
+			Vector4(-(right + left) / (right - left), -(top + bottom) / (top - bottom), -(zFar + zNear) / (zFar - zNear), 1.0f)
+		);
+	}
 
 	/*!
 	Returns a 4x4 orthographic projection matrix.
@@ -50,7 +74,15 @@ namespace mutil
 
 	@return The orthographic projection matrix.
 	*/
-	Matrix4 MUTIL_EXPORT	ortho(float const &left, float const &right, float const &bottom, float const &top);
+	inline Matrix4 ortho(float left, float right, float bottom, float top)
+	{
+		return Matrix4(
+			Vector4(2.0f / (right - left), 0.0f, 0.0f, 0.0f),
+			Vector4(0.0f, 2.0f / (top - bottom), 0.0f, 0.0f),
+			Vector4(0.0f, 0.0f, 1.0f, 0.0f),
+			Vector4(-(right + left) / (right - left), -(top + bottom) / (top - bottom), 0.0f, 1.0f)
+		);
+	}
 
 	/*!
 	Returns a 4x4 perspective projection matrix.
@@ -62,7 +94,17 @@ namespace mutil
 
 	@return The perspective projection matrix.
 	*/
-	Matrix4	MUTIL_EXPORT	perspective(float const &fov, float const &aspect, float const &zNear, float const &zFar);
+	inline Matrix4 perspective(const float fov, const float aspect, const float zNear, const float zFar)
+	{
+		float const tanHalfFOV = tanf(fov / 2.0f);
+		Matrix4 result(0.0f);
+		result.columns[0].x = 1.0f / (aspect * tanHalfFOV);
+		result.columns[1].y = 1.0f / (tanHalfFOV);
+		result.columns[2].z = -(zFar + zNear) / (zFar - zNear);
+		result.columns[2].w = -1.0f;
+		result.columns[3].z = -(2.0f * zFar * zNear) / (zFar - zNear);
+		return result;
+	}
 
 	/*!
 	Rotates a 4x4 matrix and returns the new matrix.
@@ -73,7 +115,30 @@ namespace mutil
 
 	@return A rotated version of the input matrix.
 	*/
-	Matrix4	MUTIL_EXPORT	rotate(Matrix4 const &mat4, float const angle, Vector3 const &axis);
+	inline Matrix4 rotate(const Matrix4 &mat4, const float angle, const Vector3 &axis)
+	{
+		const float c = cosf(angle);
+		const float s = sinf(angle);
+
+		Vector3 a = normalize(axis);
+		Vector3 t = (1 - c) * axis;
+
+		Matrix4 rotation = Matrix4(
+			Vector4(c + t.x * a.x, t.x * a.y + s * a.z, t.x * a.z - s * a.y, 0.0f),
+			Vector4(t.y * a.x - s * a.z, c + t.y * a.y, t.x * a.z + s * a.x, 0.0f),
+			Vector4(t.z * a.x + s * a.y, t.z * a.y - s * a.x, c + t.z * a.z, 0.0f),
+			Vector4(0.0f, 0.0f, 0.0f, 1.0f)
+		);
+
+		Matrix4 result = Matrix4(
+			mat4.columns[0] * rotation.columns[0].x + mat4.columns[1] * rotation.columns[0].y + mat4.columns[2] * rotation.columns[0].z,
+			mat4.columns[0] * rotation.columns[1].x + mat4.columns[1] * rotation.columns[1].y + mat4.columns[2] * rotation.columns[1].z,
+			mat4.columns[0] * rotation.columns[2].x + mat4.columns[1] * rotation.columns[2].y + mat4.columns[2] * rotation.columns[2].z,
+			rotation.columns[3]
+		);
+
+		return result;
+	}
 
 	/*!
 	Scales a 4x4 matrix and returns the new matrix.
@@ -83,7 +148,15 @@ namespace mutil
 
 	@return A scaled version of the input matrix.
 	*/
-	Matrix4 MUTIL_EXPORT	scale(Matrix4 const &mat4, Vector3 const &scale);
+	inline Matrix4 scale(const Matrix4 &mat4, const Vector3 &scale)
+	{
+		Matrix4 result;
+		result.columns[0] = mat4.columns[0] * scale.x;
+		result.columns[1] = mat4.columns[1] * scale.y;
+		result.columns[2] = mat4.columns[2] * scale.z;
+		result.columns[3] = mat4.columns[3];
+		return result;
+	}
 
 	/*!
 	Translates a 4x4 matrix and returns the new matrix.
@@ -93,6 +166,11 @@ namespace mutil
 
 	@return A translated version of the input matrix.
 	*/
-	Matrix4	MUTIL_EXPORT	translate(Matrix4 const &mat4, Vector3 const &translation);
+	inline Matrix4 translate(Matrix4 const &mat4, Vector3 const &translation)
+	{
+		Matrix4 result(mat4);
+		result.columns[3] = mat4.columns[0] * translation.x + mat4.columns[1] * translation.y + mat4.columns[2] * translation.z + mat4.columns[3];
+		return result;
+	}
 }
 #endif

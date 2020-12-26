@@ -9,6 +9,7 @@ Contains classes for handling different types of vectors.
 #define FVEC_TYPES_H
 
 #include <stdint.h>
+#include <memory>
 
 #include "settings.h"
 
@@ -43,14 +44,14 @@ namespace mutil
 		/*!
 		Constructs a zeroed vector.
 		*/
-		Vector2();
+		inline Vector2() : x(0.0f), y(0.0f) { }
 
 		/*!
 		Constructs a vector filled with one value.
 
 		@param scale The value to fill with.
 		*/
-		explicit Vector2(float const scalar);
+		explicit inline Vector2(const float scalar) : x(scalar), y(scalar) { }
 
 		/*!
 		Constructs a vector with two explicit values.
@@ -58,14 +59,14 @@ namespace mutil
 		@param x The x value.
 		@param y The y value.
 		*/
-		Vector2(float const x, float const y);
+		inline Vector2(const float x, const float y) : x(x), y(y) { }
 
 		/*!
 		Typecasts from an 32-bit integer vector.
 
 		@param ivec2 The vector to cast from.
 		*/
-		explicit Vector2(IntVector2 const &ivec2);
+		explicit inline Vector2(const IntVector2 &ivec2) : x(ivec2.x), y(ivec2.y) { }
 
 		/*!
 		Constructs a Vector2 with only the x and y components of
@@ -73,7 +74,7 @@ namespace mutil
 		
 		@param vec A vector.
 		*/
-		Vector2(Vector3 const &vec);
+		explicit inline Vector2(const Vector3 &vec) : x(vec.x), y(vec.y) { }
 
 		/*!
 		Constructs a Vector2 with only the x and y components of
@@ -81,26 +82,49 @@ namespace mutil
 
 		@param vec A vector.
 		*/
-		Vector2(Vector4 const &vec);
+		explicit inline Vector2(const Vector4 &vec) : x(vec.x), y(vec.y) { }
 
-		inline Vector2 &operator +=(Vector2 const &first);
-		inline Vector2 &operator -=(Vector2 const &first);
-		inline Vector2 &operator *=(Vector2 const &first);
-		inline Vector2 &operator /=(Vector2 const &first);
+		inline Vector2 &operator +=(const Vector2 &first)
+		{
+			Vector2 result = operator+(*this, first);
+			memcpy(this, &result, 2 * sizeof(float));
+			return *this;
+		}
+
+		inline Vector2 &operator -=(const Vector2 &first)
+		{
+			Vector2 result = operator-(*this, first);
+			memcpy(this, &result, 2 * sizeof(float));
+			return *this;
+		}
+
+		inline Vector2 &operator *=(const Vector2 &first)
+		{
+			Vector2 result = operator*(*this, first);
+			memcpy(this, &result, 2 * sizeof(float));
+			return *this;
+		}
+
+		inline Vector2 &operator /=(const Vector2 &first)
+		{
+			Vector2 result = operator/(*this, first);
+			memcpy(this, &result, 2 * sizeof(float));
+			return *this;
+		}
 	};
 
-	inline Vector2 MUTIL_EXPORT operator +(Vector2 const &first, Vector2 const &second);
-	inline Vector2 MUTIL_EXPORT operator -(Vector2 const &first, Vector2 const &second);
-	inline Vector2 MUTIL_EXPORT operator *(Vector2 const &first, Vector2 const &second);
-	inline Vector2 MUTIL_EXPORT operator *(Vector2 const &first, float const &scalar);
-	inline Vector2 MUTIL_EXPORT operator *(float const &scalar, Vector2 const &vec);
-	inline Vector2 MUTIL_EXPORT operator /(Vector2 const &first, Vector2 const &second);
-	inline Vector2 MUTIL_EXPORT operator /(Vector2 const &first, float const &scalar);
+	inline Vector2 operator +(const Vector2 &first, const Vector2 &second) { return Vector2(first.x + second.x, first.y + second.y); }
+	inline Vector2 operator -(const Vector2 &first, const Vector2 &second) { return Vector2(first.x - second.x, first.y - second.y); }
+	inline Vector2 operator *(const Vector2 &first, const Vector2 &second) { return Vector2(first.x * second.x, first.y * second.y); }
+	inline Vector2 operator *(const Vector2 &first, const float scalar) { return Vector2(first.x * scalar, first.y * scalar); }
+	inline Vector2 operator *(const float scalar, const Vector2 &vec) { return Vector2(vec.x * scalar, vec.y * scalar); }
+	inline Vector2 operator /(const Vector2 &first, const Vector2 &second) { return Vector2(first.x / second.x, first.y / second.y); }
+	inline Vector2 operator /(const Vector2 &first, const float scalar) { return Vector2(first.x / scalar, first.y / scalar); }
 
-	inline Vector2 MUTIL_EXPORT operator -(Vector2 const &vec);
+	inline Vector2 operator -(Vector2 const &vec) { return Vector2(-vec.x, -vec.y); };
 
-	inline bool MUTIL_EXPORT operator ==(Vector2 const &first, Vector2 const &second);
-	inline bool MUTIL_EXPORT operator !=(Vector2 const &first, Vector2 const &second);
+	inline bool operator ==(Vector2 const &first, Vector2 const &second) { return first.x == second.x && first.y == second.y; }
+	inline bool operator !=(Vector2 const &first, Vector2 const &second) { return !operator==(first, second); }
 
 	class MUTIL_EXPORT Vector3
 	{

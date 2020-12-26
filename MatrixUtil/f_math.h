@@ -10,6 +10,9 @@ Contains methods for performing floating-point math operations.
 
 #include "settings.h"
 
+#define _USE_MATH_DEFINES
+#include <math.h>
+
 namespace mutil
 {
 	/*!
@@ -19,7 +22,10 @@ namespace mutil
 
 	@return The same angle in radians.
 	*/
-	float MUTIL_EXPORT radians(float const &degrees);
+	inline float radians(float degrees)
+	{
+		return degrees / 180 * M_PI;
+	}
 
 	/*!
 	Converts an angle in radians into degrees.
@@ -28,7 +34,10 @@ namespace mutil
 
 	@return The same angle in degrees.
 	*/
-	float MUTIL_EXPORT degrees(float const &radians);
+	inline float degrees(float radians)
+	{
+		return radians / M_PI * 180;
+	}
 }
 
 #endif
