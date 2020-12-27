@@ -24,7 +24,7 @@ namespace mutil
 	*/
 	inline float radians(float degrees)
 	{
-		return degrees / 180 * M_PI;
+		return degrees / 180 * (float)M_PI;
 	}
 
 	/*!
@@ -36,7 +36,7 @@ namespace mutil
 	*/
 	inline float degrees(float radians)
 	{
-		return radians / M_PI * 180;
+		return radians / (float)M_PI * 180;
 	}
 }
 

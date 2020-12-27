@@ -72,11 +72,7 @@ namespace mutil
 
 		@param mat2 The matrix to cast from.
 		*/
-		explicit inline Matrix2(const IntMatrix2 &mat)
-		{
-			columns[0] = Vector2(mat.columns[0]);
-			columns[1] = Vector2(mat.columns[1]);
-		}
+		explicit inline Matrix2(const IntMatrix2 &mat);
 
 		/*!
 		Constructs a matrix by filling this matrix with the upper-left portion
@@ -84,11 +80,7 @@ namespace mutil
 
 		@param mat A matrix.
 		*/
-		explicit inline Matrix2(const Matrix3 &mat)
-		{
-			columns[0] = Vector2(mat.columns[0]);
-			columns[1] = Vector2(mat.columns[1]);
-		}
+		explicit inline Matrix2(const Matrix3 &mat);
 
 		/*!
 		Constructs a matrix by filling this matrix with the upper-left portion
@@ -96,18 +88,7 @@ namespace mutil
 
 		@param mat A matrix.
 		*/
-		explicit inline Matrix2(const Matrix4 &mat)
-		{
-			columns[0] = Vector2(mat.columns[0]);
-			columns[1] = Vector2(mat.columns[1]);
-		}
-
-		inline Matrix2 &operator *=(const Matrix2 &other)
-		{
-			Matrix2 result = operator*(*this, other);
-			memcpy(&columns[0], &result.columns[0], sizeof(Vector2) * 2);
-			return *this;
-		}
+		explicit inline Matrix2(const Matrix4 &mat);
 	};
 
 	inline Matrix2 operator +(const Matrix2 &first, const Matrix2 &second)
@@ -196,12 +177,7 @@ namespace mutil
 
 		@param mat3 The matrix to cast from.
 		*/
-		explicit inline Matrix3(const IntMatrix3 &mat)
-		{
-			columns[0] = Vector3(mat.columns[0]);
-			columns[1] = Vector3(mat.columns[1]);
-			columns[2] = Vector3(mat.columns[2]);
-		}
+		explicit inline Matrix3(const IntMatrix3 &mat);
 
 		/*!
 		Constructs a matrix by filling the upper left portion with input input matrix and
@@ -209,12 +185,7 @@ namespace mutil
 
 		@param mat A matrix.
 		*/
-		explicit inline Matrix3(const Matrix2 &mat)
-		{
-			columns[0] = Vector3(mat.columns[0]);
-			columns[1] = Vector3(mat.columns[1]);
-			columns[2] = Vector3(0.0f, 0.0f, 1.0f);
-		}
+		explicit inline Matrix3(const Matrix2 &mat);
 
 		/*!
 		Constructs a matrix by filling this matrix with the upper-left portion
@@ -222,19 +193,7 @@ namespace mutil
 
 		@param mat A matrix.
 		*/
-		explicit inline Matrix3(const Matrix4 &mat)
-		{
-			columns[0] = Vector3(mat.columns[0]);
-			columns[1] = Vector3(mat.columns[1]);
-			columns[2] = Vector3(mat.columns[2]);
-		}
-
-		inline Matrix3 &operator *=(const Matrix3 &other)
-		{
-			Matrix3 result = operator*(*this, other);
-			memcpy(&columns[0], &result.columns[0], sizeof(Vector3) * 3);
-			return *this;
-		}
+		explicit inline Matrix3(const Matrix4 &mat);
 	};
 
 	inline Matrix3 operator +(const Matrix3 &first, const Matrix3 &second)
@@ -334,13 +293,7 @@ namespace mutil
 
 		@param mat4 The matrix to cast from.
 		*/
-		explicit inline Matrix4(const IntMatrix4 &mat)
-		{
-			columns[0] = Vector4(mat.columns[0]);
-			columns[1] = Vector4(mat.columns[1]);
-			columns[2] = Vector4(mat.columns[2]);
-			columns[3] = Vector4(mat.columns[3]);
-		}
+		explicit inline Matrix4(const IntMatrix4 &mat);
 
 		/*!
 		Constructs a matrix by filling the upper left portion with input input matrix and
@@ -348,13 +301,7 @@ namespace mutil
 
 		@param mat A matrix.
 		*/
-		explicit inline Matrix4(const Matrix2 &mat)
-		{
-			columns[0] = Vector4(mat.columns[0]);
-			columns[1] = Vector4(mat.columns[1]);
-			columns[2] = Vector4(0.0f, 0.0f, 1.0f, 0.0f);
-			columns[3] = Vector4(0.0f, 0.0f, 0.0f, 1.0f);
-		}
+		explicit inline Matrix4(const Matrix2 &mat);
 
 		/*!
 		Constructs a matrix by filling the upper left portion with input input matrix and
@@ -362,20 +309,7 @@ namespace mutil
 
 		@param mat A matrix.
 		*/
-		explicit inline Matrix4(const Matrix3 &mat)
-		{
-			columns[0] = Vector4(mat.columns[0]);
-			columns[1] = Vector4(mat.columns[1]);
-			columns[2] = Vector4(mat.columns[2]);
-			columns[3] = Vector4(0.0f, 0.0f, 0.0f, 1.0f);
-		}
-
-		inline Matrix4 &operator *=(const Matrix4 &other)
-		{
-			Matrix4 result = operator*(*this, other);
-			memcpy(&columns[0], &result.columns[0], sizeof(Vector4) * 4);
-			return *this;
-		}
+		explicit inline Matrix4(const Matrix3 &mat);
 	};
 
 	inline Matrix4 operator +(const Matrix4 &first, const Matrix4 &second)
@@ -542,11 +476,7 @@ namespace mutil
 
 		@param mat2 The matrix to cast from.
 		*/
-		explicit inline IntMatrix2(const Matrix2 &mat)
-		{
-			columns[0] = IntVector2(mat.columns[0]);
-			columns[1] = IntVector2(mat.columns[1]);
-		}
+		explicit inline IntMatrix2(const Matrix2 &mat);
 
 		/*!
 		Constructs a matrix by filling this matrix with the upper-left portion
@@ -554,11 +484,7 @@ namespace mutil
 
 		@param mat A matrix.
 		*/
-		explicit inline IntMatrix2(const IntMatrix3 &mat)
-		{
-			columns[0] = IntVector2(mat.columns[0]);
-			columns[1] = IntVector2(mat.columns[1]);
-		}
+		explicit inline IntMatrix2(const IntMatrix3 &mat);
 
 		/*!
 		Constructs a matrix by filling this matrix with the upper-left portion
@@ -566,18 +492,7 @@ namespace mutil
 
 		@param mat A matrix.
 		*/
-		explicit inline IntMatrix2(const IntMatrix4 &mat)
-		{
-			columns[0] = IntVector2(mat.columns[0]);
-			columns[1] = IntVector2(mat.columns[1]);
-		}
-
-		inline IntMatrix2 &operator *=(const IntMatrix2 &other)
-		{
-			IntMatrix2 result = operator*(*this, other);
-			memcpy(&columns[0], &result.columns[0], sizeof(IntVector2) * 2);
-			return *this;
-		}
+		explicit inline IntMatrix2(const IntMatrix4 &mat);
 	};
 
 	inline IntMatrix2 operator +(const IntMatrix2 &first, const IntMatrix2 &second)
@@ -666,12 +581,7 @@ namespace mutil
 
 		@param mat3 The matrix to cast from.
 		*/
-		explicit inline IntMatrix3(const Matrix3 &mat)
-		{
-			columns[0] = IntVector3(mat.columns[0]);
-			columns[1] = IntVector3(mat.columns[1]);
-			columns[2] = IntVector3(mat.columns[2]);
-		}
+		explicit inline IntMatrix3(const Matrix3 &mat);
 
 		/*!
 		Constructs a matrix by filling the upper left portion with input input matrix and
@@ -679,12 +589,7 @@ namespace mutil
 
 		@param mat A matrix.
 		*/
-		explicit inline IntMatrix3(const IntMatrix2 &mat)
-		{
-			columns[0] = IntVector3(mat.columns[0], 0);
-			columns[1] = IntVector3(mat.columns[1], 0);
-			columns[2] = IntVector3(0, 0, 1);
-		}
+		explicit inline IntMatrix3(const IntMatrix2 &mat);
 
 		/*!
 		Constructs a matrix by filling this matrix with the upper-left portion
@@ -692,19 +597,7 @@ namespace mutil
 
 		@param mat A matrix.
 		*/
-		explicit inline IntMatrix3(const IntMatrix4 &mat)
-		{
-			columns[0] = IntVector3(mat.columns[0]);
-			columns[1] = IntVector3(mat.columns[1]);
-			columns[2] = IntVector3(mat.columns[2]);
-		}
-
-		inline IntMatrix3 &operator *=(const IntMatrix3 &other)
-		{
-			IntMatrix3 result = operator*(*this, other);
-			memcpy(&columns[0], &result.columns[0], sizeof(IntVector3) * 3);
-			return *this;
-		}
+		explicit inline IntMatrix3(const IntMatrix4 &mat);
 	};
 
 	inline IntMatrix3 operator +(const IntMatrix3 &first, const IntMatrix3 &second)
@@ -804,13 +697,7 @@ namespace mutil
 
 		@param mat4 The matrix to cast from.
 		*/
-		explicit inline IntMatrix4(const Matrix4 &mat)
-		{
-			columns[0] = IntVector4(mat.columns[0]);
-			columns[1] = IntVector4(mat.columns[1]);
-			columns[2] = IntVector4(mat.columns[2]);
-			columns[3] = IntVector4(mat.columns[3]);
-		}
+		explicit inline IntMatrix4(const Matrix4 &mat);
 
 		/*!
 		Constructs a matrix by filling the upper left portion with input input matrix and
@@ -818,13 +705,7 @@ namespace mutil
 
 		@param mat A matrix.
 		*/
-		explicit inline IntMatrix4(const IntMatrix2 &mat)
-		{
-			columns[0] = IntVector4(mat.columns[0]);
-			columns[1] = IntVector4(mat.columns[1]);
-			columns[2] = IntVector4(mat.columns[2]);
-			columns[3] = IntVector4(0, 0, 0, 1);
-		}
+		explicit inline IntMatrix4(const IntMatrix2 &mat);
 
 		/*!
 		Constructs a matrix by filling the upper left portion with input input matrix and
@@ -832,20 +713,7 @@ namespace mutil
 
 		@param mat A matrix.
 		*/
-		explicit inline IntMatrix4(const IntMatrix3 &mat)
-		{
-			columns[0] = IntVector4(mat.columns[0]);
-			columns[1] = IntVector4(mat.columns[1]);
-			columns[2] = IntVector4(0, 0, 1, 0);
-			columns[3] = IntVector4(0, 0, 0, 1);
-		}
-
-		inline IntMatrix4 &operator *=(const IntMatrix4 &other)
-		{
-			IntMatrix4 result = operator*(*this, other);
-			memcpy(&columns[0], &result.columns[0], sizeof(IntVector4) * 4);
-			return *this;
-		}
+		explicit inline IntMatrix4(const IntMatrix3 &mat);
 	};
 
 	inline IntMatrix4 operator +(const IntMatrix4 &first, const IntMatrix4 &second)
@@ -901,6 +769,139 @@ namespace mutil
 	inline bool operator ==(const IntMatrix4 &first, const IntMatrix4 &second)
 	{
 		return first.columns[0] == second.columns[0] && first.columns[1] == second.columns[1] && first.columns[2] == second.columns[2] && first.columns[3] == second.columns[3];
+	}
+
+
+
+	inline Matrix2::Matrix2(const IntMatrix2 &mat)
+	{
+		columns[0] = Vector2(mat.columns[0]);
+		columns[1] = Vector2(mat.columns[1]);
+	}
+
+	inline Matrix2::Matrix2(const Matrix3 &mat)
+	{
+		columns[0] = Vector2(mat.columns[0]);
+		columns[1] = Vector2(mat.columns[1]);
+	}
+
+	inline Matrix2::Matrix2(const Matrix4 &mat)
+	{
+		columns[0] = Vector2(mat.columns[0]);
+		columns[1] = Vector2(mat.columns[1]);
+	}
+
+
+	inline Matrix3::Matrix3(const IntMatrix3 &mat)
+	{
+		columns[0] = Vector3(mat.columns[0]);
+		columns[1] = Vector3(mat.columns[1]);
+		columns[2] = Vector3(mat.columns[2]);
+	}
+
+	inline Matrix3::Matrix3(const Matrix2 &mat)
+	{
+		columns[0] = Vector3(mat.columns[0]);
+		columns[1] = Vector3(mat.columns[1]);
+		columns[2] = Vector3(0.0f, 0.0f, 1.0f);
+	}
+
+	inline Matrix3::Matrix3(const Matrix4 &mat)
+	{
+		columns[0] = Vector3(mat.columns[0]);
+		columns[1] = Vector3(mat.columns[1]);
+		columns[2] = Vector3(mat.columns[2]);
+	}
+
+
+	inline Matrix4::Matrix4(const IntMatrix4 &mat)
+	{
+		columns[0] = Vector4(mat.columns[0]);
+		columns[1] = Vector4(mat.columns[1]);
+		columns[2] = Vector4(mat.columns[2]);
+		columns[3] = Vector4(mat.columns[3]);
+	}
+
+	inline Matrix4::Matrix4(const Matrix2 &mat)
+	{
+		columns[0] = Vector4(mat.columns[0]);
+		columns[1] = Vector4(mat.columns[1]);
+		columns[2] = Vector4(0.0f, 0.0f, 1.0f, 0.0f);
+		columns[3] = Vector4(0.0f, 0.0f, 0.0f, 1.0f);
+	}
+
+	inline Matrix4::Matrix4(const Matrix3 &mat)
+	{
+		columns[0] = Vector4(mat.columns[0]);
+		columns[1] = Vector4(mat.columns[1]);
+		columns[2] = Vector4(mat.columns[2]);
+		columns[3] = Vector4(0.0f, 0.0f, 0.0f, 1.0f);
+	}
+
+
+	inline IntMatrix2::IntMatrix2(const Matrix2 &mat)
+	{
+		columns[0] = IntVector2(mat.columns[0]);
+		columns[1] = IntVector2(mat.columns[1]);
+	}
+
+	inline IntMatrix2::IntMatrix2(const IntMatrix3 &mat)
+	{
+		columns[0] = IntVector2(mat.columns[0]);
+		columns[1] = IntVector2(mat.columns[1]);
+	}
+
+	inline IntMatrix2::IntMatrix2(const IntMatrix4 &mat)
+	{
+		columns[0] = IntVector2(mat.columns[0]);
+		columns[1] = IntVector2(mat.columns[1]);
+	}
+
+
+	inline IntMatrix3::IntMatrix3(const Matrix3 &mat)
+	{
+		columns[0] = IntVector3(mat.columns[0]);
+		columns[1] = IntVector3(mat.columns[1]);
+		columns[2] = IntVector3(mat.columns[2]);
+	}
+
+	inline IntMatrix3::IntMatrix3(const IntMatrix2 &mat)
+	{
+		columns[0] = IntVector3(mat.columns[0], 0);
+		columns[1] = IntVector3(mat.columns[1], 0);
+		columns[2] = IntVector3(0, 0, 1);
+	}
+
+	inline IntMatrix3::IntMatrix3(const IntMatrix4 &mat)
+	{
+		columns[0] = IntVector3(mat.columns[0]);
+		columns[1] = IntVector3(mat.columns[1]);
+		columns[2] = IntVector3(mat.columns[2]);
+	}
+
+
+	inline IntMatrix4::IntMatrix4(const Matrix4 &mat)
+	{
+		columns[0] = IntVector4(mat.columns[0]);
+		columns[1] = IntVector4(mat.columns[1]);
+		columns[2] = IntVector4(mat.columns[2]);
+		columns[3] = IntVector4(mat.columns[3]);
+	}
+
+	inline IntMatrix4::IntMatrix4(const IntMatrix2 &mat)
+	{
+		columns[0] = IntVector4(mat.columns[0]);
+		columns[1] = IntVector4(mat.columns[1]);
+		columns[2] = IntVector4(mat.columns[2]);
+		columns[3] = IntVector4(0, 0, 0, 1);
+	}
+
+	inline IntMatrix4::IntMatrix4(const IntMatrix3 &mat)
+	{
+		columns[0] = IntVector4(mat.columns[0]);
+		columns[1] = IntVector4(mat.columns[1]);
+		columns[2] = IntVector4(0, 0, 1, 0);
+		columns[3] = IntVector4(0, 0, 0, 1);
 	}
 }
 

@@ -121,7 +121,7 @@ namespace mutil
 		const float s = sinf(angle);
 
 		Vector3 a = normalize(axis);
-		Vector3 t = (1 - c) * axis;
+		Vector3 t = axis * (1 - c);
 
 		Matrix4 rotation = Matrix4(
 			Vector4(c + t.x * a.x, t.x * a.y + s * a.z, t.x * a.z - s * a.y, 0.0f),

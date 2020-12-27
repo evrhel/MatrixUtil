@@ -20,7 +20,7 @@ Contains methods for performing operations on floating-point vectors.
 
 namespace mutil
 {
-	constexpr float inverseSqrt(const float num)
+	inline float inverseSqrt(const float num)
 	{
 		return 1.0f / sqrtf(num);
 	}
@@ -38,23 +38,6 @@ namespace mutil
 	inline float dot(const Vector2 &first, const Vector2 &second)
 	{
 		return (first.x * second.x) + (first.y * second.y);
-	}
-
-	/*!
-	Returns the cross product of two Vector2's.  This treats each Vector2 as if
-	their z component is 0.  Since the cross product returns an orthogonal vector
-	to the two inputs and the input vectors are only 2D, the z component is the
-	only non-zero component.  Due to this, the z magnitude of the cross product
-	is returned.
-
-	@param first The first vector.
-	@param second The second vector.
-
-	@return The magnitude of the z component of the result of the cross product.
-	*/
-	inline float cross(const Vector2 &first, const Vector2 &second)
-	{
-		return cross(Vector3(first, 0.0f), Vector3(second, 0.0f)).z;
 	}
 
 	/*!
@@ -105,7 +88,7 @@ namespace mutil
 	*/
 	inline Vector2 reflect(const Vector2 &vec, const Vector2 &normal)
 	{
-		return 2.0f * dot(normal, vec) * normal - vec;
+		return (normal * (2.0f * dot(normal, vec))) - vec;
 	}
 
 	/*!
@@ -225,7 +208,7 @@ namespace mutil
 	*/
 	inline Vector3 reflect(const Vector3 &vec, const Vector3 &normal)
 	{
-		return 2.0f * dot(normal, vec) * normal - vec;
+		return (normal * (2.0f * dot(normal, vec))) - vec;
 	}
 
 	/*!
@@ -237,7 +220,7 @@ namespace mutil
 	*/
 	inline Vector3 refract(const Vector3 &vec, const Vector3 &normal, const float ratio)
 	{
-		return (ratio * (cross(normal, cross(-normal, vec)))) - (normal * sqrtf(1 - (ratio * ratio) * dot(cross(normal, vec), cross(normal, vec))));
+		return ((cross(normal, cross(-normal, vec))) * ratio) - (normal * sqrtf(1 - (ratio * ratio) * dot(cross(normal, vec), cross(normal, vec))));
 	}
 
 	/*!
@@ -350,7 +333,7 @@ namespace mutil
 	*/
 	inline Vector4 reflect(const Vector4 &vec, const Vector4 &normal)
 	{
-		return 2.0f * dot(normal, vec) * normal - vec;
+		return (normal * (2.0f * dot(normal, vec))) - vec;
 	}
 
 	/*!
