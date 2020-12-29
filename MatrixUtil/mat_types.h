@@ -98,7 +98,7 @@ namespace mutil
 		*/
 		explicit inline Matrix2(const Matrix4 &mat);
 
-		inline float operator [](size_t index)
+		inline float operator [](size_t index) const
 		{
 			return ((float *)this)[index];
 		}
@@ -217,7 +217,7 @@ namespace mutil
 		*/
 		explicit inline Matrix3(const Matrix4 &mat);
 
-		inline float operator [](size_t index)
+		inline float operator [](size_t index) const
 		{
 			return ((float *)this)[index];
 		}
@@ -348,7 +348,7 @@ namespace mutil
 		*/
 		explicit inline Matrix4(const Matrix3 &mat);
 
-		inline float operator [](size_t index)
+		inline float operator [](size_t index) const
 		{
 			return ((float *)this)[index];
 		}
@@ -544,7 +544,7 @@ namespace mutil
 		*/
 		explicit inline IntMatrix2(const IntMatrix4 &mat);
 
-		inline int32_t operator [](size_t index)
+		inline int32_t operator [](size_t index) const
 		{
 			return ((int32_t *)this)[index];
 		}
@@ -663,7 +663,7 @@ namespace mutil
 		*/
 		explicit inline IntMatrix3(const IntMatrix4 &mat);
 
-		inline int32_t operator [](size_t index)
+		inline int32_t operator [](size_t index) const
 		{
 			return ((int32_t *)this)[index];
 		}
@@ -794,7 +794,7 @@ namespace mutil
 		*/
 		explicit inline IntMatrix4(const IntMatrix3 &mat);
 
-		inline int32_t operator [](size_t index)
+		inline int32_t operator [](size_t index) const
 		{
 			return ((int32_t *)this)[index];
 		}
