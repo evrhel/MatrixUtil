@@ -44,6 +44,7 @@ namespace mutil
 				float _11, _12;
 				float _21, _22;
 			};
+			float mat[4];
 		};
 
 		/*!
@@ -98,9 +99,14 @@ namespace mutil
 		*/
 		explicit inline Matrix2(const Matrix4 &mat);
 
-		inline float operator [](size_t index) const
+		inline const float &operator [](size_t index) const
 		{
-			return ((float *)this)[index];
+			return mat[index];
+		}
+
+		inline float &operator [](size_t index)
+		{
+			return mat[index];
 		}
 	};
 
@@ -160,6 +166,7 @@ namespace mutil
 				float _21, _22, _23;
 				float _31, _32, _33;
 			};
+			float mat[9];
 		};
 
 		/*!
@@ -217,9 +224,14 @@ namespace mutil
 		*/
 		explicit inline Matrix3(const Matrix4 &mat);
 
-		inline float operator [](size_t index) const
+		inline const float &operator [](size_t index) const
 		{
-			return ((float *)this)[index];
+			return mat[index];
+		}
+
+		inline float &operator [](size_t index)
+		{
+			return mat[index];
 		}
 	};
 
@@ -288,6 +300,7 @@ namespace mutil
 				float _31, _32, _33, _34;
 				float _41, _42, _43, _44;
 			};
+			float mat[4];
 		};
 
 		/*!
@@ -348,9 +361,14 @@ namespace mutil
 		*/
 		explicit inline Matrix4(const Matrix3 &mat);
 
-		inline float operator [](size_t index) const
+		inline const float &operator [](size_t index) const
 		{
-			return ((float *)this)[index];
+			return mat[index];
+		}
+
+		inline float &operator [](size_t index)
+		{
+			return mat[index];
 		}
 	};
 
@@ -490,6 +508,7 @@ namespace mutil
 				int32_t _11, _12;
 				int32_t _21, _22;
 			};
+			int32_t mat[2];
 		};
 
 		/*!
@@ -544,9 +563,14 @@ namespace mutil
 		*/
 		explicit inline IntMatrix2(const IntMatrix4 &mat);
 
-		inline int32_t operator [](size_t index) const
+		inline const int32_t &operator [](size_t index) const
 		{
-			return ((int32_t *)this)[index];
+			return mat[index];
+		}
+
+		inline int32_t &operator [](size_t index)
+		{
+			return mat[index];
 		}
 	};
 
@@ -606,6 +630,7 @@ namespace mutil
 				int32_t _21, _22, _23;
 				int32_t _31, _32, _33;
 			};
+			int32_t mat[9];
 		};
 
 		/*!
@@ -663,9 +688,14 @@ namespace mutil
 		*/
 		explicit inline IntMatrix3(const IntMatrix4 &mat);
 
-		inline int32_t operator [](size_t index) const
+		inline const int32_t &operator [](size_t index) const
 		{
-			return ((int32_t *)this)[index];
+			return mat[index];
+		}
+
+		inline int32_t &operator [](size_t index)
+		{
+			return mat[index];
 		}
 	};
 
@@ -734,6 +764,7 @@ namespace mutil
 				int32_t _31, _32, _33, _34;
 				int32_t _41, _42, _43, _44;
 			};
+			int32_t mat[16];
 		};
 
 		/*!
@@ -794,9 +825,14 @@ namespace mutil
 		*/
 		explicit inline IntMatrix4(const IntMatrix3 &mat);
 
-		inline int32_t operator [](size_t index) const
+		inline const int32_t &operator [](size_t index) const
 		{
-			return ((int32_t *)this)[index];
+			return mat[index];
+		}
+
+		inline int32_t &operator [](size_t index)
+		{
+			return mat[index];
 		}
 	};
 
@@ -976,7 +1012,7 @@ namespace mutil
 	{
 		columns[0] = IntVector4(mat.columns[0]);
 		columns[1] = IntVector4(mat.columns[1]);
-		columns[2] = IntVector4(mat.columns[2]);
+		columns[2] = IntVector4(0, 0, 0, 0);
 		columns[3] = IntVector4(0, 0, 0, 1);
 	}
 

@@ -39,6 +39,7 @@ namespace mutil
 			struct { float x, y; };
 			struct { float r, g; };
 			struct { float s, t; };
+			float vec[2];
 		};
 
 		/*!
@@ -89,9 +90,14 @@ namespace mutil
 		inline Vector2 &operator *=(const Vector2 &first);
 		inline Vector2 &operator /=(const Vector2 &first);
 
-		inline float operator[](size_t index) const
+		inline const float &operator[](size_t index) const
 		{
-			return ((float *)this)[index];
+			return vec[index];
+		}
+
+		inline float &operator[](size_t index)
+		{
+			return vec[index];
 		}
 	};
 
@@ -115,6 +121,7 @@ namespace mutil
 			struct { float x, y, z; };
 			struct { float r, g, b; };
 			struct { float s, t, b; };
+			float vec[3];
 		};
 
 		inline Vector3() : x(0.0f), y(0.0f), z(0.0f) { }
@@ -144,9 +151,14 @@ namespace mutil
 		inline Vector3 &operator *=(const Vector3 &first);
 		inline Vector3 &operator /=(const Vector3 &first);
 
-		inline float operator[](size_t index) const
+		inline const float &operator[](size_t index) const
 		{
-			return ((float *)this)[index];
+			return vec[index];
+		}
+
+		inline float &operator[](size_t index)
+		{
+			return vec[index];
 		}
 	};
 
@@ -170,6 +182,7 @@ namespace mutil
 			struct { float x, y, z, w; };
 			struct { float r, g, b, a; };
 			struct { float s, t, p, q; };
+			float vec[4];
 		};
 
 		inline Vector4() : x(0.0f), y(0.0f), z(0.0f), w(0.0f) { }
@@ -200,9 +213,14 @@ namespace mutil
 		inline Vector4 &operator *=(const Vector4 &first);
 		inline Vector4 &operator /=(const Vector4 &first);
 
-		inline float operator[](size_t index) const
+		inline const float &operator[](size_t index) const
 		{
-			return ((float *)this)[index];
+			return vec[index];
+		}
+
+		inline float &operator[](size_t index)
+		{
+			return vec[index];
 		}
 	};
 
@@ -227,6 +245,7 @@ namespace mutil
 			struct { int32_t x, y; };
 			struct { int32_t r, g; };
 			struct { int32_t s, t; };
+			int32_t vec[2];
 		};
 
 		inline IntVector2() : x(0), y(0) { }
@@ -255,9 +274,14 @@ namespace mutil
 		inline IntVector2 &operator *=(const IntVector2 &first);
 		inline IntVector2 &operator /=(const IntVector2 &first);
 
-		inline int32_t operator[](size_t index) const
+		inline const int32_t &operator[](size_t index) const
 		{
-			return ((int32_t *)this)[index];
+			return vec[index];
+		}
+
+		inline int32_t &operator[](size_t index)
+		{
+			return vec[index];
 		}
 	};
 
@@ -281,6 +305,7 @@ namespace mutil
 			struct { int32_t x, y, z; };
 			struct { int32_t r, g, b; };
 			struct { int32_t s, t, b; };
+			int32_t vec[3];
 		};
 
 		inline IntVector3() : x(0), y(0), z(0) { }
@@ -310,9 +335,14 @@ namespace mutil
 		inline IntVector3 &operator *=(const IntVector3 &first);
 		inline IntVector3 &operator /=(const IntVector3 &first);
 
-		inline int32_t operator[](size_t index) const
+		inline const int32_t &operator[](size_t index) const
 		{
-			return ((int32_t *)this)[index];
+			return vec[index];
+		}
+
+		inline int32_t &operator[](size_t index)
+		{
+			return vec[index];
 		}
 	};
 
@@ -336,6 +366,7 @@ namespace mutil
 			struct { int32_t x, y, z, w; };
 			struct { int32_t r, g, b, a; };
 			struct { int32_t s, t, p, q; };
+			int32_t vec[4];
 		};
 
 		inline IntVector4() : x(0), y(0), z(0), w(0) { }
@@ -366,9 +397,14 @@ namespace mutil
 		inline IntVector4 &operator *=(const IntVector4 &first);
 		inline IntVector4 &operator /=(const IntVector4 &first);
 
-		inline int32_t operator[](size_t index) const
+		inline const int32_t &operator[](size_t index) const
 		{
-			return ((int32_t *)this)[index];
+			return vec[index];
+		}
+
+		inline int32_t &operator[](size_t index)
+		{
+			return vec[index];
 		}
 	};
 
