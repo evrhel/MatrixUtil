@@ -36,7 +36,15 @@ namespace mutil
 		/*!
 		The matrix's columns.
 		*/
-		Vector2 columns[2];
+		union
+		{
+			Vector2 columns[2];
+			struct
+			{
+				float _11, _12;
+				float _21, _22;
+			};
+		};
 
 		/*!
 		Constructs the identity matrix.
@@ -89,6 +97,11 @@ namespace mutil
 		@param mat A matrix.
 		*/
 		explicit inline Matrix2(const Matrix4 &mat);
+
+		inline float operator [](size_t index)
+		{
+			return ((float *)this)[index];
+		}
 	};
 
 	inline Matrix2 operator +(const Matrix2 &first, const Matrix2 &second)
@@ -138,7 +151,16 @@ namespace mutil
 		/*!
 		The matrix's columns.
 		*/
-		Vector3 columns[3];
+		union
+		{
+			Vector3 columns[3];
+			struct
+			{
+				float _11, _12, _13;
+				float _21, _22, _23;
+				float _31, _32, _33;
+			};
+		};
 
 		/*!
 		Constructs the identity matrix.
@@ -194,6 +216,11 @@ namespace mutil
 		@param mat A matrix.
 		*/
 		explicit inline Matrix3(const Matrix4 &mat);
+
+		inline float operator [](size_t index)
+		{
+			return ((float *)this)[index];
+		}
 	};
 
 	inline Matrix3 operator +(const Matrix3 &first, const Matrix3 &second)
@@ -251,7 +278,17 @@ namespace mutil
 		/*!
 		The matrix's columns.
 		*/
-		Vector4 columns[4];
+		union
+		{
+			Vector4 columns[4];
+			struct
+			{
+				float _11, _12, _13, _14;
+				float _21, _22, _23, _24;
+				float _31, _32, _33, _34;
+				float _41, _42, _43, _44;
+			};
+		};
 
 		/*!
 		Constructs the identity matrix.
@@ -310,6 +347,11 @@ namespace mutil
 		@param mat A matrix.
 		*/
 		explicit inline Matrix4(const Matrix3 &mat);
+
+		inline float operator [](size_t index)
+		{
+			return ((float *)this)[index];
+		}
 	};
 
 	inline Matrix4 operator +(const Matrix4 &first, const Matrix4 &second)
@@ -440,7 +482,15 @@ namespace mutil
 		/*!
 		The matrix's columns.
 		*/
-		IntVector2 columns[2];
+		union
+		{
+			IntVector2 columns[2];
+			struct
+			{
+				int32_t _11, _12;
+				int32_t _21, _22;
+			};
+		};
 
 		/*!
 		Constructs the identity matrix.
@@ -493,6 +543,11 @@ namespace mutil
 		@param mat A matrix.
 		*/
 		explicit inline IntMatrix2(const IntMatrix4 &mat);
+
+		inline int32_t operator [](size_t index)
+		{
+			return ((int32_t *)this)[index];
+		}
 	};
 
 	inline IntMatrix2 operator +(const IntMatrix2 &first, const IntMatrix2 &second)
@@ -542,7 +597,16 @@ namespace mutil
 		/*!
 		The matrix's columns.
 		*/
-		IntVector3 columns[3];
+		union
+		{
+			IntVector3 columns[3];
+			struct
+			{
+				int32_t _11, _12, _13;
+				int32_t _21, _22, _23;
+				int32_t _31, _32, _33;
+			};
+		};
 
 		/*!
 		Constructs the identity matrix.
@@ -598,6 +662,11 @@ namespace mutil
 		@param mat A matrix.
 		*/
 		explicit inline IntMatrix3(const IntMatrix4 &mat);
+
+		inline int32_t operator [](size_t index)
+		{
+			return ((int32_t *)this)[index];
+		}
 	};
 
 	inline IntMatrix3 operator +(const IntMatrix3 &first, const IntMatrix3 &second)
@@ -655,7 +724,17 @@ namespace mutil
 		/*!
 		The matrix's columns.
 		*/
-		IntVector4 columns[4];
+		union
+		{
+			IntVector4 columns[4];
+			struct
+			{
+				int32_t _11, _12, _13, _14;
+				int32_t _21, _22, _23, _24;
+				int32_t _31, _32, _33, _34;
+				int32_t _41, _42, _43, _44;
+			};
+		};
 
 		/*!
 		Constructs the identity matrix.
@@ -714,6 +793,11 @@ namespace mutil
 		@param mat A matrix.
 		*/
 		explicit inline IntMatrix4(const IntMatrix3 &mat);
+
+		inline int32_t operator [](size_t index)
+		{
+			return ((int32_t *)this)[index];
+		}
 	};
 
 	inline IntMatrix4 operator +(const IntMatrix4 &first, const IntMatrix4 &second)

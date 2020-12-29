@@ -88,6 +88,11 @@ namespace mutil
 		inline Vector2 &operator -=(const Vector2 &first);
 		inline Vector2 &operator *=(const Vector2 &first);
 		inline Vector2 &operator /=(const Vector2 &first);
+
+		inline float operator[](size_t index)
+		{
+			return ((float *)this)[index];
+		}
 	};
 
 	inline Vector2 operator +(const Vector2 &first, const Vector2 &second) { return Vector2(first.x + second.x, first.y + second.y); }
@@ -138,6 +143,11 @@ namespace mutil
 		inline Vector3 &operator -=(const Vector3 &first);
 		inline Vector3 &operator *=(const Vector3 &first);
 		inline Vector3 &operator /=(const Vector3 &first);
+
+		inline float operator[](size_t index)
+		{
+			return ((float *)this)[index];
+		}
 	};
 
 	inline Vector3 operator +(const Vector3 &first, const Vector3 &second) { return Vector3(first.x + second.x, first.y + second.y, first.z + second.z); }
@@ -189,6 +199,11 @@ namespace mutil
 		inline Vector4 &operator -=(const Vector4 &first);
 		inline Vector4 &operator *=(const Vector4 &first);
 		inline Vector4 &operator /=(const Vector4 &first);
+
+		inline float operator[](size_t index)
+		{
+			return ((float *)this)[index];
+		}
 	};
 
 	inline Vector4 operator +(const Vector4 &first, const Vector4 &second) { return Vector4(first.x + second.x, first.y + second.y, first.z + second.z, first.w + second.w); }
@@ -239,6 +254,11 @@ namespace mutil
 		inline IntVector2 &operator -=(const IntVector2 &first);
 		inline IntVector2 &operator *=(const IntVector2 &first);
 		inline IntVector2 &operator /=(const IntVector2 &first);
+
+		inline int32_t operator[](size_t index)
+		{
+			return ((int32_t *)this)[index];
+		}
 	};
 
 	inline IntVector2 operator +(const IntVector2 &first, const IntVector2 &second) { return IntVector2(first.x + second.x, first.y + second.y); }
@@ -289,6 +309,11 @@ namespace mutil
 		inline IntVector3 &operator -=(const IntVector3 &first);
 		inline IntVector3 &operator *=(const IntVector3 &first);
 		inline IntVector3 &operator /=(const IntVector3 &first);
+
+		inline int32_t operator[](size_t index)
+		{
+			return ((int32_t *)this)[index];
+		}
 	};
 
 	inline IntVector3 operator +(const IntVector3 &first, const IntVector3 &second) { return IntVector3(first.x + second.x, first.y + second.y, first.z + second.z); }
@@ -341,6 +366,10 @@ namespace mutil
 		inline IntVector4 &operator *=(const IntVector4 &first);
 		inline IntVector4 &operator /=(const IntVector4 &first);
 
+		inline int32_t operator[](size_t index)
+		{
+			return ((int32_t *)this)[index];
+		}
 	};
 
 	inline IntVector4 operator +(const IntVector4 &first, const IntVector4 &second) { return IntVector4(first.x + second.x, first.y + second.y, first.z + second.z, first.w + second.w); }
