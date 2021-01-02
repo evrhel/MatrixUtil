@@ -22,7 +22,36 @@ namespace mutil
 {
 	inline float inverseSqrt(const float num)
 	{
+#if defined(USE_SIMD)
+		float result;
+		_mm_store_ss(&result, _mm_sqrt_ss(_mm_load_ss(&num)));
+		return 1.0f / result;
+#else
 		return 1.0f / sqrtf(num);
+#endif
+	}
+
+	inline float fastInverseSqrt(const float num)
+	{
+#if defined(USE_SIMD)
+		float result;
+		_mm_store_ss(&result, _mm_rsqrt_ss(_mm_load_ss(&num)));
+		return result;
+#else
+		const float x2 = num * 0.5f;
+		const float threehalfs = 1.5f;
+
+		union
+		{
+			float f;
+			uint32_t i;
+		} un;
+
+		un.f = num;
+		un.i = 0x5f3759df - (un.i >> 1);
+		un.f *= threehalfs - (x2 * un.f * un.f);
+		return un.f;
+#endif
 	}
 
 	// Vector2 operations
@@ -37,7 +66,12 @@ namespace mutil
 	*/
 	inline float dot(const Vector2 &first, const Vector2 &second)
 	{
+#if defined(USE_SIMD)
+		static const int MASK = 0x31;
+		return _mm_cvtss_f32(_mm_dp_ps(_mm_loadu_ps((float *)&first), _mm_loadu_ps((float *)&second), MASK));
+#else
 		return (first.x * second.x) + (first.y * second.y);
+#endif
 	}
 
 	/*!
@@ -49,7 +83,7 @@ namespace mutil
 	*/
 	inline float length(const Vector2 &vec)
 	{
-		return sqrtf(vec.x * vec.x + vec.y * vec.y);
+		return sqrtf(dot(vec, vec));
 	}
 
 	/*!
@@ -74,7 +108,11 @@ namespace mutil
 	*/
 	inline Vector2 normalize(const Vector2 &vec)
 	{
+#if defined(NO_FAST_INVERSE_SQRT)
 		return vec * inverseSqrt(dot(vec, vec));
+#else
+		return vec * fastInverseSqrt(dot(vec, vec));
+#endif
 	}
 
 
@@ -141,7 +179,12 @@ namespace mutil
 	*/
 	inline float dot(const Vector3 &first, const Vector3 &second)
 	{
+#if defined(USE_SIMD)
+		static const int MASK = 0x71;
+		return _mm_cvtss_f32(_mm_dp_ps(_mm_loadu_ps((float *)&first), _mm_loadu_ps((float *)&second), MASK));
+#else
 		return (first.x * second.x) + (first.y * second.y) + (first.z * second.z);
+#endif
 	}
 
 	/*!
@@ -170,7 +213,7 @@ namespace mutil
 	*/
 	inline float length(const Vector3 &vec)
 	{
-		return sqrtf(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
+		return sqrtf(dot(vec, vec));
 	}
 
 	/*!
@@ -195,7 +238,11 @@ namespace mutil
 	*/
 	inline Vector3 normalize(const Vector3 &vec)
 	{
+#if defined(NO_FAST_INVERSE_SQRT)
 		return vec * inverseSqrt(dot(vec, vec));
+#else
+		return vec * fastInverseSqrt(dot(vec, vec));
+#endif
 	}
 
 	/*!
@@ -273,14 +320,8 @@ namespace mutil
 	inline float dot(const Vector4 &first, const Vector4 &second)
 	{
 #if defined(USE_SIMD)
-		//__m128 _mm_load_ps1 (float const* mem_addr)
-		//__m128 _mm_dp_ps (__m128 a, __m128 b, const int imm8)
 		static const int MASK = 0xf1;
-
-		__m128 reg1 = _mm_loadu_ps((float *)&first);
-		__m128 reg2 = _mm_loadu_ps((float *)&second);
-		__m128 resultReg = _mm_dp_ps(reg1, reg2, MASK);
-		return _mm_cvtss_f32(resultReg);
+		return _mm_cvtss_f32(_mm_dp_ps(_mm_loadu_ps((float *)&first), _mm_loadu_ps((float *)&second), MASK));
 #else
 		return (first.x * second.x) + (first.y * second.y) + (first.z * second.z) + (first.w * second.w);
 #endif
@@ -295,7 +336,7 @@ namespace mutil
 	*/
 	inline float length(const Vector4 &vec)
 	{
-		return sqrtf(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z + vec.w * vec.w);
+		return sqrtf(dot(vec, vec));
 	}
 
 	/*!
@@ -320,7 +361,11 @@ namespace mutil
 	*/
 	inline Vector4 normalize(const Vector4 &vec)
 	{
+#if defined(NO_FAST_INVERSE_SQRT)
 		return vec * inverseSqrt(dot(vec, vec));
+#else
+		return vec * fastInverseSqrt(dot(vec, vec));
+#endif
 	}
 
 	/*!
