@@ -28,7 +28,7 @@ namespace mutil
 
 	@return The look matrix.
 	*/
-	inline Matrix4 lookAt(const Vector3 &eye, const Vector3 &at, const Vector3 &up)
+	MUTIL_INLINE Matrix4 lookAt(const Vector3 &eye, const Vector3 &at, const Vector3 &up)
 	{
 		Vector3 const f = normalize(at - eye);
 		Vector3 const r = normalize(cross(f, up));
@@ -54,7 +54,7 @@ namespace mutil
 
 	@return The orthographic projection matrix.
 	*/
-	inline Matrix4 ortho(float left, float right, float bottom, float top, float zNear, float zFar)
+	MUTIL_INLINE Matrix4 ortho(float left, float right, float bottom, float top, float zNear, float zFar)
 	{
 		return Matrix4(
 			Vector4(2.0f / (right - left), 0.0f, 0.0f, 0.0f),
@@ -74,7 +74,7 @@ namespace mutil
 
 	@return The orthographic projection matrix.
 	*/
-	inline Matrix4 ortho(float left, float right, float bottom, float top)
+	MUTIL_INLINE Matrix4 ortho(float left, float right, float bottom, float top)
 	{
 		return Matrix4(
 			Vector4(2.0f / (right - left), 0.0f, 0.0f, 0.0f),
@@ -94,7 +94,7 @@ namespace mutil
 
 	@return The perspective projection matrix.
 	*/
-	inline Matrix4 perspective(const float fov, const float aspect, const float zNear, const float zFar)
+	MUTIL_INLINE Matrix4 perspective(const float fov, const float aspect, const float zNear, const float zFar)
 	{
 		float const tanHalfFOV = tanf(fov / 2.0f);
 		Matrix4 result(0.0f);
@@ -115,7 +115,7 @@ namespace mutil
 
 	@return A rotated version of the input matrix.
 	*/
-	inline Matrix4 rotate(const Matrix4 &mat4, const float angle, const Vector3 &axis)
+	MUTIL_INLINE Matrix4 rotate(const Matrix4 &mat4, const float angle, const Vector3 &axis)
 	{
 		const float c = cosf(angle);
 		const float s = sinf(angle);
@@ -148,7 +148,7 @@ namespace mutil
 
 	@return A scaled version of the input matrix.
 	*/
-	inline Matrix4 scale(const Matrix4 &mat4, const Vector3 &scale)
+	MUTIL_INLINE Matrix4 scale(const Matrix4 &mat4, const Vector3 &scale)
 	{
 		Matrix4 result;
 		result.columns[0] = mat4.columns[0] * scale.x;
@@ -166,7 +166,7 @@ namespace mutil
 
 	@return A translated version of the input matrix.
 	*/
-	inline Matrix4 translate(Matrix4 const &mat4, Vector3 const &translation)
+	MUTIL_INLINE Matrix4 translate(Matrix4 const &mat4, Vector3 const &translation)
 	{
 		Matrix4 result(mat4);
 		result.columns[3] = mat4.columns[0] * translation.x + mat4.columns[1] * translation.y + mat4.columns[2] * translation.z + mat4.columns[3];

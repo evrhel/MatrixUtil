@@ -22,7 +22,7 @@ namespace mutil
 
 	@return The same angle in radians.
 	*/
-	inline float radians(float degrees)
+	MUTIL_INLINE float radians(float degrees)
 	{
 		return degrees / 180 * (float)M_PI;
 	}
@@ -34,7 +34,7 @@ namespace mutil
 
 	@return The same angle in degrees.
 	*/
-	inline float degrees(float radians)
+	MUTIL_INLINE float degrees(float radians)
 	{
 		return radians / (float)M_PI * 180;
 	}

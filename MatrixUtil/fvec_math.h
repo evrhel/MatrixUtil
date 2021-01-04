@@ -20,7 +20,7 @@ Contains methods for performing operations on floating-point vectors.
 
 namespace mutil
 {
-	inline float inverseSqrt(const float num)
+	MUTIL_INLINE float inverseSqrt(const float num)
 	{
 #if defined(USE_SIMD)
 		float result;
@@ -31,7 +31,7 @@ namespace mutil
 #endif
 	}
 
-	inline float fastInverseSqrt(const float num)
+	MUTIL_INLINE float fastInverseSqrt(const float num)
 	{
 #if defined(USE_SIMD)
 		float result;
@@ -64,7 +64,7 @@ namespace mutil
 
 	@return The dot product.
 	*/
-	inline float dot(const Vector2 &first, const Vector2 &second)
+	MUTIL_INLINE float dot(const Vector2 &first, const Vector2 &second)
 	{
 #if defined(USE_SIMD)
 		static const int MASK = 0x31;
@@ -81,7 +81,7 @@ namespace mutil
 
 	@return The length.
 	*/
-	inline float length(const Vector2 &vec)
+	MUTIL_INLINE float length(const Vector2 &vec)
 	{
 		return sqrtf(dot(vec, vec));
 	}
@@ -94,7 +94,7 @@ namespace mutil
 
 	@return The distance between the two vectors.
 	*/
-	inline float distance(const Vector2 &first, const Vector2 &second)
+	MUTIL_INLINE float distance(const Vector2 &first, const Vector2 &second)
 	{
 		return length(second - first);
 	}
@@ -106,7 +106,7 @@ namespace mutil
 
 	@return The normalized vector.
 	*/
-	inline Vector2 normalize(const Vector2 &vec)
+	MUTIL_INLINE Vector2 normalize(const Vector2 &vec)
 	{
 #if defined(NO_FAST_INVERSE_SQRT)
 		return vec * inverseSqrt(dot(vec, vec));
@@ -124,7 +124,7 @@ namespace mutil
 
 	@return The reflected vector.
 	*/
-	inline Vector2 reflect(const Vector2 &vec, const Vector2 &normal)
+	MUTIL_INLINE Vector2 reflect(const Vector2 &vec, const Vector2 &normal)
 	{
 		return (normal * (2.0f * dot(normal, vec))) - vec;
 	}
@@ -136,7 +136,7 @@ namespace mutil
 
 	@return The same vector in radians.
 	*/
-	inline Vector2 radians(const Vector2 &vec)
+	MUTIL_INLINE Vector2 radians(const Vector2 &vec)
 	{
 		return Vector2(radians(vec.x), radians(vec.y));
 	}
@@ -148,7 +148,7 @@ namespace mutil
 
 	@return The same vector in degrees.
 	*/
-	inline Vector2 degrees(const Vector2 &vec)
+	MUTIL_INLINE Vector2 degrees(const Vector2 &vec)
 	{
 		return Vector2(degrees(vec.x), degrees(vec.y));
 	}
@@ -162,7 +162,7 @@ namespace mutil
 
 	@return The absolute value.
 	*/
-	inline Vector2 abs(const Vector2 &vec)
+	MUTIL_INLINE Vector2 abs(const Vector2 &vec)
 	{
 		return Vector2(fabsf(vec.x), fabsf(vec.y));
 	}
@@ -177,7 +177,7 @@ namespace mutil
 
 	@return The dot product.
 	*/
-	inline float dot(const Vector3 &first, const Vector3 &second)
+	MUTIL_INLINE float dot(const Vector3 &first, const Vector3 &second)
 	{
 #if defined(USE_SIMD)
 		static const int MASK = 0x71;
@@ -195,7 +195,7 @@ namespace mutil
 
 	@return The result of the cross product.
 	*/
-	inline Vector3 cross(const Vector3 &first, const Vector3 &second)
+	MUTIL_INLINE Vector3 cross(const Vector3 &first, const Vector3 &second)
 	{
 		return Vector3(
 			(first.y * second.z - second.y * first.z),
@@ -211,7 +211,7 @@ namespace mutil
 
 	@return The length.
 	*/
-	inline float length(const Vector3 &vec)
+	MUTIL_INLINE float length(const Vector3 &vec)
 	{
 		return sqrtf(dot(vec, vec));
 	}
@@ -224,7 +224,7 @@ namespace mutil
 
 	@return The distance between the two vectors.
 	*/
-	inline float distance(const Vector3 &first, const Vector3 &second)
+	MUTIL_INLINE float distance(const Vector3 &first, const Vector3 &second)
 	{
 		return length(second - first);
 	}
@@ -236,7 +236,7 @@ namespace mutil
 
 	@return The normalized vector.
 	*/
-	inline Vector3 normalize(const Vector3 &vec)
+	MUTIL_INLINE Vector3 normalize(const Vector3 &vec)
 	{
 #if defined(NO_FAST_INVERSE_SQRT)
 		return vec * inverseSqrt(dot(vec, vec));
@@ -253,7 +253,7 @@ namespace mutil
 
 	@return The reflected vector.
 	*/
-	inline Vector3 reflect(const Vector3 &vec, const Vector3 &normal)
+	MUTIL_INLINE Vector3 reflect(const Vector3 &vec, const Vector3 &normal)
 	{
 		return (normal * (2.0f * dot(normal, vec))) - vec;
 	}
@@ -265,7 +265,7 @@ namespace mutil
 	@param normal The normal of the refracting surface.
 	@param index The ratio between two indicies of refraction.
 	*/
-	inline Vector3 refract(const Vector3 &vec, const Vector3 &normal, const float ratio)
+	MUTIL_INLINE Vector3 refract(const Vector3 &vec, const Vector3 &normal, const float ratio)
 	{
 		return ((cross(normal, cross(-normal, vec))) * ratio) - (normal * sqrtf(1 - (ratio * ratio) * dot(cross(normal, vec), cross(normal, vec))));
 	}
@@ -277,7 +277,7 @@ namespace mutil
 
 	@return The same vector in radians.
 	*/
-	inline Vector3 radians(const Vector3 &vec)
+	MUTIL_INLINE Vector3 radians(const Vector3 &vec)
 	{
 		return Vector3(radians(vec.x), radians(vec.y), radians(vec.z));
 	}
@@ -289,7 +289,7 @@ namespace mutil
 
 	@return The same vector in degrees.
 	*/
-	inline Vector3 degrees(const Vector3 &vec)
+	MUTIL_INLINE Vector3 degrees(const Vector3 &vec)
 	{
 		return Vector3(degrees(vec.x), degrees(vec.y), degrees(vec.z));
 	}
@@ -302,7 +302,7 @@ namespace mutil
 
 	@return The absolute value.
 	*/
-	inline Vector3 abs(const Vector3 &vec)
+	MUTIL_INLINE Vector3 abs(const Vector3 &vec)
 	{
 		return Vector3(fabsf(vec.x), fabsf(vec.y), fabs(vec.z));
 	}
@@ -317,7 +317,7 @@ namespace mutil
 
 	@return The dot product.
 	*/
-	inline float dot(const Vector4 &first, const Vector4 &second)
+	MUTIL_INLINE float dot(const Vector4 &first, const Vector4 &second)
 	{
 #if defined(USE_SIMD)
 		static const int MASK = 0xf1;
@@ -334,7 +334,7 @@ namespace mutil
 
 	@return The length.
 	*/
-	inline float length(const Vector4 &vec)
+	MUTIL_INLINE float length(const Vector4 &vec)
 	{
 		return sqrtf(dot(vec, vec));
 	}
@@ -347,7 +347,7 @@ namespace mutil
 
 	@return The distance between the two vectors.
 	*/
-	inline float distance(const Vector4 &first, const Vector4 &second)
+	MUTIL_INLINE float distance(const Vector4 &first, const Vector4 &second)
 	{
 		return length(second - first);
 	}
@@ -359,7 +359,7 @@ namespace mutil
 
 	@return The normalized vector.
 	*/
-	inline Vector4 normalize(const Vector4 &vec)
+	MUTIL_INLINE Vector4 normalize(const Vector4 &vec)
 	{
 #if defined(NO_FAST_INVERSE_SQRT)
 		return vec * inverseSqrt(dot(vec, vec));
@@ -376,7 +376,7 @@ namespace mutil
 
 	@return The reflected vector.
 	*/
-	inline Vector4 reflect(const Vector4 &vec, const Vector4 &normal)
+	MUTIL_INLINE Vector4 reflect(const Vector4 &vec, const Vector4 &normal)
 	{
 		return (normal * (2.0f * dot(normal, vec))) - vec;
 	}
@@ -388,7 +388,7 @@ namespace mutil
 
 	@return The same vector in radians.
 	*/
-	inline Vector4 radians(const Vector4 &vec)
+	MUTIL_INLINE Vector4 radians(const Vector4 &vec)
 	{
 		return Vector4(radians(vec.x), radians(vec.y), radians(vec.z), degrees(vec.w));
 	}
@@ -400,7 +400,7 @@ namespace mutil
 
 	@return The same vector in degrees.
 	*/
-	inline Vector4 degrees(const Vector4 &vec)
+	MUTIL_INLINE Vector4 degrees(const Vector4 &vec)
 	{
 		return Vector4(degrees(vec.x), degrees(vec.y), degrees(vec.z), degrees(vec.w));
 	}
@@ -413,7 +413,7 @@ namespace mutil
 
 	@return The absolute value.
 	*/
-	inline Vector4 abs(const Vector4 &vec)
+	MUTIL_INLINE Vector4 abs(const Vector4 &vec)
 	{
 		return Vector4(fabsf(vec.x), fabsf(vec.y), fabs(vec.z), fabs(vec.w));
 	}

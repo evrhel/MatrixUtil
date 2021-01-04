@@ -165,7 +165,6 @@
   <ItemGroup>
     <ClInclude Include="fmat_math.h" />
     <ClInclude Include="fmat_transform.h" />
-    <ClInclude Include="framework.h" />
     <ClInclude Include="f_math.h" />
     <ClInclude Include="matrix.h" />
     <ClInclude Include="mat_types.h" />
@@ -175,14 +174,7 @@
     <ClInclude Include="settings.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="fmat_math.cpp" />
-    <ClCompile Include="fmat_transform.cpp" />
-    <ClCompile Include="f_math.cpp" />
     <ClCompile Include="matrix.cpp" />
-    <ClCompile Include="mat_types.cpp" />
-    <ClCompile Include="fvec_math.cpp" />
-    <ClCompile Include="vec_types.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

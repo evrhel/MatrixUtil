@@ -30,7 +30,7 @@ namespace mutil
 
 	@return The inverted matrix, or the input matrix if no inverse exists.
 	*/
-	inline Matrix2 inverse(const Matrix2 &mat2, bool *exists = nullptr)
+	MUTIL_INLINE Matrix2 inverse(const Matrix2 &mat2, bool *exists = nullptr)
 	{
 		matrix *mat = matrix::matrix_from_array((float *)&mat2, 2, 2);
 		matrix *inv = matrix::matrix_invert(mat);
@@ -64,7 +64,7 @@ namespace mutil
 
 	@return The inverted matrix, or the input matrix if no inverse exists.
 	*/
-	inline Matrix3 inverse(const Matrix3 &mat3, bool *exists = nullptr)
+	MUTIL_INLINE Matrix3 inverse(const Matrix3 &mat3, bool *exists = nullptr)
 	{
 		matrix *mat = matrix::matrix_from_array((float *)&mat3, 3, 3);
 		matrix *inv = matrix::matrix_invert(mat);
@@ -98,7 +98,7 @@ namespace mutil
 
 	@return The inverted matrix, or the input matrix if no inverse exists.
 	*/
-	inline Matrix4 inverse(const Matrix4 &mat4, bool *exists = nullptr)
+	MUTIL_INLINE Matrix4 inverse(const Matrix4 &mat4, bool *exists = nullptr)
 	{
 		matrix *mat = matrix::matrix_from_array((float *)&mat4, 4, 4);
 		matrix *inv = matrix::matrix_invert(mat);
