@@ -300,7 +300,7 @@ namespace mutil
 				float _31, _32, _33, _34;
 				float _41, _42, _43, _44;
 			};
-			float mat[4];
+			float mat[16];
 		};
 
 		/*!
@@ -508,7 +508,7 @@ namespace mutil
 				int32_t _11, _12;
 				int32_t _21, _22;
 			};
-			int32_t mat[2];
+			int32_t mat[4];
 		};
 
 		/*!
