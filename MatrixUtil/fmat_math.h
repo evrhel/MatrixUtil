@@ -21,6 +21,11 @@ namespace mutil
 {
 	// Matrix2 operations
 
+	MUTIL_INLINE float determinant(const Matrix2 &mat2)
+	{
+		return mat2._11 * mat2._22 - mat2._12 * mat2._12;
+	}
+
 	/*!
 	Calculates the inverse of a 2x2 matrix, if one exists.
 
@@ -54,6 +59,11 @@ namespace mutil
 	}
 
 	// Matrix3 operations
+
+	MUTIL_INLINE float determinant(const Matrix3 &mat3)
+	{
+		return (mat3._11 * mat3._22 * mat3._33) + (mat3._12 * mat3._32 * mat3._13);
+	}
 
 	/*!
 	Calculates the inverse of a 3x3 matrix, if one exists.

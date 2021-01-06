@@ -76,6 +76,13 @@ namespace mutil
 			memcpy(&columns[1], &column2, sizeof(Vector2));
 		}
 
+		explicit MUTIL_INLINE Matrix2(	float _11, float _12,
+										float _21, float _22) :
+			_11(_11), _12(_12), _21(_21), _22(_22)
+		{
+			
+		}
+
 		/*!
 		Constructs a matrix by casting it from a 32-bit integer matrix.
 
@@ -199,6 +206,14 @@ namespace mutil
 			columns[0] = Vector3(column1);
 			columns[1] = Vector3(column2);
 			columns[2] = Vector3(column3);
+		}
+
+		explicit MUTIL_INLINE Matrix3(	float _11, float _12, float _13,
+										float _21, float _22, float _23,
+										float _31, float _32, float _33) :
+			_11(_11), _12(_12), _13(_13), _21(_21), _22(_22), _23(_23), _31(_31), _32(_32), _33(_33)
+		{
+
 		}
 
 		/*!
@@ -336,6 +351,16 @@ namespace mutil
 			columns[1] = Vector4(column2);
 			columns[2] = Vector4(column3);
 			columns[3] = Vector4(column4);
+		}
+
+		explicit MUTIL_INLINE Matrix4(	float _11, float _12, float _13, float _14,
+										float _21, float _22, float _23, float _24,
+										float _31, float _32, float _33, float _34,
+										float _41, float _42, float _43, float _44) :
+			_11(_11), _12(_12), _13(_13), _14(_14), _21(_21), _22(_22), _23(_23), _24(_24),
+			_31(_31), _32(_32), _33(_33), _34(_34), _41(_41), _42(_42), _43(_43), _44(_44)
+		{
+
 		}
 
 		/*!
