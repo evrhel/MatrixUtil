@@ -103,9 +103,21 @@ namespace mutil
 
 	MUTIL_INLINE float determinant(const Matrix4 &mat4)
 	{
-		return	(mat4._11 * mat4._13 * mat4._33 * mat4._44) - (mat4._11 * mat4._22 * mat4._43 * mat4._34) -
+		return	(mat4._11 * mat4._22 * mat4._33 * mat4._44) - (mat4._11 * mat4._22 * mat4._43 * mat4._34) -
 				(mat4._11 * mat4._32 * mat4._23 * mat4._44) + (mat4._11 * mat4._32 * mat4._43 * mat4._24) +
-				(mat4._11 * mat4._32 * mat4._23 * mat4._34) - (mat4._11 * mat4._42 * mat4._33 * mat4._24)
+				(mat4._11 * mat4._32 * mat4._23 * mat4._34) - (mat4._11 * mat4._42 * mat4._33 * mat4._24) -
+
+				(mat4._21 * mat4._12 * mat4._33 * mat4._44) + (mat4._21 * mat4._12 * mat4._43 * mat4._34) +
+				(mat4._21 * mat4._32 * mat4._13 * mat4._44) - (mat4._21 * mat4._32 * mat4._43 * mat4._14) -
+				(mat4._21 * mat4._42 * mat4._13 * mat4._34) + (mat4._21 * mat4._42 * mat4._33 * mat4._14) +
+			
+				(mat4._31 * mat4._12 * mat4._23 * mat4._44) - (mat4._31 * mat4._12 * mat4._43 * mat4._24) -
+				(mat4._31 * mat4._22 * mat4._13 * mat4._44) + (mat4._31 * mat4._22 * mat4._43 * mat4._14) +
+				(mat4._31 * mat4._42 * mat4._13 * mat4._24) - (mat4._31 * mat4._42 * mat4._23 * mat4._14) -
+			
+				(mat4._41 * mat4._12 * mat4._23 * mat4._34) + (mat4._41 * mat4._12 * mat4._33 * mat4._24) +
+				(mat4._41 * mat4._22 * mat4._13 * mat4._34) - (mat4._41 * mat4._22 * mat4._33 * mat4._14) -
+				(mat4._41 * mat4._32 * mat4._13 * mat4._24) + (mat4._41 * mat4._32 * mat4._23 * mat4._14);
 	}
 
 	/*!
