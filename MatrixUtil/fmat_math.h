@@ -62,7 +62,9 @@ namespace mutil
 
 	MUTIL_INLINE float determinant(const Matrix3 &mat3)
 	{
-		return (mat3._11 * mat3._22 * mat3._33) + (mat3._12 * mat3._32 * mat3._13);
+		return	(mat3._11 * mat3._22 * mat3._33) + (mat3._12 * mat3._32 * mat3._13) +
+				(mat3._13 * mat3._12 * mat3._23) - (mat3._31 * mat3._22 * mat3._13) -
+				(mat3._21 * mat3._12 * mat3._33) - (mat3._11 * mat3._32 * mat3._23);
 	}
 
 	/*!
@@ -98,6 +100,13 @@ namespace mutil
 	}
 
 	// Matrix4 operations
+
+	MUTIL_INLINE float determinant(const Matrix4 &mat4)
+	{
+		return	(mat4._11 * mat4._13 * mat4._33 * mat4._44) - (mat4._11 * mat4._22 * mat4._43 * mat4._34) -
+				(mat4._11 * mat4._32 * mat4._23 * mat4._44) + (mat4._11 * mat4._32 * mat4._43 * mat4._24) +
+				(mat4._11 * mat4._32 * mat4._23 * mat4._34) - (mat4._11 * mat4._42 * mat4._33 * mat4._24)
+	}
 
 	/*!
 	Calculates the inverse of a 4x4 matrix, if one exists.
