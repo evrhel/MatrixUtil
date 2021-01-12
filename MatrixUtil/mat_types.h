@@ -149,6 +149,22 @@ namespace mutil
 		);
 	}
 
+	MUTIL_INLINE Matrix2 operator *(const Matrix2 &first, float second)
+	{
+		return Matrix2(
+			first.columns[0] * second,
+			first.columns[1] * second
+		);
+	}
+
+	MUTIL_INLINE Matrix2 operator /(const Matrix2 &first, float second)
+	{
+		return Matrix2(
+			first.columns[0] / second,
+			first.columns[1] / second
+		);
+	}
+
 	MUTIL_INLINE bool operator ==(const Matrix2 &first, const Matrix2 &second)
 	{
 		return first.columns[0] == second.columns[0] && first.columns[1] == second.columns[1];
@@ -287,6 +303,24 @@ namespace mutil
 			first.columns[0].x * second.x + first.columns[1].x * second.y + first.columns[2].x * second.z,
 			first.columns[0].y * second.x + first.columns[1].y * second.y + first.columns[2].y * second.z,
 			first.columns[0].z * second.x + first.columns[1].z * second.y + first.columns[2].z * second.z
+		);
+	}
+
+	MUTIL_INLINE Matrix3 operator *(const Matrix3 &first, float second)
+	{
+		return Matrix3(
+			first.columns[0] * second,
+			first.columns[1] * second,
+			first.columns[2] * second
+		);
+	}
+
+	MUTIL_INLINE Matrix3 operator /(const Matrix3 &first, float second)
+	{
+		return Matrix3(
+			first.columns[0] / second,
+			first.columns[1] / second,
+			first.columns[2] / second
 		);
 	}
 
@@ -510,6 +544,26 @@ namespace mutil
 		);
 	}
 
+	MUTIL_INLINE Matrix4 operator *(const Matrix4 &first, float second)
+	{
+		return Matrix4(
+			first.columns[0] * second,
+			first.columns[1] * second,
+			first.columns[2] * second,
+			first.columns[3] * second
+		);
+	}
+
+	MUTIL_INLINE Matrix4 operator /(const Matrix4 &first, float second)
+	{
+		return Matrix4(
+			first.columns[0] / second,
+			first.columns[1] / second,
+			first.columns[2] / second,
+			first.columns[3] / second
+		);
+	}
+
 	MUTIL_INLINE bool operator ==(const Matrix4 &first, const Matrix4 &second)
 	{
 		return first.columns[0] == second.columns[0] && first.columns[1] == second.columns[1] && first.columns[2] == second.columns[2] && first.columns[3] == second.columns[3];
@@ -628,6 +682,22 @@ namespace mutil
 		return IntVector2(
 			first.columns[0].x * second.x + first.columns[1].x * second.y,
 			first.columns[0].y * second.x + first.columns[1].y * second.y
+		);
+	}
+
+	MUTIL_INLINE IntMatrix2 operator *(const IntMatrix2 &first, int32_t second)
+	{
+		return IntMatrix2(
+			first.columns[0] * second,
+			first.columns[1] * second
+		);
+	}
+
+	MUTIL_INLINE IntMatrix2 operator /(const IntMatrix2 &first, int32_t second)
+	{
+		return IntMatrix2(
+			first.columns[0] / second,
+			first.columns[1] / second
 		);
 	}
 
@@ -761,6 +831,24 @@ namespace mutil
 			first.columns[0].x * second.x + first.columns[1].x * second.y + first.columns[2].x * second.z,
 			first.columns[0].y * second.x + first.columns[1].y * second.y + first.columns[2].y * second.z,
 			first.columns[0].z * second.x + first.columns[1].z * second.y + first.columns[2].z * second.z
+		);
+	}
+
+	MUTIL_INLINE IntMatrix3 operator *(const IntMatrix3 &first, int32_t second)
+	{
+		return IntMatrix3(
+			first.columns[0] * second,
+			first.columns[1] * second,
+			first.columns[2] * second
+		);
+	}
+
+	MUTIL_INLINE IntMatrix3 operator /(const IntMatrix3 &first, int32_t second)
+	{
+		return IntMatrix3(
+			first.columns[0] / second,
+			first.columns[1] / second,
+			first.columns[2] / second
 		);
 	}
 
@@ -908,6 +996,26 @@ namespace mutil
 			first.columns[0].y * second.x + first.columns[1].y * second.y + first.columns[2].y * second.z + first.columns[3].y * second.w,
 			first.columns[0].z * second.x + first.columns[1].z * second.y + first.columns[2].z * second.z + first.columns[3].z * second.w,
 			first.columns[0].w * second.x + first.columns[1].w * second.y + first.columns[2].w * second.z + first.columns[3].w * second.w
+		);
+	}
+
+	MUTIL_INLINE IntMatrix4 operator *(const IntMatrix4 &first, int32_t second)
+	{
+		return IntMatrix4(
+			first.columns[0] * second,
+			first.columns[1] * second,
+			first.columns[2] * second,
+			first.columns[3] * second
+		);
+	}
+
+	MUTIL_INLINE IntMatrix4 operator /(const IntMatrix4 &first, int32_t second)
+	{
+		return IntMatrix4(
+			first.columns[0] / second,
+			first.columns[1] / second,
+			first.columns[2] / second,
+			first.columns[3] / second
 		);
 	}
 
