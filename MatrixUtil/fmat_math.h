@@ -24,7 +24,7 @@ namespace mutil
 
 	@return The determinant.
 	*/
-	MUTIL_INLINE float determinant(const Matrix2 &mat2)
+	MUTIL_CONSTEXPR float determinant(const Matrix2 &mat2)
 	{
 		return mat2._11 * mat2._22 - mat2._12 * mat2._12;
 	}
@@ -36,7 +36,7 @@ namespace mutil
 
 	@return The transpose.
 	*/
-	MUTIL_INLINE Matrix2 transpose(const Matrix2 &mat2)
+	MUTIL_CONSTEXPR Matrix2 transpose(const Matrix2 &mat2)
 	{
 		return Matrix2(
 			mat2._11, mat2._21,
@@ -51,7 +51,7 @@ namespace mutil
 
 	@return The adjugate matrix.
 	*/
-	MUTIL_INLINE Matrix2 adjugate(const Matrix2 &mat2)
+	MUTIL_CONSTEXPR Matrix2 adjugate(const Matrix2 &mat2)
 	{
 		return Matrix2(
 			mat2._22, -mat2._12,
@@ -66,7 +66,7 @@ namespace mutil
 
 	@return The inverse of the matrix. There is undefined behavior if the matrix does not have an inverse.
 	*/
-	MUTIL_INLINE Matrix2 inverse(const Matrix2 &mat2)
+	MUTIL_CONSTEXPR Matrix2 inverse(const Matrix2 &mat2)
 	{
 		return adjugate(mat2) * (1.0f / determinant(mat2));
 	}
@@ -80,7 +80,7 @@ namespace mutil
 
 	@return The determinant.
 	*/
-	MUTIL_INLINE float determinant(const Matrix3 &mat3)
+	MUTIL_CONSTEXPR float determinant(const Matrix3 &mat3)
 	{
 		return	(mat3._11 * mat3._22 * mat3._33) + (mat3._12 * mat3._32 * mat3._13) +
 				(mat3._13 * mat3._12 * mat3._23) - (mat3._31 * mat3._22 * mat3._13) -
@@ -94,7 +94,7 @@ namespace mutil
 
 	@return The transpose.
 	*/
-	MUTIL_INLINE Matrix3 transpose(const Matrix3 &mat3)
+	MUTIL_CONSTEXPR Matrix3 transpose(const Matrix3 &mat3)
 	{
 		return Matrix3(
 			mat3._11, mat3._21, mat3._31,
@@ -110,7 +110,7 @@ namespace mutil
 	
 	@return The adjugate matrix.
 	*/
-	MUTIL_INLINE Matrix3 adjugate(const Matrix3 &mat3)
+	MUTIL_CONSTEXPR Matrix3 adjugate(const Matrix3 &mat3)
 	{
 		return Matrix3(
 			mat3._22 * mat3._33 - mat3._32 * mat3._23, -(mat3._21 * mat3._33 - mat3._31 * mat3._23), mat3._21 * mat3._32 - mat3._31 * mat3._22,
@@ -126,7 +126,7 @@ namespace mutil
 
 	@return The inverse of the matrix. There is undefined behavior if the matrix does not have an inverse.
 	*/
-	MUTIL_INLINE Matrix3 inverse(const Matrix3 &mat3)
+	MUTIL_CONSTEXPR Matrix3 inverse(const Matrix3 &mat3)
 	{
 		return adjugate(mat3) * (1.0f / determinant(mat3));
 	}
@@ -140,7 +140,7 @@ namespace mutil
 
 	@return The determinant.
 	*/
-	MUTIL_INLINE float determinant(const Matrix4 &mat4)
+	MUTIL_CONSTEXPR float determinant(const Matrix4 &mat4)
 	{
 		return	(mat4._11 * mat4._22 * mat4._33 * mat4._44) - (mat4._11 * mat4._22 * mat4._43 * mat4._34) -
 				(mat4._11 * mat4._32 * mat4._23 * mat4._44) + (mat4._11 * mat4._32 * mat4._43 * mat4._24) +
@@ -166,7 +166,7 @@ namespace mutil
 
 	@return The transpose.
 	*/
-	MUTIL_INLINE Matrix4 transpose(const Matrix4 &mat4)
+	MUTIL_CONSTEXPR Matrix4 transpose(const Matrix4 &mat4)
 	{
 		return Matrix4(
 			mat4._11, mat4._21, mat4._31, mat4._41,
@@ -183,7 +183,7 @@ namespace mutil
 
 	@return The adjugate matrix.
 	*/
-	MUTIL_INLINE Matrix4 adjugate(const Matrix4 &mat4)
+	MUTIL_CONSTEXPR Matrix4 adjugate(const Matrix4 &mat4)
 	{
 		return Matrix4(
 			// Row 1
@@ -251,7 +251,7 @@ namespace mutil
 
 	@return The inverse of the matrix. There is undefined behavior if the matrix does not have an inverse.
 	*/
-	MUTIL_INLINE Matrix4 inverse(const Matrix4 &mat4)
+	MUTIL_CONSTEXPR Matrix4 inverse(const Matrix4 &mat4)
 	{
 		return adjugate(mat4) * (1.0f / determinant(mat4));
 	}
