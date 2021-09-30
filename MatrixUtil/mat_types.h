@@ -50,7 +50,7 @@ namespace mutil
 		/*!
 		Constructs the identity matrix.
 		*/
-		MUTIL_INLINE Matrix2() : Matrix2(1.0f) { }
+		MUTIL_CONSTEXPR Matrix2() : Matrix2(1.0f) { }
 
 		/*!
 		Constructs a matrix with a value along its diagnol, and all elements being
@@ -58,11 +58,9 @@ namespace mutil
 
 		@param The value of the diagnol.
 		*/
-		explicit MUTIL_INLINE Matrix2(const float diagonal)
-		{
-			columns[0] = Vector2(diagonal, 0.0f);
-			columns[1] = Vector2(0.0f, diagonal);
-		}
+		explicit MUTIL_CONSTEXPR Matrix2(const float diagonal) :
+			_11(diagonal),	_12(0.0f),
+			_21(0.0f),		_22(diagonal) { }
 
 		/*!
 		Constructs a matrix with two explicitly given columns.
@@ -70,25 +68,22 @@ namespace mutil
 		@param column1 The first column.
 		@param column2 The second column.
 		*/
-		explicit MUTIL_INLINE Matrix2(const Vector2 &column1, const Vector2 &column2)
-		{
-			memcpy(&columns[0], &column1, sizeof(Vector2));
-			memcpy(&columns[1], &column2, sizeof(Vector2));
-		}
+		explicit MUTIL_CONSTEXPR Matrix2(const Vector2 &column1, const Vector2 &column2) :
+			_11(column1.x), _12(column2.x),
+			_21(column1.y), _22(column2.y) { }
 
-		explicit MUTIL_INLINE Matrix2(	float _11, float _12,
-										float _21, float _22) :
-			_11(_11), _12(_12), _21(_21), _22(_22)
-		{
-			
-		}
+		explicit MUTIL_CONSTEXPR Matrix2(
+			float _11, float _12,
+			float _21, float _22) :
+			_11(_11), _12(_12),
+			_21(_21), _22(_22) { }
 
 		/*!
 		Constructs a matrix by casting it from a 32-bit integer matrix.
 
 		@param mat2 The matrix to cast from.
 		*/
-		explicit MUTIL_INLINE Matrix2(const IntMatrix2 &mat);
+		explicit MUTIL_CONSTEXPR Matrix2(const IntMatrix2 &mat);
 
 		/*!
 		Constructs a matrix by filling this matrix with the upper-left portion
@@ -96,7 +91,7 @@ namespace mutil
 
 		@param mat A matrix.
 		*/
-		explicit MUTIL_INLINE Matrix2(const Matrix3 &mat);
+		explicit MUTIL_CONSTEXPR Matrix2(const Matrix3 &mat);
 
 		/*!
 		Constructs a matrix by filling this matrix with the upper-left portion
@@ -104,30 +99,30 @@ namespace mutil
 
 		@param mat A matrix.
 		*/
-		explicit MUTIL_INLINE Matrix2(const Matrix4 &mat);
+		explicit MUTIL_CONSTEXPR Matrix2(const Matrix4 &mat);
 
-		MUTIL_INLINE const float &operator [](size_t index) const
+		MUTIL_CONSTEXPR const float &operator [](size_t index) const
 		{
 			return mat[index];
 		}
 
-		MUTIL_INLINE float &operator [](size_t index)
+		MUTIL_CONSTEXPR float &operator [](size_t index)
 		{
 			return mat[index];
 		}
 	};
 
-	MUTIL_INLINE Matrix2 operator +(const Matrix2 &first, const Matrix2 &second)
+	MUTIL_CONSTEXPR Matrix2 operator +(const Matrix2 &first, const Matrix2 &second)
 	{
 		return Matrix2(first.columns[0] + second.columns[0], first.columns[1] + second.columns[1]);
 	}
 
-	MUTIL_INLINE Matrix2 operator -(const Matrix2 &first, const Matrix2 &second)
+	MUTIL_CONSTEXPR Matrix2 operator -(const Matrix2 &first, const Matrix2 &second)
 	{
 		return Matrix2(first.columns[0] - second.columns[0], first.columns[1] - second.columns[1]);
 	}
 
-	MUTIL_INLINE Matrix2 operator *(const Matrix2 &first, const Matrix2 &second)
+	MUTIL_CONSTEXPR Matrix2 operator *(const Matrix2 &first, const Matrix2 &second)
 	{
 		return Matrix2(
 			Vector2(
@@ -141,7 +136,7 @@ namespace mutil
 		);
 	}
 
-	MUTIL_INLINE Vector2 operator *(const Matrix2 &first, const Vector2 &second)
+	MUTIL_CONSTEXPR Vector2 operator *(const Matrix2 &first, const Vector2 &second)
 	{
 		return Vector2(
 			first.columns[0].x * second.x + first.columns[1].x * second.y,
@@ -149,7 +144,7 @@ namespace mutil
 		);
 	}
 
-	MUTIL_INLINE Matrix2 operator *(const Matrix2 &first, float second)
+	MUTIL_CONSTEXPR Matrix2 operator *(const Matrix2 &first, float second)
 	{
 		return Matrix2(
 			first.columns[0] * second,
@@ -157,7 +152,7 @@ namespace mutil
 		);
 	}
 
-	MUTIL_INLINE Matrix2 operator /(const Matrix2 &first, float second)
+	MUTIL_CONSTEXPR Matrix2 operator /(const Matrix2 &first, float second)
 	{
 		return Matrix2(
 			first.columns[0] / second,
@@ -165,7 +160,7 @@ namespace mutil
 		);
 	}
 
-	MUTIL_INLINE bool operator ==(const Matrix2 &first, const Matrix2 &second)
+	MUTIL_CONSTEXPR bool operator ==(const Matrix2 &first, const Matrix2 &second)
 	{
 		return first.columns[0] == second.columns[0] && first.columns[1] == second.columns[1];
 	}
@@ -195,7 +190,7 @@ namespace mutil
 		/*!
 		Constructs the identity matrix.
 		*/
-		MUTIL_INLINE Matrix3() : Matrix3(1.0f) { }
+		MUTIL_CONSTEXPR Matrix3() : Matrix3(1.0f) { }
 
 		/*!
 		Constructs a matrix with a value along its diagnol, and all elements being
@@ -203,12 +198,10 @@ namespace mutil
 
 		@param The value of the diagnol.
 		*/
-		explicit MUTIL_INLINE Matrix3(const float diagonal)
-		{
-			columns[0] = Vector3(diagonal, 0.0f, 0.0f);
-			columns[1] = Vector3(0.0f, diagonal, 0.0f);
-			columns[2] = Vector3(0.0f, 0.0f, diagonal);
-		}
+		explicit MUTIL_CONSTEXPR Matrix3(const float diagonal) :
+			_11(diagonal),	_12(0.0f),		_13(0.0f),
+			_21(0.0f),		_22(diagonal),	_23(0.0f),
+			_31(0.0f),		_32(0.0f),		_33(diagonal) { }
 
 		/*!
 		Constructs a matrix with three explicitly given columns.
@@ -217,27 +210,25 @@ namespace mutil
 		@param column2 The second column.
 		@param column3 The third column.
 		*/
-		explicit MUTIL_INLINE Matrix3(const Vector3 &column1, const Vector3 &column2, const Vector3 &column3)
-		{
-			columns[0] = Vector3(column1);
-			columns[1] = Vector3(column2);
-			columns[2] = Vector3(column3);
-		}
+		explicit MUTIL_CONSTEXPR Matrix3(const Vector3 &column1, const Vector3 &column2, const Vector3 &column3) :
+			_11(column1.x), _12(column2.x), _13(column3.x),
+			_21(column1.y), _22(column2.y), _23(column3.y),
+			_31(column1.z), _32(column2.z), _33(column3.z) { }
 
-		explicit MUTIL_INLINE Matrix3(	float _11, float _12, float _13,
-										float _21, float _22, float _23,
-										float _31, float _32, float _33) :
-			_11(_11), _12(_12), _13(_13), _21(_21), _22(_22), _23(_23), _31(_31), _32(_32), _33(_33)
-		{
-
-		}
+		explicit MUTIL_CONSTEXPR Matrix3(
+			float _11, float _12, float _13,
+			float _21, float _22, float _23,
+			float _31, float _32, float _33) :
+			_11(_11), _12(_12), _13(_13),
+			_21(_21), _22(_22), _23(_23),
+			_31(_31), _32(_32), _33(_33) { }
 
 		/*!
 		Constructs a matrix by casting it from a 32-bit integer matrix.
 
 		@param mat3 The matrix to cast from.
 		*/
-		explicit MUTIL_INLINE Matrix3(const IntMatrix3 &mat);
+		explicit MUTIL_CONSTEXPR Matrix3(const IntMatrix3 &mat);
 
 		/*!
 		Constructs a matrix by filling the upper left portion with input input matrix and
@@ -245,7 +236,7 @@ namespace mutil
 
 		@param mat A matrix.
 		*/
-		explicit MUTIL_INLINE Matrix3(const Matrix2 &mat);
+		explicit MUTIL_CONSTEXPR Matrix3(const Matrix2 &mat);
 
 		/*!
 		Constructs a matrix by filling this matrix with the upper-left portion
@@ -253,30 +244,30 @@ namespace mutil
 
 		@param mat A matrix.
 		*/
-		explicit MUTIL_INLINE Matrix3(const Matrix4 &mat);
+		explicit MUTIL_CONSTEXPR Matrix3(const Matrix4 &mat);
 
-		MUTIL_INLINE const float &operator [](size_t index) const
+		MUTIL_CONSTEXPR const float &operator [](size_t index) const
 		{
 			return mat[index];
 		}
 
-		MUTIL_INLINE float &operator [](size_t index)
+		MUTIL_CONSTEXPR float &operator [](size_t index)
 		{
 			return mat[index];
 		}
 	};
 
-	MUTIL_INLINE Matrix3 operator +(const Matrix3 &first, const Matrix3 &second)
+	MUTIL_CONSTEXPR Matrix3 operator +(const Matrix3 &first, const Matrix3 &second)
 	{
 		return Matrix3(first.columns[0] + second.columns[0], first.columns[1] + second.columns[1], first.columns[2] + second.columns[2]);
 	}
 
-	MUTIL_INLINE Matrix3 operator -(const Matrix3 &first, const Matrix3 &second)
+	MUTIL_CONSTEXPR Matrix3 operator -(const Matrix3 &first, const Matrix3 &second)
 	{
 		return Matrix3(first.columns[0] - second.columns[0], first.columns[1] - second.columns[1], first.columns[2] - second.columns[2]);
 	}
 
-	MUTIL_INLINE Matrix3 operator *(const Matrix3 &first, const Matrix3 &second)
+	MUTIL_CONSTEXPR Matrix3 operator *(const Matrix3 &first, const Matrix3 &second)
 	{
 		return Matrix3(
 			Vector3(
@@ -297,7 +288,7 @@ namespace mutil
 		);
 	}
 
-	MUTIL_INLINE Vector3 operator *(const Matrix3 &first, const Vector3 &second)
+	MUTIL_CONSTEXPR Vector3 operator *(const Matrix3 &first, const Vector3 &second)
 	{
 		return Vector3(
 			first.columns[0].x * second.x + first.columns[1].x * second.y + first.columns[2].x * second.z,
@@ -306,7 +297,7 @@ namespace mutil
 		);
 	}
 
-	MUTIL_INLINE Matrix3 operator *(const Matrix3 &first, float second)
+	MUTIL_CONSTEXPR Matrix3 operator *(const Matrix3 &first, float second)
 	{
 		return Matrix3(
 			first.columns[0] * second,
@@ -315,7 +306,7 @@ namespace mutil
 		);
 	}
 
-	MUTIL_INLINE Matrix3 operator /(const Matrix3 &first, float second)
+	MUTIL_CONSTEXPR Matrix3 operator /(const Matrix3 &first, float second)
 	{
 		return Matrix3(
 			first.columns[0] / second,
@@ -324,7 +315,7 @@ namespace mutil
 		);
 	}
 
-	MUTIL_INLINE bool operator ==(const Matrix3 &first, const Matrix3 &second)
+	MUTIL_CONSTEXPR bool operator ==(const Matrix3 &first, const Matrix3 &second)
 	{
 		return first.columns[0] == second.columns[0] && first.columns[1] == second.columns[1] && first.columns[2] == second.columns[2];
 	}
@@ -355,7 +346,7 @@ namespace mutil
 		/*!
 		Constructs the identity matrix.
 		*/
-		MUTIL_INLINE Matrix4() : Matrix4(1.0f) { }
+		MUTIL_CONSTEXPR Matrix4() : Matrix4(1.0f) { }
 
 		/*!
 		Constructs a matrix with a value along its diagnol, and all elements being
@@ -363,13 +354,11 @@ namespace mutil
 
 		@param The value of the diagnol.
 		*/
-		explicit MUTIL_INLINE Matrix4(const float diagonal)
-		{
-			columns[0] = Vector4(diagonal, 0.0f, 0.0f, 0.0f);
-			columns[1] = Vector4(0.0f, diagonal, 0.0f, 0.0f);
-			columns[2] = Vector4(0.0f, 0.0f, diagonal, 0.0f);
-			columns[3] = Vector4(0.0f, 0.0f, 0.0f, diagonal);
-		}
+		explicit MUTIL_CONSTEXPR Matrix4(const float diagonal) :
+			_11(diagonal),	_12(0.0f),		_13(0.0f),		_14(0.0f),
+			_21(0.0f),		_22(diagonal),	_23(0.0f),		_24(0.0f),
+			_31(0.0f),		_32(0.0f),		_33(diagonal),	_34(0.0f),
+			_41(0.0f),		_42(0.0f),		_43(0.0f),		_44(0.0f) { }
 
 		/*!
 		Constructs a matrix with four explicitly given columns.
@@ -379,30 +368,28 @@ namespace mutil
 		@param column3 The third column.
 		@param column4 The fourth column.
 		*/
-		explicit MUTIL_INLINE Matrix4(const Vector4 &column1, const Vector4 &column2, const Vector4 &column3, const Vector4 &column4)
-		{
-			columns[0] = Vector4(column1);
-			columns[1] = Vector4(column2);
-			columns[2] = Vector4(column3);
-			columns[3] = Vector4(column4);
-		}
+		explicit MUTIL_CONSTEXPR Matrix4(const Vector4 &column1, const Vector4 &column2, const Vector4 &column3, const Vector4 &column4) :
+			_11(column1.x), _12(column2.x), _13(column3.x), _14(column4.x),
+			_21(column1.y), _22(column2.y), _23(column3.y), _24(column4.y),
+			_31(column1.z), _32(column2.z), _33(column3.z), _34(column4.z),
+			_41(column1.w), _42(column2.w), _43(column3.w), _44(column4.w) { }
 
-		explicit MUTIL_INLINE Matrix4(	float _11, float _12, float _13, float _14,
-										float _21, float _22, float _23, float _24,
-										float _31, float _32, float _33, float _34,
-										float _41, float _42, float _43, float _44) :
-			_11(_11), _12(_12), _13(_13), _14(_14), _21(_21), _22(_22), _23(_23), _24(_24),
-			_31(_31), _32(_32), _33(_33), _34(_34), _41(_41), _42(_42), _43(_43), _44(_44)
-		{
-
-		}
+		explicit MUTIL_CONSTEXPR Matrix4(
+			float _11, float _12, float _13, float _14,
+			float _21, float _22, float _23, float _24,
+			float _31, float _32, float _33, float _34,
+			float _41, float _42, float _43, float _44) :
+			_11(_11), _12(_12), _13(_13), _14(_14),
+			_21(_21), _22(_22), _23(_23), _24(_24),
+			_31(_31), _32(_32), _33(_33), _34(_34),
+			_41(_41), _42(_42), _43(_43), _44(_44) { }
 
 		/*!
 		Constructs a matrix by casting it from a 32-bit integer matrix.
 
 		@param mat4 The matrix to cast from.
 		*/
-		explicit MUTIL_INLINE Matrix4(const IntMatrix4 &mat);
+		explicit MUTIL_CONSTEXPR Matrix4(const IntMatrix4 &mat);
 
 		/*!
 		Constructs a matrix by filling the upper left portion with input input matrix and
@@ -410,7 +397,7 @@ namespace mutil
 
 		@param mat A matrix.
 		*/
-		explicit MUTIL_INLINE Matrix4(const Matrix2 &mat);
+		explicit MUTIL_CONSTEXPR Matrix4(const Matrix2 &mat);
 
 		/*!
 		Constructs a matrix by filling the upper left portion with input input matrix and
@@ -418,25 +405,25 @@ namespace mutil
 
 		@param mat A matrix.
 		*/
-		explicit MUTIL_INLINE Matrix4(const Matrix3 &mat);
+		explicit MUTIL_CONSTEXPR Matrix4(const Matrix3 &mat);
 
-		MUTIL_INLINE const float &operator [](size_t index) const
+		MUTIL_CONSTEXPR const float &operator [](size_t index) const
 		{
 			return mat[index];
 		}
 
-		MUTIL_INLINE float &operator [](size_t index)
+		MUTIL_CONSTEXPR float &operator [](size_t index)
 		{
 			return mat[index];
 		}
 	};
 
-	MUTIL_INLINE Matrix4 operator +(const Matrix4 &first, const Matrix4 &second)
+	MUTIL_CONSTEXPR Matrix4 operator +(const Matrix4 &first, const Matrix4 &second)
 	{
 		return Matrix4(first.columns[0] + second.columns[0], first.columns[1] + second.columns[1], first.columns[2] + second.columns[2], first.columns[3] + second.columns[3]);
 	}
 
-	MUTIL_INLINE Matrix4 operator -(const Matrix4 &first, const Matrix4 &second)
+	MUTIL_CONSTEXPR Matrix4 operator -(const Matrix4 &first, const Matrix4 &second)
 	{
 		return Matrix4(first.columns[0] - second.columns[0], first.columns[1] - second.columns[1], first.columns[2] - second.columns[2], first.columns[3] - second.columns[3]);
 	}
@@ -444,7 +431,7 @@ namespace mutil
 	MUTIL_INLINE Matrix4 operator *(const Matrix4 &first, const Matrix4 &second)
 	{
 #if defined(USE_SIMD)
-		static const int MASK0 = 0xf1, MASK1 = 0xf2, MASK2 = 0xf4, MASK3 = 0xf8;
+		constexpr int MASK0 = 0xf1, MASK1 = 0xf2, MASK2 = 0xf4, MASK3 = 0xf8;
 
 		__m128 rc0 = _mm_loadu_ps((float *)&second.columns[0]);
 		__m128 rc1 = _mm_loadu_ps((float *)&second.columns[1]);
@@ -534,7 +521,7 @@ namespace mutil
 #endif
 	}
 
-	MUTIL_INLINE Vector4 operator *(const Matrix4 &first, const Vector4 &second)
+	MUTIL_CONSTEXPR Vector4 operator *(const Matrix4 &first, const Vector4 &second)
 	{
 		return Vector4(
 			first.columns[0].x * second.x + first.columns[1].x * second.y + first.columns[2].x * second.z + first.columns[3].x * second.w,
@@ -544,7 +531,7 @@ namespace mutil
 		);
 	}
 
-	MUTIL_INLINE Matrix4 operator *(const Matrix4 &first, float second)
+	MUTIL_CONSTEXPR Matrix4 operator *(const Matrix4 &first, float second)
 	{
 		return Matrix4(
 			first.columns[0] * second,
@@ -554,7 +541,7 @@ namespace mutil
 		);
 	}
 
-	MUTIL_INLINE Matrix4 operator /(const Matrix4 &first, float second)
+	MUTIL_CONSTEXPR Matrix4 operator /(const Matrix4 &first, float second)
 	{
 		return Matrix4(
 			first.columns[0] / second,
@@ -564,7 +551,7 @@ namespace mutil
 		);
 	}
 
-	MUTIL_INLINE bool operator ==(const Matrix4 &first, const Matrix4 &second)
+	MUTIL_CONSTEXPR bool operator ==(const Matrix4 &first, const Matrix4 &second)
 	{
 		return first.columns[0] == second.columns[0] && first.columns[1] == second.columns[1] && first.columns[2] == second.columns[2] && first.columns[3] == second.columns[3];
 	}
@@ -593,7 +580,7 @@ namespace mutil
 		/*!
 		Constructs the identity matrix.
 		*/
-		MUTIL_INLINE IntMatrix2() : IntMatrix2(1) { }
+		MUTIL_CONSTEXPR IntMatrix2() : IntMatrix2(1) { }
 
 		/*!
 		Constructs a matrix with a value along its diagnol, and all elements being
@@ -601,11 +588,9 @@ namespace mutil
 
 		@param The value of the diagnol.
 		*/
-		explicit MUTIL_INLINE IntMatrix2(const int32_t diagonal)
-		{
-			columns[0] = IntVector2(diagonal, 0);
-			columns[1] = IntVector2(0, diagonal);
-		}
+		explicit MUTIL_CONSTEXPR IntMatrix2(const int32_t diagonal) :
+			_11(diagonal),	_12(0),
+			_21(0),			_22(diagonal) { }
 
 		/*!
 		Constructs a matrix with two explicitly given columns.
@@ -613,18 +598,16 @@ namespace mutil
 		@param column1 The first column.
 		@param column2 The second column.
 		*/
-		explicit MUTIL_INLINE IntMatrix2(const IntVector2 &column1, const IntVector2 &column2)
-		{
-			columns[0] = column1;
-			columns[1] = column2;
-		}
+		explicit MUTIL_CONSTEXPR IntMatrix2(const IntVector2 &column1, const IntVector2 &column2) :
+			_11(column1.x), _12(column2.x),
+			_21(column1.y), _22(column2.y) { }
 
 		/*!
 		Constructs a matrix by casting it from a floating point matrix.
 
 		@param mat2 The matrix to cast from.
 		*/
-		explicit MUTIL_INLINE IntMatrix2(const Matrix2 &mat);
+		explicit MUTIL_CONSTEXPR IntMatrix2(const Matrix2 &mat);
 
 		/*!
 		Constructs a matrix by filling this matrix with the upper-left portion
@@ -632,7 +615,7 @@ namespace mutil
 
 		@param mat A matrix.
 		*/
-		explicit MUTIL_INLINE IntMatrix2(const IntMatrix3 &mat);
+		explicit MUTIL_CONSTEXPR IntMatrix2(const IntMatrix3 &mat);
 
 		/*!
 		Constructs a matrix by filling this matrix with the upper-left portion
@@ -640,30 +623,30 @@ namespace mutil
 
 		@param mat A matrix.
 		*/
-		explicit MUTIL_INLINE IntMatrix2(const IntMatrix4 &mat);
+		explicit MUTIL_CONSTEXPR IntMatrix2(const IntMatrix4 &mat);
 
-		MUTIL_INLINE const int32_t &operator [](size_t index) const
+		MUTIL_CONSTEXPR const int32_t &operator [](size_t index) const
 		{
 			return mat[index];
 		}
 
-		MUTIL_INLINE int32_t &operator [](size_t index)
+		MUTIL_CONSTEXPR int32_t &operator [](size_t index)
 		{
 			return mat[index];
 		}
 	};
 
-	MUTIL_INLINE IntMatrix2 operator +(const IntMatrix2 &first, const IntMatrix2 &second)
+	MUTIL_CONSTEXPR IntMatrix2 operator +(const IntMatrix2 &first, const IntMatrix2 &second)
 	{
 		return IntMatrix2(first.columns[0] + second.columns[0], first.columns[1] + second.columns[1]);
 	}
 
-	MUTIL_INLINE IntMatrix2 operator -(const IntMatrix2 &first, const IntMatrix2 &second)
+	MUTIL_CONSTEXPR IntMatrix2 operator -(const IntMatrix2 &first, const IntMatrix2 &second)
 	{
 		return IntMatrix2(first.columns[0] - second.columns[0], first.columns[1] - second.columns[1]);
 	}
 
-	MUTIL_INLINE IntMatrix2 operator *(const IntMatrix2 &first, const IntMatrix2 &second)
+	MUTIL_CONSTEXPR IntMatrix2 operator *(const IntMatrix2 &first, const IntMatrix2 &second)
 	{
 		return IntMatrix2(
 			IntVector2(
@@ -677,7 +660,7 @@ namespace mutil
 		);
 	}
 
-	MUTIL_INLINE IntVector2 operator *(const IntMatrix2 &first, const IntVector2 &second)
+	MUTIL_CONSTEXPR IntVector2 operator *(const IntMatrix2 &first, const IntVector2 &second)
 	{
 		return IntVector2(
 			first.columns[0].x * second.x + first.columns[1].x * second.y,
@@ -685,7 +668,7 @@ namespace mutil
 		);
 	}
 
-	MUTIL_INLINE IntMatrix2 operator *(const IntMatrix2 &first, int32_t second)
+	MUTIL_CONSTEXPR IntMatrix2 operator *(const IntMatrix2 &first, int32_t second)
 	{
 		return IntMatrix2(
 			first.columns[0] * second,
@@ -693,7 +676,7 @@ namespace mutil
 		);
 	}
 
-	MUTIL_INLINE IntMatrix2 operator /(const IntMatrix2 &first, int32_t second)
+	MUTIL_CONSTEXPR IntMatrix2 operator /(const IntMatrix2 &first, int32_t second)
 	{
 		return IntMatrix2(
 			first.columns[0] / second,
@@ -701,7 +684,7 @@ namespace mutil
 		);
 	}
 
-	MUTIL_INLINE bool operator ==(const IntMatrix2 &first, const IntMatrix2 &second)
+	MUTIL_CONSTEXPR bool operator ==(const IntMatrix2 &first, const IntMatrix2 &second)
 	{
 		return first.columns[0] == second.columns[0] && first.columns[1] == second.columns[1];
 	}
@@ -731,7 +714,7 @@ namespace mutil
 		/*!
 		Constructs the identity matrix.
 		*/
-		MUTIL_INLINE IntMatrix3() : IntMatrix3(1) { }
+		MUTIL_CONSTEXPR IntMatrix3() : IntMatrix3(1) { }
 
 		/*!
 		Constructs a matrix with a value along its diagnol, and all elements being
@@ -739,12 +722,10 @@ namespace mutil
 
 		@param The value of the diagnol.
 		*/
-		explicit MUTIL_INLINE IntMatrix3(const int32_t diagonal)
-		{
-			columns[0] = IntVector3(diagonal, 0, 0);
-			columns[1] = IntVector3(0, diagonal, 0);
-			columns[2] = IntVector3(0, 0, diagonal);
-		}
+		explicit MUTIL_CONSTEXPR IntMatrix3(const int32_t diagonal) :
+			_11(diagonal),	_12(0),			_13(0),
+			_21(0),			_22(diagonal),	_23(0),
+			_31(0),			_32(0),			_33(diagonal) { }
 
 		/*!
 		Constructs a matrix with three explicitly given columns.
@@ -753,19 +734,17 @@ namespace mutil
 		@param column2 The second column.
 		@param column3 The third column.
 		*/
-		explicit MUTIL_INLINE IntMatrix3(const IntVector3 &column1, const IntVector3 &column2, const IntVector3 &column3)
-		{
-			columns[0] = column1;
-			columns[1] = column2;
-			columns[2] = column3;
-		}
+		explicit MUTIL_CONSTEXPR IntMatrix3(const IntVector3 &column1, const IntVector3 &column2, const IntVector3 &column3) :
+			_11(column1.x), _12(column2.x), _13(column3.x),
+			_21(column1.y), _22(column2.y), _23(column3.y),
+			_31(column1.z), _32(column2.z), _33(column3.z) { }
 
 		/*!
 		Constructs a matrix by casting it from a floating point matrix.
 
 		@param mat3 The matrix to cast from.
 		*/
-		explicit MUTIL_INLINE IntMatrix3(const Matrix3 &mat);
+		explicit MUTIL_CONSTEXPR IntMatrix3(const Matrix3 &mat);
 
 		/*!
 		Constructs a matrix by filling the upper left portion with input input matrix and
@@ -773,7 +752,7 @@ namespace mutil
 
 		@param mat A matrix.
 		*/
-		explicit MUTIL_INLINE IntMatrix3(const IntMatrix2 &mat);
+		explicit MUTIL_CONSTEXPR IntMatrix3(const IntMatrix2 &mat);
 
 		/*!
 		Constructs a matrix by filling this matrix with the upper-left portion
@@ -781,30 +760,30 @@ namespace mutil
 
 		@param mat A matrix.
 		*/
-		explicit MUTIL_INLINE IntMatrix3(const IntMatrix4 &mat);
+		explicit MUTIL_CONSTEXPR IntMatrix3(const IntMatrix4 &mat);
 
-		MUTIL_INLINE const int32_t &operator [](size_t index) const
+		MUTIL_CONSTEXPR const int32_t &operator [](size_t index) const
 		{
 			return mat[index];
 		}
 
-		MUTIL_INLINE int32_t &operator [](size_t index)
+		MUTIL_CONSTEXPR int32_t &operator [](size_t index)
 		{
 			return mat[index];
 		}
 	};
 
-	MUTIL_INLINE IntMatrix3 operator +(const IntMatrix3 &first, const IntMatrix3 &second)
+	MUTIL_CONSTEXPR IntMatrix3 operator +(const IntMatrix3 &first, const IntMatrix3 &second)
 	{
 		return IntMatrix3(first.columns[0] + second.columns[0], first.columns[1] + second.columns[1], first.columns[2] + second.columns[2]);
 	}
 
-	MUTIL_INLINE IntMatrix3 operator -(const IntMatrix3 &first, const IntMatrix3 &second)
+	MUTIL_CONSTEXPR IntMatrix3 operator -(const IntMatrix3 &first, const IntMatrix3 &second)
 	{
 		return IntMatrix3(first.columns[0] - second.columns[0], first.columns[1] - second.columns[1], first.columns[2] - second.columns[2]);
 	}
 
-	MUTIL_INLINE IntMatrix3 operator *(const IntMatrix3 &first, const IntMatrix3 &second)
+	MUTIL_CONSTEXPR IntMatrix3 operator *(const IntMatrix3 &first, const IntMatrix3 &second)
 	{
 		return IntMatrix3(
 			IntVector3(
@@ -825,7 +804,7 @@ namespace mutil
 		);
 	}
 
-	MUTIL_INLINE IntVector3 operator *(const IntMatrix3 &first, const IntVector3 &second)
+	MUTIL_CONSTEXPR IntVector3 operator *(const IntMatrix3 &first, const IntVector3 &second)
 	{
 		return IntVector3(
 			first.columns[0].x * second.x + first.columns[1].x * second.y + first.columns[2].x * second.z,
@@ -834,7 +813,7 @@ namespace mutil
 		);
 	}
 
-	MUTIL_INLINE IntMatrix3 operator *(const IntMatrix3 &first, int32_t second)
+	MUTIL_CONSTEXPR IntMatrix3 operator *(const IntMatrix3 &first, int32_t second)
 	{
 		return IntMatrix3(
 			first.columns[0] * second,
@@ -843,7 +822,7 @@ namespace mutil
 		);
 	}
 
-	MUTIL_INLINE IntMatrix3 operator /(const IntMatrix3 &first, int32_t second)
+	MUTIL_CONSTEXPR IntMatrix3 operator /(const IntMatrix3 &first, int32_t second)
 	{
 		return IntMatrix3(
 			first.columns[0] / second,
@@ -852,7 +831,7 @@ namespace mutil
 		);
 	}
 
-	MUTIL_INLINE bool operator ==(const IntMatrix3 &first, const IntMatrix3 &second)
+	MUTIL_CONSTEXPR bool operator ==(const IntMatrix3 &first, const IntMatrix3 &second)
 	{
 		return first.columns[0] == second.columns[0] && first.columns[1] == second.columns[1] && first.columns[2] == second.columns[2];
 	}
@@ -883,7 +862,7 @@ namespace mutil
 		/*!
 		Constructs the identity matrix.
 		*/
-		MUTIL_INLINE IntMatrix4() : IntMatrix4(1) { }
+		MUTIL_CONSTEXPR IntMatrix4() : IntMatrix4(1) { }
 
 		/*!
 		Constructs a matrix with a value along its diagnol, and all elements being
@@ -891,13 +870,11 @@ namespace mutil
 
 		@param The value of the diagnol.
 		*/
-		explicit MUTIL_INLINE IntMatrix4(const int32_t diagonal)
-		{
-			columns[0] = IntVector4(diagonal, 0, 0, 0);
-			columns[1] = IntVector4(0, diagonal, 0, 0);
-			columns[2] = IntVector4(0, 0, diagonal, 0);
-			columns[3] = IntVector4(0, 0, 0, diagonal);
-		}
+		explicit MUTIL_CONSTEXPR IntMatrix4(const int32_t diagonal) :
+			_11(diagonal),	_12(0),			_13(0),			_14(0),
+			_21(0),			_22(diagonal),	_23(0),			_24(0),
+			_31(0),			_32(0),			_33(diagonal),	_34(0),
+			_41(0),			_42(0),			_43(0),			_44(diagonal) { }
 
 		/*!
 		Constructs a matrix with four explicitly given columns.
@@ -907,20 +884,18 @@ namespace mutil
 		@param column3 The third column.
 		@param column4 The fourth column.
 		*/
-		explicit MUTIL_INLINE IntMatrix4(const IntVector4 &column1, const IntVector4 &column2, const IntVector4 &column3, const IntVector4 &column4)
-		{
-			columns[0] = column1;
-			columns[1] = column2;
-			columns[2] = column3;
-			columns[3] = column4;
-		}
+		explicit MUTIL_CONSTEXPR IntMatrix4(const IntVector4 &column1, const IntVector4 &column2, const IntVector4 &column3, const IntVector4 &column4) :
+			_11(column1.x), _12(column2.x), _13(column3.x), _14(column4.x),
+			_21(column1.y), _22(column2.y), _23(column3.y), _24(column4.y),
+			_31(column1.z), _32(column2.z), _33(column3.z), _34(column4.z),
+			_41(column1.w), _42(column2.w), _43(column3.w), _44(column4.w) { }
 
 		/*!
 		Constructs a matrix by casting it from a floating point matrix.
 
 		@param mat4 The matrix to cast from.
 		*/
-		explicit MUTIL_INLINE IntMatrix4(const Matrix4 &mat);
+		explicit MUTIL_CONSTEXPR IntMatrix4(const Matrix4 &mat);
 
 		/*!
 		Constructs a matrix by filling the upper left portion with input input matrix and
@@ -928,7 +903,7 @@ namespace mutil
 
 		@param mat A matrix.
 		*/
-		explicit MUTIL_INLINE IntMatrix4(const IntMatrix2 &mat);
+		explicit MUTIL_CONSTEXPR IntMatrix4(const IntMatrix2 &mat);
 
 		/*!
 		Constructs a matrix by filling the upper left portion with input input matrix and
@@ -936,30 +911,30 @@ namespace mutil
 
 		@param mat A matrix.
 		*/
-		explicit MUTIL_INLINE IntMatrix4(const IntMatrix3 &mat);
+		explicit MUTIL_CONSTEXPR IntMatrix4(const IntMatrix3 &mat);
 
-		MUTIL_INLINE const int32_t &operator [](size_t index) const
+		MUTIL_CONSTEXPR const int32_t &operator [](size_t index) const
 		{
 			return mat[index];
 		}
 
-		MUTIL_INLINE int32_t &operator [](size_t index)
+		MUTIL_CONSTEXPR int32_t &operator [](size_t index)
 		{
 			return mat[index];
 		}
 	};
 
-	MUTIL_INLINE IntMatrix4 operator +(const IntMatrix4 &first, const IntMatrix4 &second)
+	MUTIL_CONSTEXPR IntMatrix4 operator +(const IntMatrix4 &first, const IntMatrix4 &second)
 	{
 		return IntMatrix4(first.columns[0] + second.columns[0], first.columns[1] + second.columns[1], first.columns[2] + second.columns[2], first.columns[3] + second.columns[3]);
 	}
 
-	MUTIL_INLINE IntMatrix4 operator -(const IntMatrix4 &first, const IntMatrix4 &second)
+	MUTIL_CONSTEXPR IntMatrix4 operator -(const IntMatrix4 &first, const IntMatrix4 &second)
 	{
 		return IntMatrix4(first.columns[0] - second.columns[0], first.columns[1] - second.columns[1], first.columns[2] - second.columns[2], first.columns[3] - second.columns[3]);
 	}
 
-	MUTIL_INLINE IntMatrix4 operator *(const IntMatrix4 &first, const IntMatrix4 &second)
+	MUTIL_CONSTEXPR IntMatrix4 operator *(const IntMatrix4 &first, const IntMatrix4 &second)
 	{
 		return IntMatrix4(
 			IntVector4(
@@ -989,7 +964,7 @@ namespace mutil
 		);
 	}
 
-	MUTIL_INLINE IntVector4 operator *(const IntMatrix4 &first, const  IntVector4 &second)
+	MUTIL_CONSTEXPR IntVector4 operator *(const IntMatrix4 &first, const  IntVector4 &second)
 	{
 		return IntVector4(
 			first.columns[0].x * second.x + first.columns[1].x * second.y + first.columns[2].x * second.z + first.columns[3].x * second.w,
@@ -999,7 +974,7 @@ namespace mutil
 		);
 	}
 
-	MUTIL_INLINE IntMatrix4 operator *(const IntMatrix4 &first, int32_t second)
+	MUTIL_CONSTEXPR IntMatrix4 operator *(const IntMatrix4 &first, int32_t second)
 	{
 		return IntMatrix4(
 			first.columns[0] * second,
@@ -1009,7 +984,7 @@ namespace mutil
 		);
 	}
 
-	MUTIL_INLINE IntMatrix4 operator /(const IntMatrix4 &first, int32_t second)
+	MUTIL_CONSTEXPR IntMatrix4 operator /(const IntMatrix4 &first, int32_t second)
 	{
 		return IntMatrix4(
 			first.columns[0] / second,
@@ -1019,47 +994,47 @@ namespace mutil
 		);
 	}
 
-	MUTIL_INLINE bool operator ==(const IntMatrix4 &first, const IntMatrix4 &second)
+	MUTIL_CONSTEXPR bool operator ==(const IntMatrix4 &first, const IntMatrix4 &second)
 	{
 		return first.columns[0] == second.columns[0] && first.columns[1] == second.columns[1] && first.columns[2] == second.columns[2] && first.columns[3] == second.columns[3];
 	}
 
 
 
-	MUTIL_INLINE Matrix2::Matrix2(const IntMatrix2 &mat)
+	MUTIL_CONSTEXPR Matrix2::Matrix2(const IntMatrix2 &mat)
 	{
 		columns[0] = Vector2(mat.columns[0]);
 		columns[1] = Vector2(mat.columns[1]);
 	}
 
-	MUTIL_INLINE Matrix2::Matrix2(const Matrix3 &mat)
+	MUTIL_CONSTEXPR Matrix2::Matrix2(const Matrix3 &mat)
 	{
 		columns[0] = Vector2(mat.columns[0]);
 		columns[1] = Vector2(mat.columns[1]);
 	}
 
-	MUTIL_INLINE Matrix2::Matrix2(const Matrix4 &mat)
+	MUTIL_CONSTEXPR Matrix2::Matrix2(const Matrix4 &mat)
 	{
 		columns[0] = Vector2(mat.columns[0]);
 		columns[1] = Vector2(mat.columns[1]);
 	}
 
 
-	MUTIL_INLINE Matrix3::Matrix3(const IntMatrix3 &mat)
+	MUTIL_CONSTEXPR Matrix3::Matrix3(const IntMatrix3 &mat)
 	{
 		columns[0] = Vector3(mat.columns[0]);
 		columns[1] = Vector3(mat.columns[1]);
 		columns[2] = Vector3(mat.columns[2]);
 	}
 
-	MUTIL_INLINE Matrix3::Matrix3(const Matrix2 &mat)
+	MUTIL_CONSTEXPR Matrix3::Matrix3(const Matrix2 &mat)
 	{
 		columns[0] = Vector3(mat.columns[0]);
 		columns[1] = Vector3(mat.columns[1]);
 		columns[2] = Vector3(0.0f, 0.0f, 1.0f);
 	}
 
-	MUTIL_INLINE Matrix3::Matrix3(const Matrix4 &mat)
+	MUTIL_CONSTEXPR Matrix3::Matrix3(const Matrix4 &mat)
 	{
 		columns[0] = Vector3(mat.columns[0]);
 		columns[1] = Vector3(mat.columns[1]);
@@ -1067,7 +1042,7 @@ namespace mutil
 	}
 
 
-	MUTIL_INLINE Matrix4::Matrix4(const IntMatrix4 &mat)
+	MUTIL_CONSTEXPR Matrix4::Matrix4(const IntMatrix4 &mat)
 	{
 		columns[0] = Vector4(mat.columns[0]);
 		columns[1] = Vector4(mat.columns[1]);
@@ -1075,7 +1050,7 @@ namespace mutil
 		columns[3] = Vector4(mat.columns[3]);
 	}
 
-	MUTIL_INLINE Matrix4::Matrix4(const Matrix2 &mat)
+	MUTIL_CONSTEXPR Matrix4::Matrix4(const Matrix2 &mat)
 	{
 		columns[0] = Vector4(mat.columns[0]);
 		columns[1] = Vector4(mat.columns[1]);
@@ -1083,7 +1058,7 @@ namespace mutil
 		columns[3] = Vector4(0.0f, 0.0f, 0.0f, 1.0f);
 	}
 
-	MUTIL_INLINE Matrix4::Matrix4(const Matrix3 &mat)
+	MUTIL_CONSTEXPR Matrix4::Matrix4(const Matrix3 &mat)
 	{
 		columns[0] = Vector4(mat.columns[0]);
 		columns[1] = Vector4(mat.columns[1]);
@@ -1092,40 +1067,40 @@ namespace mutil
 	}
 
 
-	MUTIL_INLINE IntMatrix2::IntMatrix2(const Matrix2 &mat)
+	MUTIL_CONSTEXPR IntMatrix2::IntMatrix2(const Matrix2 &mat)
 	{
 		columns[0] = IntVector2(mat.columns[0]);
 		columns[1] = IntVector2(mat.columns[1]);
 	}
 
-	MUTIL_INLINE IntMatrix2::IntMatrix2(const IntMatrix3 &mat)
+	MUTIL_CONSTEXPR IntMatrix2::IntMatrix2(const IntMatrix3 &mat)
 	{
 		columns[0] = IntVector2(mat.columns[0]);
 		columns[1] = IntVector2(mat.columns[1]);
 	}
 
-	MUTIL_INLINE IntMatrix2::IntMatrix2(const IntMatrix4 &mat)
+	MUTIL_CONSTEXPR IntMatrix2::IntMatrix2(const IntMatrix4 &mat)
 	{
 		columns[0] = IntVector2(mat.columns[0]);
 		columns[1] = IntVector2(mat.columns[1]);
 	}
 
 
-	MUTIL_INLINE IntMatrix3::IntMatrix3(const Matrix3 &mat)
+	MUTIL_CONSTEXPR IntMatrix3::IntMatrix3(const Matrix3 &mat)
 	{
 		columns[0] = IntVector3(mat.columns[0]);
 		columns[1] = IntVector3(mat.columns[1]);
 		columns[2] = IntVector3(mat.columns[2]);
 	}
 
-	MUTIL_INLINE IntMatrix3::IntMatrix3(const IntMatrix2 &mat)
+	MUTIL_CONSTEXPR IntMatrix3::IntMatrix3(const IntMatrix2 &mat)
 	{
 		columns[0] = IntVector3(mat.columns[0], 0);
 		columns[1] = IntVector3(mat.columns[1], 0);
 		columns[2] = IntVector3(0, 0, 1);
 	}
 
-	MUTIL_INLINE IntMatrix3::IntMatrix3(const IntMatrix4 &mat)
+	MUTIL_CONSTEXPR IntMatrix3::IntMatrix3(const IntMatrix4 &mat)
 	{
 		columns[0] = IntVector3(mat.columns[0]);
 		columns[1] = IntVector3(mat.columns[1]);
@@ -1133,7 +1108,7 @@ namespace mutil
 	}
 
 
-	MUTIL_INLINE IntMatrix4::IntMatrix4(const Matrix4 &mat)
+	MUTIL_CONSTEXPR IntMatrix4::IntMatrix4(const Matrix4 &mat)
 	{
 		columns[0] = IntVector4(mat.columns[0]);
 		columns[1] = IntVector4(mat.columns[1]);
@@ -1141,7 +1116,7 @@ namespace mutil
 		columns[3] = IntVector4(mat.columns[3]);
 	}
 
-	MUTIL_INLINE IntMatrix4::IntMatrix4(const IntMatrix2 &mat)
+	MUTIL_CONSTEXPR IntMatrix4::IntMatrix4(const IntMatrix2 &mat)
 	{
 		columns[0] = IntVector4(mat.columns[0]);
 		columns[1] = IntVector4(mat.columns[1]);
@@ -1149,7 +1124,7 @@ namespace mutil
 		columns[3] = IntVector4(0, 0, 0, 1);
 	}
 
-	MUTIL_INLINE IntMatrix4::IntMatrix4(const IntMatrix3 &mat)
+	MUTIL_CONSTEXPR IntMatrix4::IntMatrix4(const IntMatrix3 &mat)
 	{
 		columns[0] = IntVector4(mat.columns[0]);
 		columns[1] = IntVector4(mat.columns[1]);

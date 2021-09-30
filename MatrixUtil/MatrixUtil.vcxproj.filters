@@ -39,16 +39,8 @@
     <ClInclude Include="fmat_transform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="matrix.h">
-      <Filter>External</Filter>
-    </ClInclude>
     <ClInclude Include="f_math.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="matrix.cpp">
-      <Filter>External</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

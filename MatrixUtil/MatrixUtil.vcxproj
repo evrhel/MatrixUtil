@@ -166,15 +166,11 @@
     <ClInclude Include="fmat_math.h" />
     <ClInclude Include="fmat_transform.h" />
     <ClInclude Include="f_math.h" />
-    <ClInclude Include="matrix.h" />
     <ClInclude Include="mat_types.h" />
     <ClInclude Include="mutil.h" />
     <ClInclude Include="vec_types.h" />
     <ClInclude Include="fvec_math.h" />
     <ClInclude Include="settings.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="matrix.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
