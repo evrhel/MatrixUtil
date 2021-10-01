@@ -804,7 +804,7 @@ namespace mutil
 		);
 	}
 
-	MUTIL_CONSTEXPR IntVector3 operator *(const IntMatrix3 &first, const IntVector3 &second)
+	MUTIL_INLINE IntVector3 operator *(const IntMatrix3 &first, const IntVector3 &second)
 	{
 		return IntVector3(
 			first.columns[0].x * second.x + first.columns[1].x * second.y + first.columns[2].x * second.z,
@@ -1001,136 +1001,99 @@ namespace mutil
 
 
 
-	MUTIL_CONSTEXPR Matrix2::Matrix2(const IntMatrix2 &mat)
-	{
-		columns[0] = Vector2(mat.columns[0]);
-		columns[1] = Vector2(mat.columns[1]);
-	}
+	MUTIL_CONSTEXPR Matrix2::Matrix2(const IntMatrix2 &mat) :
+		_11(mat._11), _12(mat._12),
+		_21(mat._21), _22(mat._22) { }
 
-	MUTIL_CONSTEXPR Matrix2::Matrix2(const Matrix3 &mat)
-	{
-		columns[0] = Vector2(mat.columns[0]);
-		columns[1] = Vector2(mat.columns[1]);
-	}
+	MUTIL_CONSTEXPR Matrix2::Matrix2(const Matrix3 &mat) :
+		_11(mat._11), _12(mat._12),
+		_21(mat._21), _22(mat._22) { }
 
-	MUTIL_CONSTEXPR Matrix2::Matrix2(const Matrix4 &mat)
-	{
-		columns[0] = Vector2(mat.columns[0]);
-		columns[1] = Vector2(mat.columns[1]);
-	}
+	MUTIL_CONSTEXPR Matrix2::Matrix2(const Matrix4 &mat) :
+		_11(mat._11), _12(mat._12),
+		_21(mat._21), _22(mat._22) { }
 
+	MUTIL_CONSTEXPR Matrix3::Matrix3(const IntMatrix3 &mat) :
+		_11(mat._11), _12(mat._12), _13(mat._13),
+		_21(mat._21), _22(mat._22), _23(mat._23),
+		_31(mat._31), _32(mat._32), _33(mat._33) { }
 
-	MUTIL_CONSTEXPR Matrix3::Matrix3(const IntMatrix3 &mat)
-	{
-		columns[0] = Vector3(mat.columns[0]);
-		columns[1] = Vector3(mat.columns[1]);
-		columns[2] = Vector3(mat.columns[2]);
-	}
+	MUTIL_CONSTEXPR Matrix3::Matrix3(const Matrix2 &mat) :
+		_11(mat._11),	_12(mat._12),	_13(0.0f),
+		_21(mat._21),	_22(mat._22),	_23(0.0f),
+		_31(0.0f),		_32(0.0f),		_33(1.0f) { }
 
-	MUTIL_CONSTEXPR Matrix3::Matrix3(const Matrix2 &mat)
-	{
-		columns[0] = Vector3(mat.columns[0]);
-		columns[1] = Vector3(mat.columns[1]);
-		columns[2] = Vector3(0.0f, 0.0f, 1.0f);
-	}
-
-	MUTIL_CONSTEXPR Matrix3::Matrix3(const Matrix4 &mat)
-	{
-		columns[0] = Vector3(mat.columns[0]);
-		columns[1] = Vector3(mat.columns[1]);
-		columns[2] = Vector3(mat.columns[2]);
-	}
+	MUTIL_CONSTEXPR Matrix3::Matrix3(const Matrix4 &mat) :
+		_11(mat._11), _12(mat._12), _13(mat._13),
+		_21(mat._21), _22(mat._22), _23(mat._23),
+		_31(mat._31), _32(mat._32), _33(mat._33) { }
 
 
-	MUTIL_CONSTEXPR Matrix4::Matrix4(const IntMatrix4 &mat)
-	{
-		columns[0] = Vector4(mat.columns[0]);
-		columns[1] = Vector4(mat.columns[1]);
-		columns[2] = Vector4(mat.columns[2]);
-		columns[3] = Vector4(mat.columns[3]);
-	}
+	MUTIL_CONSTEXPR Matrix4::Matrix4(const IntMatrix4 &mat) :
+		_11(mat._11), _12(mat._12), _13(mat._13), _14(mat._14),
+		_21(mat._21), _22(mat._22), _23(mat._23), _24(mat._24),
+		_31(mat._31), _32(mat._32), _33(mat._33), _34(mat._34),
+		_41(mat._41), _42(mat._42), _43(mat._43), _44(mat._44) { }
 
-	MUTIL_CONSTEXPR Matrix4::Matrix4(const Matrix2 &mat)
-	{
-		columns[0] = Vector4(mat.columns[0]);
-		columns[1] = Vector4(mat.columns[1]);
-		columns[2] = Vector4(0.0f, 0.0f, 1.0f, 0.0f);
-		columns[3] = Vector4(0.0f, 0.0f, 0.0f, 1.0f);
-	}
+	MUTIL_CONSTEXPR Matrix4::Matrix4(const Matrix2 &mat) :
+		_11(mat._11),	_12(mat._12),	_13(0.0f), _14(0.0f),
+		_21(mat._21),	_22(mat._22),	_23(0.0f), _24(0.0f),
+		_31(0.0f),		_32(0.0f),		_33(1.0f), _34(0.0f),
+		_41(0.0f),		_42(0.0f),		_43(0.0f), _44(1.0f) { }
 
-	MUTIL_CONSTEXPR Matrix4::Matrix4(const Matrix3 &mat)
-	{
-		columns[0] = Vector4(mat.columns[0]);
-		columns[1] = Vector4(mat.columns[1]);
-		columns[2] = Vector4(mat.columns[2]);
-		columns[3] = Vector4(0.0f, 0.0f, 0.0f, 1.0f);
-	}
+	MUTIL_CONSTEXPR Matrix4::Matrix4(const Matrix3 &mat) :
+		_11(mat._11),	_12(mat._12),	_13(mat._13),	_14(0.0f),
+		_21(mat._21),	_22(mat._22),	_23(mat._23),	_24(0.0f),
+		_31(mat._31),	_32(mat._32),	_33(mat._33),	_34(0.0f),
+		_41(0.0f),		_42(0.0f),		_43(0.0f),		_44(1.0f) { }
 
 
-	MUTIL_CONSTEXPR IntMatrix2::IntMatrix2(const Matrix2 &mat)
-	{
-		columns[0] = IntVector2(mat.columns[0]);
-		columns[1] = IntVector2(mat.columns[1]);
-	}
+	MUTIL_CONSTEXPR IntMatrix2::IntMatrix2(const Matrix2 &mat) :
+		_11(mat._11), _12(mat._12),
+		_21(mat._21), _22(mat._22) { }
 
-	MUTIL_CONSTEXPR IntMatrix2::IntMatrix2(const IntMatrix3 &mat)
-	{
-		columns[0] = IntVector2(mat.columns[0]);
-		columns[1] = IntVector2(mat.columns[1]);
-	}
+	MUTIL_CONSTEXPR IntMatrix2::IntMatrix2(const IntMatrix3 &mat) :
+		_11(mat._11), _12(mat._12),
+		_21(mat._21), _22(mat._22) { }
 
-	MUTIL_CONSTEXPR IntMatrix2::IntMatrix2(const IntMatrix4 &mat)
-	{
-		columns[0] = IntVector2(mat.columns[0]);
-		columns[1] = IntVector2(mat.columns[1]);
-	}
+	MUTIL_CONSTEXPR IntMatrix2::IntMatrix2(const IntMatrix4 &mat) :
+		_11(mat._11), _12(mat._12),
+		_21(mat._21), _22(mat._22) { }
 
 
-	MUTIL_CONSTEXPR IntMatrix3::IntMatrix3(const Matrix3 &mat)
-	{
-		columns[0] = IntVector3(mat.columns[0]);
-		columns[1] = IntVector3(mat.columns[1]);
-		columns[2] = IntVector3(mat.columns[2]);
-	}
+	MUTIL_CONSTEXPR IntMatrix3::IntMatrix3(const Matrix3 &mat) :
+		_11(mat._11), _12(mat._12), _13(mat._13),
+		_21(mat._21), _22(mat._22), _23(mat._23),
+		_31(mat._31), _32(mat._32), _33(mat._33) { }
 
-	MUTIL_CONSTEXPR IntMatrix3::IntMatrix3(const IntMatrix2 &mat)
-	{
-		columns[0] = IntVector3(mat.columns[0], 0);
-		columns[1] = IntVector3(mat.columns[1], 0);
-		columns[2] = IntVector3(0, 0, 1);
-	}
+	MUTIL_CONSTEXPR IntMatrix3::IntMatrix3(const IntMatrix2 &mat) :
+		_11(mat._11),	_12(mat._12),	_13(0),
+		_21(mat._21),	_22(mat._22),	_23(0),
+		_31(0),			_32(0),			_33(1) { }
 
-	MUTIL_CONSTEXPR IntMatrix3::IntMatrix3(const IntMatrix4 &mat)
-	{
-		columns[0] = IntVector3(mat.columns[0]);
-		columns[1] = IntVector3(mat.columns[1]);
-		columns[2] = IntVector3(mat.columns[2]);
-	}
+	MUTIL_CONSTEXPR IntMatrix3::IntMatrix3(const IntMatrix4 &mat) :
+		_11(mat._11), _12(mat._12), _13(mat._13),
+		_21(mat._21), _22(mat._22), _23(mat._23),
+		_31(mat._31), _32(mat._32), _33(mat._33) { }
 
 
-	MUTIL_CONSTEXPR IntMatrix4::IntMatrix4(const Matrix4 &mat)
-	{
-		columns[0] = IntVector4(mat.columns[0]);
-		columns[1] = IntVector4(mat.columns[1]);
-		columns[2] = IntVector4(mat.columns[2]);
-		columns[3] = IntVector4(mat.columns[3]);
-	}
+	MUTIL_CONSTEXPR IntMatrix4::IntMatrix4(const Matrix4 &mat) :
+		_11(mat._11), _12(mat._12), _13(mat._13), _14(mat._14),
+		_21(mat._21), _22(mat._22), _23(mat._23), _24(mat._24),
+		_31(mat._31), _32(mat._32), _33(mat._33), _34(mat._34),
+		_41(mat._41), _42(mat._42), _43(mat._43), _44(mat._44) { }
 
-	MUTIL_CONSTEXPR IntMatrix4::IntMatrix4(const IntMatrix2 &mat)
-	{
-		columns[0] = IntVector4(mat.columns[0]);
-		columns[1] = IntVector4(mat.columns[1]);
-		columns[2] = IntVector4(0, 0, 0, 0);
-		columns[3] = IntVector4(0, 0, 0, 1);
-	}
+	MUTIL_CONSTEXPR IntMatrix4::IntMatrix4(const IntMatrix2 &mat) :
+		_11(mat._11),	_12(mat._12),	_13(0), _14(0),
+		_21(mat._21),	_22(mat._22),	_23(0), _24(0),
+		_31(0),			_32(0),			_33(1), _34(0),
+		_41(0),			_42(0),			_43(0), _44(1) { }
 
-	MUTIL_CONSTEXPR IntMatrix4::IntMatrix4(const IntMatrix3 &mat)
-	{
-		columns[0] = IntVector4(mat.columns[0]);
-		columns[1] = IntVector4(mat.columns[1]);
-		columns[2] = IntVector4(0, 0, 1, 0);
-		columns[3] = IntVector4(0, 0, 0, 1);
-	}
+	MUTIL_CONSTEXPR IntMatrix4::IntMatrix4(const IntMatrix3 &mat) :
+		_11(mat._11),	_12(mat._12),	_13(mat._13),	_14(0),
+		_21(mat._21),	_22(mat._22),	_23(mat._23),	_24(0),
+		_31(mat._31),	_32(mat._32),	_33(mat._33),	_34(0),
+		_41(0),			_42(0),			_43(0),			_44(1) { }
 }
 
 #endif

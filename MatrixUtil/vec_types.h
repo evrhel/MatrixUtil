@@ -630,7 +630,7 @@ namespace mutil
 	MUTIL_CONSTEXPR IntVector4 &IntVector4::operator *=(const IntVector4 &first)
 	{
 		x *= first.x;
-		y +*= first.y;
+		y *= first.y;
 		z *= first.z;
 		w *= first.w;
 		return *this;
