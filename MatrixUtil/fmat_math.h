@@ -26,7 +26,7 @@ namespace mutil
 	*/
 	MUTIL_CONSTEXPR float determinant(const Matrix2 &mat2)
 	{
-		return mat2._11 * mat2._22 - mat2._12 * mat2._12;
+		return mat2._11 * mat2._22 - mat2._12 * mat2._21;
 	}
 
 	/*
