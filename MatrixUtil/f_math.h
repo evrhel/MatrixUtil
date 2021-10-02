@@ -38,6 +38,18 @@ namespace mutil
 	{
 		return radians / (float)M_PI * 180;
 	}
+
+	/*
+	Computes the absolute value of a floating-point value.
+
+	@param value The value to calculate the absolute value of.
+
+	@return The absolute value of value.
+	*/
+	MUTIL_CONSTEXPR float abs(float value)
+	{
+		return value < 0.0f ? -value : value;
+	}
 }
 
 #endif

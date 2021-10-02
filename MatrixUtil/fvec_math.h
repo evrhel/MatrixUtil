@@ -83,7 +83,13 @@ namespace mutil
 	*/
 	MUTIL_INLINE float length(const Vector2 &vec)
 	{
+#if defined(USE_SIMD)
+		float result = dot(vec, vec);
+		_mm_store_ss(&result, _mm_sqrt_ss(_mm_load_ss(&result)));
+		return result;
+#else
 		return sqrtf(dot(vec, vec));
+#endif
 	}
 
 	/*!
@@ -164,7 +170,7 @@ namespace mutil
 	*/
 	MUTIL_INLINE Vector2 abs(const Vector2 &vec)
 	{
-		return Vector2(fabsf(vec.x), fabsf(vec.y));
+		return Vector2(abs(vec.x), abs(vec.y));
 	}
 
 	// Vector3 operations
@@ -213,7 +219,13 @@ namespace mutil
 	*/
 	MUTIL_INLINE float length(const Vector3 &vec)
 	{
+#if defined(USE_SIMD)
+		float result = dot(vec, vec);
+		_mm_store_ss(&result, _mm_sqrt_ss(_mm_load_ss(&result)));
+		return result;
+#else
 		return sqrtf(dot(vec, vec));
+#endif
 	}
 
 	/*!
@@ -267,7 +279,13 @@ namespace mutil
 	*/
 	MUTIL_INLINE Vector3 refract(const Vector3 &vec, const Vector3 &normal, const float ratio)
 	{
+#if defined(USE_SIMD)
+		float sqrtresult = 1 - (ratio * ratio) * dot(cross(normal, vec), cross(normal, vec));
+		_mm_store_ss(&sqrtresult, _mm_sqrt_ss(_mm_load_ss(&sqrtresult)));
+		return ((cross(normal, cross(-normal, vec))) * ratio) - (normal * sqrtresult);
+#else
 		return ((cross(normal, cross(-normal, vec))) * ratio) - (normal * sqrtf(1 - (ratio * ratio) * dot(cross(normal, vec), cross(normal, vec))));
+#endif
 	}
 
 	/*!
@@ -304,7 +322,7 @@ namespace mutil
 	*/
 	MUTIL_INLINE Vector3 abs(const Vector3 &vec)
 	{
-		return Vector3(fabsf(vec.x), fabsf(vec.y), fabs(vec.z));
+		return Vector3(abs(vec.x), abs(vec.y), abs(vec.z));
 	}
 
 	// Vector4 operations
@@ -336,7 +354,13 @@ namespace mutil
 	*/
 	MUTIL_INLINE float length(const Vector4 &vec)
 	{
+#if defined(USE_SIMD)
+		float result = dot(vec, vec);
+		_mm_store_ss(&result, _mm_sqrt_ss(_mm_load_ss(&result)));
+		return result;
+#else
 		return sqrtf(dot(vec, vec));
+#endif
 	}
 
 	/*!
@@ -390,7 +414,7 @@ namespace mutil
 	*/
 	MUTIL_INLINE Vector4 radians(const Vector4 &vec)
 	{
-		return Vector4(radians(vec.x), radians(vec.y), radians(vec.z), degrees(vec.w));
+		return Vector4(radians(vec.x), radians(vec.y), radians(vec.z), radians(vec.w));
 	}
 
 	/*!
@@ -415,7 +439,7 @@ namespace mutil
 	*/
 	MUTIL_INLINE Vector4 abs(const Vector4 &vec)
 	{
-		return Vector4(fabsf(vec.x), fabsf(vec.y), fabs(vec.z), fabs(vec.w));
+		return Vector4(abs(vec.x), abs(vec.y), abs(vec.z), abs(vec.w));
 	}
 }
 

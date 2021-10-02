@@ -164,6 +164,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="fmat_math.h" />
+    <ClInclude Include="fmat_math_defs.h" />
     <ClInclude Include="fmat_transform.h" />
     <ClInclude Include="f_math.h" />
     <ClInclude Include="mat_types.h" />
