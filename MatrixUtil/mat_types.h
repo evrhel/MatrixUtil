@@ -126,7 +126,7 @@ namespace mutil
 	{
 		return Matrix2(
 			first._11 * second._11 + first._12 * second._21, first._11 * second._12 + first._12 * second._22,
-			first._21 * second._11 + first._22 * second._21, first._21 * second._21 + first._22 * second._22
+			first._21 * second._11 + first._22 * second._21, first._21 * second._12 + first._22 * second._22
 		);
 	}
 

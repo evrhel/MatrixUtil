@@ -58,7 +58,7 @@ namespace mutil
 	{
 		return Matrix2(
 			_22, -_21,
-			-_21, _11
+			-_12, _11
 		);
 	}
 
@@ -158,9 +158,9 @@ namespace mutil
 	MUTIL_CONSTEXPR Matrix3 transpose(const Matrix3 &mat3)
 	{
 		return transpose(
-			mat3._11, mat3._21, mat3._31,
-			mat3._12, mat3._22, mat3._32,
-			mat3._13, mat3._23, mat3._33
+			mat3._11, mat3._12, mat3._13,
+			mat3._21, mat3._22, mat3._23,
+			mat3._31, mat3._32, mat3._33
 		);
 	}
 
@@ -172,42 +172,42 @@ namespace mutil
 	{
 		return Matrix3(
 			// Row 1
-			_11 * determinant(
+			determinant(
 				_22, _23,
 				_32, _33),
-			_12 * determinant(
+			-determinant(
 				_21, _23,
 				_31, _33
 			),
-			_13 * determinant(
+			determinant(
 				_21, _22,
 				_31, _32
 			),
 
 			// Row 2
-			_21 * determinant(
+			-determinant(
 				_12, _13,
 				_32, _33
 			),
-			_22 * determinant(
+			determinant(
 				_11, _13,
 				_31, _33
 			),
-			_23 * determinant(
+			-determinant(
 				_11, _12,
 				_31, _32
 			),
 
 			// Row 3
-			_31 * determinant(
+			determinant(
 				_12, _13,
 				_22, _23
 			),
-			_32 * determinant(
+			-determinant(
 				_11, _13,
 				_21, _23
 			),
-			_33 * determinant(
+			determinant(
 				_11, _12,
 				_21, _22
 			)
@@ -274,10 +274,26 @@ namespace mutil
 	)
 	{
 		return
-			_11 * determinant(_22, _32, _42, _23, _33, _43, _41, _24, _44) -
-			_21 * determinant(_21, _32, _42, _31, _33, _43, _41, _34, _44) +
-			_31 * determinant(_21, _22, _42, _31, _23, _43, _41, _24, _44) -
-			_41 * determinant(_21, _22, _32, _31, _23, _33, _41, _24, _34);
+			(_11 * determinant(
+				_22, _23, _24,
+				_32, _33, _34,
+				_42, _43, _44
+			)) -
+			(_12 * determinant(
+				_21, _23, _24,
+				_31, _33, _34,
+				_41, _43, _44
+			)) +
+			(_13 * determinant(
+				_21, _22, _24,
+				_31, _32, _34,
+				_41, _42, _44
+			)) -
+			(_14 * determinant(
+				_21, _22, _23,
+				_31, _32, _33,
+				_41, _42, _43
+			));
 	}
 
 	/*!
@@ -322,10 +338,10 @@ namespace mutil
 	MUTIL_CONSTEXPR Matrix4 transpose(const Matrix4 &mat4)
 	{
 		return transpose(
-			mat4._11, mat4._21, mat4._31, mat4._41,
-			mat4._12, mat4._22, mat4._32, mat4._42,
-			mat4._13, mat4._23, mat4._33, mat4._43,
-			mat4._14, mat4._24, mat4._34, mat4._44
+			mat4._11, mat4._12, mat4._13, mat4._14,
+			mat4._21, mat4._22, mat4._23, mat4._24,
+			mat4._31, mat4._32, mat4._33, mat4._34,
+			mat4._41, mat4._42, mat4._43, mat4._44
 		);
 	}
 
@@ -338,88 +354,88 @@ namespace mutil
 	{
 		return Matrix4(
 			// Row 1
-			_11 * determinant(
+			determinant(
 				_22, _23, _24,
 				_32, _33, _34,
 				_42, _43, _44
 			),
-			_12 * determinant(
+			-determinant(
 				_21, _23, _24,
 				_31, _33, _34,
 				_41, _43, _44
 			),
-			_13 * determinant(
+			determinant(
 				_21, _22, _24,
 				_31, _32, _34,
 				_41, _42, _44
 			),
-			_14 * determinant(
+			-determinant(
 				_21, _22, _23,
 				_31, _32, _33,
 				_41, _42, _43
 			),
 
 			// Row 2
-			_21 * determinant(
+			-determinant(
 				_12, _13, _14,
 				_32, _33, _34,
 				_42, _43, _44
 			),
-			_22 * determinant(
+			determinant(
 				_11, _13, _14,
 				_31, _33, _34,
 				_41, _43, _44
 			),
-			_23 * determinant(
+			-determinant(
 				_11, _12, _14,
 				_31, _32, _34,
 				_41, _42, _44
 			),
-			_24 * determinant(
+			determinant(
 				_11, _12, _13,
 				_31, _32, _33,
 				_41, _42, _43
 			),
 
 			// Row 3
-			_31 * determinant(
+			determinant(
 				_12, _13, _14,
 				_22, _23, _24,
 				_42, _43, _44
 			),
-			_32 * determinant(
+			-determinant(
 				_11, _13, _14,
 				_21, _23, _24,
 				_41, _43, _44
 			),
-			_33 * determinant(
+			determinant(
 				_11, _12, _14,
 				_21, _22, _24,
 				_41, _42, _44
 			),
-			_34 * determinant(
+			-determinant(
 				_11, _12, _13,
 				_21, _22, _23,
 				_41, _42, _43
 			),
 
 			// Row 4
-			_41 * determinant(
+			-determinant(
 				_12, _13, _14,
 				_22, _23, _24,
 				_32, _33, _34
 			),
-			_42 * determinant(
+			determinant(
 				_11, _13, _14,
 				_21, _23, _24,
 				_31, _33, _34
 			),
-			_43 * determinant(
+			-determinant(
 				_11, _12, _14,
 				_21, _22, _24,
 				_31, _32, _34
 			),
-			_44 * determinant(
+			determinant(
 				_11, _12, _13,
 				_21, _22, _23,
 				_31, _32, _33
@@ -463,9 +479,9 @@ namespace mutil
 	MUTIL_CONSTEXPR Matrix4 adjugate(const Matrix4 &mat4)
 	{
 		return adjugate(
-			mat4._11, mat4._12, mat4._13, mat4._13,
+			mat4._11, mat4._12, mat4._13, mat4._14,
 			mat4._21, mat4._22, mat4._23, mat4._24,
-			mat4._21, mat4._32, mat4._33, mat4._34,
+			mat4._31, mat4._32, mat4._33, mat4._34,
 			mat4._41, mat4._42, mat4._43, mat4._44
 		);
 	}
