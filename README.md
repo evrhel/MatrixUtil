@@ -30,7 +30,7 @@ All matrices are stored in column-major order.
 - `Matrix3` - A 3x3 32-bit floating point matrix.
 - `Matrix4` - A 4x4 32-bit floating point matrix.
 - `IntMatrix2` - A 2x2 signed 32-bit integer matrix.
-- `IntMatrix3` - A 2x2 signed 32-bit integer matrix.
-- `IntMatrix4` - A 2x2 signed 32-bit integer matrix.
+- `IntMatrix3` - A 3x3 signed 32-bit integer matrix.
+- `IntMatrix4` - A 4x4 signed 32-bit integer matrix.
 
 Like vectors, each matrix type has multiple ways to access its data. For an `N`x`N`, a member variable exists named `columns[N]` which stores each column of the matrix. Additionally, there are member variables named in the format: `_RC` where `R` is the row in the matrix and `C` is the column in the matrix. This means, for the `N`x`N` matrix, this ranges from `_11` to `_NN`. Finally, like in vectors, there is an array member which contains the raw elements of the matrix in column major order. For a matrix containing type `T`, the member is defined as: `T mat[N * N]`.
