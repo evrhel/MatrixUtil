@@ -170,7 +170,10 @@ namespace mutil
 	*/
 	MUTIL_INLINE Vector2 abs(const Vector2 &vec)
 	{
-		return Vector2(abs(vec.x), abs(vec.y));
+		return Vector2(
+			vec.x < 0.0 ? -vec.x : vec.x,
+			vec.y < 0.0 ? -vec.y : vec.y
+			);
 	}
 
 	// Vector3 operations
@@ -322,7 +325,11 @@ namespace mutil
 	*/
 	MUTIL_INLINE Vector3 abs(const Vector3 &vec)
 	{
-		return Vector3(abs(vec.x), abs(vec.y), abs(vec.z));
+		return Vector3(
+			vec.x < 0.0 ? -vec.x : vec.x,
+			vec.y < 0.0 ? -vec.y : vec.y,
+			vec.z < 0.0 ? -vec.z : vec.z
+			);
 	}
 
 	// Vector4 operations
@@ -439,7 +446,12 @@ namespace mutil
 	*/
 	MUTIL_INLINE Vector4 abs(const Vector4 &vec)
 	{
-		return Vector4(abs(vec.x), abs(vec.y), abs(vec.z), abs(vec.w));
+		return Vector4(
+			vec.x < 0.0 ? -vec.x : vec.x,
+			vec.y < 0.0 ? -vec.y : vec.y,
+			vec.z < 0.0 ? -vec.z : vec.z,
+			vec.w < 0.0 ? -vec.w : vec.w
+			);
 	}
 }
 
