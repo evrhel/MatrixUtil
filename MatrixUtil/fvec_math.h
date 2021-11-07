@@ -159,6 +159,7 @@ namespace mutil
 		return Vector2(degrees(vec.x), degrees(vec.y));
 	}
 
+	MUTIL_INLINE
 
 	/*!
 	Returns a Vector2 with each component being the absolute value of
@@ -168,12 +169,19 @@ namespace mutil
 
 	@return The absolute value.
 	*/
-	MUTIL_INLINE Vector2 abs(const Vector2 &vec)
+	MUTIL_CONSTEXPR Vector2 abs(const Vector2 &vec)
 	{
 		return Vector2(
 			vec.x < 0.0 ? -vec.x : vec.x,
 			vec.y < 0.0 ? -vec.y : vec.y
 			);
+	}
+
+	MUTIL_CONSTEXPR Vector2 &absthis(Vector2 &vec)
+	{
+		vec.x = vec.x < 0.0 ? -vec.x : vec.x;
+		vec.y = vec.y < 0.0 ? -vec.y : vec.y;
+		return vec;
 	}
 
 	// Vector3 operations
@@ -260,6 +268,22 @@ namespace mutil
 #endif
 	}
 
+	MUTIL_INLINE Vector3 &normalizethis(Vector3 &vec)
+	{
+#if defined(NO_FAST_INVERSE_SQRT)
+		const float dotinvsqrt = inverseSqrt(dot(vec, vec));
+		vec.x *= dotinvsqrt;
+		vec.y *= dotinvsqrt;
+		vec.z *= dotinvsqrt;
+#else
+		const float dotinvsqrt = fastInverseSqrt(dot(vec, vec));
+		vec.x *= dotinvsqrt;
+		vec.y *= dotinvsqrt;
+		vec.z *= dotinvsqrt;
+#endif
+		return vec;
+	}
+
 	/*!
 	Reflects a Vector3 over a normal, returning the reflected vector.
 
@@ -273,6 +297,15 @@ namespace mutil
 		return (normal * (2.0f * dot(normal, vec))) - vec;
 	}
 
+	MUTIL_INLINE Vector3 &refractthis(Vector3 &vec, const Vector3 &normal)
+	{
+		const float twotimesdot = 2.0f * dot(normal, vec);
+		vec.x = normal.x * twotimesdot - vec.x;
+		vec.y = normal.y * twotimesdot - vec.y;
+		vec.z = normal.z * twotimesdot - vec.z;
+		return vec;
+	}
+
 	/*!
 	Refracts a Vector3 and returns the resultant vector.
 
@@ -280,7 +313,7 @@ namespace mutil
 	@param normal The normal of the refracting surface.
 	@param index The ratio between two indicies of refraction.
 	*/
-	MUTIL_INLINE Vector3 refract(const Vector3 &vec, const Vector3 &normal, const float ratio)
+	MUTIL_INLINE Vector3 refract(const Vector3 &vec, const Vector3 &normal, float ratio)
 	{
 #if defined(USE_SIMD)
 		float sqrtresult = 1 - (ratio * ratio) * dot(cross(normal, vec), cross(normal, vec));
@@ -301,6 +334,14 @@ namespace mutil
 	MUTIL_INLINE Vector3 radians(const Vector3 &vec)
 	{
 		return Vector3(radians(vec.x), radians(vec.y), radians(vec.z));
+	}
+
+	MUTIL_INLINE Vector3 &radiansthis(Vector3 &vec)
+	{
+		vec.x = radians(vec.x);
+		vec.y = radians(vec.y);
+		vec.z = radians(vec.z);
+		return vec;
 	}
 
 	/*!

@@ -170,7 +170,7 @@ namespace mutil
 			mat4.columns[0],
 			mat4.columns[1],
 			mat4.columns[2],
-			Vector4(mat4.columns[0].x * translation.x, mat4.columns[1].y * translation.y, mat4.columns[2].z * translation.z, mat4.columns[3].w)
+			Vector4(mat4.columns[3].x + translation.x, mat4.columns[3].y + translation.y, mat4.columns[3].z + translation.z, mat4.columns[3].w)
 		);
 	}
 }
