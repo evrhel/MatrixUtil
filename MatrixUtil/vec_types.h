@@ -88,7 +88,9 @@ namespace mutil
 		MUTIL_CONSTEXPR Vector2 &operator +=(const Vector2 &first);
 		MUTIL_CONSTEXPR Vector2 &operator -=(const Vector2 &first);
 		MUTIL_CONSTEXPR Vector2 &operator *=(const Vector2 &first);
+		MUTIL_CONSTEXPR Vector2 &operator *=(float scalar);
 		MUTIL_CONSTEXPR Vector2 &operator /=(const Vector2 &first);
+		MUTIL_CONSTEXPR Vector2 &operator /=(float scalar);
 
 		MUTIL_CONSTEXPR const float &operator[](size_t index) const
 		{
@@ -104,14 +106,14 @@ namespace mutil
 	MUTIL_CONSTEXPR Vector2 operator +(const Vector2 &first, const Vector2 &second) { return Vector2(first.x + second.x, first.y + second.y); }
 	MUTIL_CONSTEXPR Vector2 operator -(const Vector2 &first, const Vector2 &second) { return Vector2(first.x - second.x, first.y - second.y); }
 	MUTIL_CONSTEXPR Vector2 operator *(const Vector2 &first, const Vector2 &second) { return Vector2(first.x * second.x, first.y * second.y); }
-	MUTIL_CONSTEXPR Vector2 operator *(const Vector2 &first, const float &scalar) { return Vector2(first.x * scalar, first.y * scalar); }
+	MUTIL_CONSTEXPR Vector2 operator *(const Vector2 &first, float scalar) { return Vector2(first.x * scalar, first.y * scalar); }
 	MUTIL_CONSTEXPR Vector2 operator /(const Vector2 &first, const Vector2 &second) { return Vector2(first.x / second.x, first.y / second.y); }
-	MUTIL_CONSTEXPR Vector2 operator /(const Vector2 &first, const float &scalar) { return Vector2(first.x / scalar, first.y / scalar); }
+	MUTIL_CONSTEXPR Vector2 operator /(const Vector2 &first, float scalar) { return Vector2(first.x / scalar, first.y / scalar); }
 
 	MUTIL_CONSTEXPR Vector2 operator -(Vector2 const &vec) { return Vector2(-vec.x, -vec.y); };
 
-	MUTIL_CONSTEXPR bool operator ==(Vector2 const &first, Vector2 const &second) { return first.x == second.x && first.y == second.y; }
-	MUTIL_CONSTEXPR bool operator !=(Vector2 const &first, Vector2 const &second) { return !operator==(first, second); }
+	MUTIL_CONSTEXPR bool operator ==(const Vector2 &first, const Vector2 &second) { return first.x == second.x && first.y == second.y; }
+	MUTIL_CONSTEXPR bool operator !=(const Vector2 &first, const Vector2 &second) { return !operator==(first, second); }
 
 	class Vector3
 	{
@@ -149,7 +151,9 @@ namespace mutil
 		MUTIL_CONSTEXPR Vector3 &operator +=(const Vector3 &first);
 		MUTIL_CONSTEXPR Vector3 &operator -=(const Vector3 &first);
 		MUTIL_CONSTEXPR Vector3 &operator *=(const Vector3 &first);
+		MUTIL_CONSTEXPR Vector3 &operator *=(float scalar);
 		MUTIL_CONSTEXPR Vector3 &operator /=(const Vector3 &first);
+		MUTIL_CONSTEXPR Vector3 &operator /=(float scalar);
 
 		MUTIL_CONSTEXPR const float &operator[](size_t index) const
 		{
@@ -165,9 +169,9 @@ namespace mutil
 	MUTIL_CONSTEXPR Vector3 operator +(const Vector3 &first, const Vector3 &second) { return Vector3(first.x + second.x, first.y + second.y, first.z + second.z); }
 	MUTIL_CONSTEXPR Vector3 operator -(const Vector3 &first, const Vector3 &second) { return Vector3(first.x - second.x, first.y - second.y, first.z - second.z); }
 	MUTIL_CONSTEXPR Vector3 operator *(const Vector3 &first, const Vector3 &second) { return Vector3(first.x * second.x, first.y * second.y, first.z * second.z); }
-	MUTIL_CONSTEXPR Vector3 operator *(const Vector3 &first, const float &scalar) { return Vector3(first.x * scalar, first.y * scalar, first.z * scalar); }
+	MUTIL_CONSTEXPR Vector3 operator *(const Vector3 &first, float scalar) { return Vector3(first.x * scalar, first.y * scalar, first.z * scalar); }
 	MUTIL_CONSTEXPR Vector3 operator /(const Vector3 &first, const Vector3 &second) { return Vector3(first.x / second.x, first.y / second.y, first.z / second.z); }
-	MUTIL_CONSTEXPR Vector3 operator /(const Vector3 &first, const float &scalar) { return Vector3(first.x / scalar, first.y / scalar, first.z / scalar); }
+	MUTIL_CONSTEXPR Vector3 operator /(const Vector3 &first, float scalar) { return Vector3(first.x / scalar, first.y / scalar, first.z / scalar); }
 
 	MUTIL_CONSTEXPR Vector3 operator -(const Vector3 &vec) { return Vector3(-vec.x, -vec.y, -vec.z); }
 
@@ -211,7 +215,9 @@ namespace mutil
 		MUTIL_CONSTEXPR Vector4 &operator +=(const Vector4 &first);
 		MUTIL_CONSTEXPR Vector4 &operator -=(const Vector4 &first);
 		MUTIL_CONSTEXPR Vector4 &operator *=(const Vector4 &first);
+		MUTIL_CONSTEXPR Vector4 &operator *=(float scalar);
 		MUTIL_CONSTEXPR Vector4 &operator /=(const Vector4 &first);
+		MUTIL_CONSTEXPR Vector4 &operator /=(float scalar);
 
 		MUTIL_CONSTEXPR const float &operator[](size_t index) const
 		{
@@ -227,9 +233,9 @@ namespace mutil
 	MUTIL_CONSTEXPR Vector4 operator +(const Vector4 &first, const Vector4 &second) { return Vector4(first.x + second.x, first.y + second.y, first.z + second.z, first.w + second.w); }
 	MUTIL_CONSTEXPR Vector4 operator -(const Vector4 &first, const Vector4 &second) { return Vector4(first.x - second.x, first.y - second.y, first.z - second.z, first.w - second.w); }
 	MUTIL_CONSTEXPR Vector4 operator *(const Vector4 &first, const Vector4 &second) { return Vector4(first.x * second.x, first.y * second.y, first.z * second.z, first.w * second.w); }
-	MUTIL_CONSTEXPR Vector4 operator *(const Vector4 &first, const float &scalar) { return Vector4(first.x * scalar, first.y * scalar, first.z * scalar, first.w * scalar); }
+	MUTIL_CONSTEXPR Vector4 operator *(const Vector4 &first, float scalar) { return Vector4(first.x * scalar, first.y * scalar, first.z * scalar, first.w * scalar); }
 	MUTIL_CONSTEXPR Vector4 operator /(const Vector4 &first, const Vector4 &second) { return Vector4(first.x / second.x, first.y / second.y, first.z / second.z, first.w / second.w); }
-	MUTIL_CONSTEXPR Vector4 operator /(const Vector4 &first, const float &scalar) { return Vector4(first.x / scalar, first.y / scalar, first.z / scalar, first.w * scalar); }
+	MUTIL_CONSTEXPR Vector4 operator /(const Vector4 &first, float scalar) { return Vector4(first.x / scalar, first.y / scalar, first.z / scalar, first.w * scalar); }
 
 	MUTIL_CONSTEXPR Vector4 operator -(const Vector4 &vec) { return Vector4(-vec.x, -vec.y, -vec.z, -vec.w); };
 	MUTIL_CONSTEXPR bool operator ==(const Vector4 &first, const Vector4 &second) { return first.x == second.x && first.y == second.y && first.z == second.z && first.w == second.w; }
@@ -272,7 +278,9 @@ namespace mutil
 		MUTIL_CONSTEXPR IntVector2 &operator +=(const IntVector2 &first);
 		MUTIL_CONSTEXPR IntVector2 &operator -=(const IntVector2 &first);
 		MUTIL_CONSTEXPR IntVector2 &operator *=(const IntVector2 &first);
+		MUTIL_CONSTEXPR IntVector2 &operator *=(int32_t first);
 		MUTIL_CONSTEXPR IntVector2 &operator /=(const IntVector2 &first);
+		MUTIL_CONSTEXPR IntVector2 &operator /=(int32_t first);
 
 		MUTIL_CONSTEXPR const int32_t &operator[](size_t index) const
 		{
@@ -333,7 +341,9 @@ namespace mutil
 		MUTIL_CONSTEXPR IntVector3 &operator +=(const IntVector3 &first);
 		MUTIL_CONSTEXPR IntVector3 &operator -=(const IntVector3 &first);
 		MUTIL_CONSTEXPR IntVector3 &operator *=(const IntVector3 &first);
+		MUTIL_CONSTEXPR IntVector3 &operator *=(int32_t scalar);
 		MUTIL_CONSTEXPR IntVector3 &operator /=(const IntVector3 &first);
+		MUTIL_CONSTEXPR IntVector3 &operator /=(int32_t scalar);
 
 		MUTIL_CONSTEXPR const int32_t &operator[](size_t index) const
 		{
@@ -349,9 +359,9 @@ namespace mutil
 	MUTIL_CONSTEXPR IntVector3 operator +(const IntVector3 &first, const IntVector3 &second) { return IntVector3(first.x + second.x, first.y + second.y, first.z + second.z); }
 	MUTIL_CONSTEXPR IntVector3 operator -(const IntVector3 &first, const IntVector3 &second) { return IntVector3(first.x - second.x, first.y - second.y, first.z - second.z); }
 	MUTIL_CONSTEXPR IntVector3 operator *(const IntVector3 &first, const IntVector3 &second) { return IntVector3(first.x * second.x, first.y * second.y, first.z * second.z); }
-	MUTIL_CONSTEXPR IntVector3 operator *(const IntVector3 &first, const int32_t &scalar) { return IntVector3(first.x * scalar, first.y * scalar, first.z * scalar); }
+	MUTIL_CONSTEXPR IntVector3 operator *(const IntVector3 &first, int32_t scalar) { return IntVector3(first.x * scalar, first.y * scalar, first.z * scalar); }
 	MUTIL_CONSTEXPR IntVector3 operator /(const IntVector3 &first, const IntVector3 &second) { return IntVector3(first.x / second.x, first.y / second.y, first.z / second.z); }
-	MUTIL_CONSTEXPR IntVector3 operator /(const IntVector3 &first, const int32_t &scalar) { return IntVector3(first.x / scalar, first.y / scalar, first.z * scalar); }
+	MUTIL_CONSTEXPR IntVector3 operator /(const IntVector3 &first, int32_t scalar) { return IntVector3(first.x / scalar, first.y / scalar, first.z * scalar); }
 
 	MUTIL_CONSTEXPR IntVector3 operator -(const IntVector3 &vec) { return IntVector3(-vec.x, -vec.y, -vec.z); };
 
@@ -395,7 +405,9 @@ namespace mutil
 		MUTIL_CONSTEXPR IntVector4 &operator +=(const IntVector4 &first);
 		MUTIL_CONSTEXPR IntVector4 &operator -=(const IntVector4 &first);
 		MUTIL_CONSTEXPR IntVector4 &operator *=(const IntVector4 &first);
+		MUTIL_CONSTEXPR IntVector4 &operator *=(int32_t scalar);
 		MUTIL_CONSTEXPR IntVector4 &operator /=(const IntVector4 &first);
+		MUTIL_CONSTEXPR IntVector4 &operator /=(int32_t scalar);
 
 		MUTIL_CONSTEXPR const int32_t &operator[](size_t index) const
 		{
@@ -447,10 +459,24 @@ namespace mutil
 		return *this;
 	}
 
+	MUTIL_CONSTEXPR Vector2 &Vector2::operator *=(float scalar)
+	{
+		x *= scalar;
+		y *= scalar;
+		return *this;
+	}
+
 	MUTIL_CONSTEXPR Vector2 &Vector2::operator /=(const Vector2 &first)
 	{
 		x /= first.x;
 		y /= first.y;
+		return *this;
+	}
+
+	MUTIL_CONSTEXPR Vector2 &Vector2::operator /=(float scalar)
+	{
+		x /= scalar;
+		y /= scalar;
 		return *this;
 	}
 
@@ -483,11 +509,27 @@ namespace mutil
 		return *this;
 	}
 
+	MUTIL_CONSTEXPR Vector3 &Vector3::operator*=(float scalar)
+	{
+		x *= scalar;
+		y *= scalar;
+		z *= scalar;
+		return *this;
+	}
+
 	MUTIL_CONSTEXPR Vector3 &Vector3::operator /=(const Vector3 &first)
 	{
 		x /= first.x;
 		y /= first.y;
 		z /= first.z;
+		return *this;
+	}
+
+	MUTIL_CONSTEXPR Vector3 &Vector3::operator/=(float scalar)
+	{
+		x /= scalar;
+		y /= scalar;
+		z /= scalar;
 		return *this;
 	}
 
@@ -524,12 +566,30 @@ namespace mutil
 		return *this;
 	}
 
+	MUTIL_CONSTEXPR Vector4 &Vector4::operator*=(float scalar)
+	{
+		x *= scalar;
+		y *= scalar;
+		z *= scalar;
+		w *= scalar;
+		return *this;
+	}
+
 	MUTIL_CONSTEXPR Vector4 &Vector4::operator /=(const Vector4 &first)
 	{
 		x /= first.x;
 		y /= first.y;
 		z /= first.z;
 		w /= first.w;
+		return *this;
+	}
+
+	MUTIL_CONSTEXPR Vector4 &Vector4::operator/=(float scalar)
+	{
+		x /= scalar;
+		y /= scalar;
+		z /= scalar;
+		w /= scalar;
 		return *this;
 	}
 
@@ -559,10 +619,24 @@ namespace mutil
 		return *this;
 	}
 
+	inline MUTIL_CONSTEXPR IntVector2 &IntVector2::operator*=(int32_t scalar)
+	{
+		x *= scalar;
+		y *= scalar;
+		return *this;
+	}
+
 	MUTIL_CONSTEXPR IntVector2 &IntVector2::operator /=(const IntVector2 &first)
 	{
 		x /= first.x;
 		y /= first.y;
+		return *this;
+	}
+
+	inline MUTIL_CONSTEXPR IntVector2 &IntVector2::operator/=(int32_t scalar)
+	{
+		x /= scalar;
+		y /= scalar;
 		return *this;
 	}
 
@@ -595,11 +669,27 @@ namespace mutil
 		return *this;
 	}
 
+	MUTIL_CONSTEXPR IntVector3 &IntVector3::operator*=(int32_t scalar)
+	{
+		x *= scalar;
+		y *= scalar;
+		z *= scalar;
+		return *this;
+	}
+
 	MUTIL_CONSTEXPR IntVector3 &IntVector3::operator /=(const IntVector3 &first)
 	{
 		x /= first.x;
 		y /= first.y;
 		z /= first.z;
+		return *this;
+	}
+
+	MUTIL_CONSTEXPR IntVector3 &IntVector3::operator/=(int32_t scalar)
+	{
+		x /= scalar;
+		y /= scalar;
+		z /= scalar;
 		return *this;
 	}
 
@@ -636,12 +726,30 @@ namespace mutil
 		return *this;
 	}
 
+	MUTIL_CONSTEXPR IntVector4 &IntVector4::operator*=(int32_t scalar)
+	{
+		x *= scalar;
+		y *= scalar;
+		z *= scalar;
+		w *= scalar;
+		return *this;
+	}
+
 	MUTIL_CONSTEXPR IntVector4 &IntVector4::operator /=(const IntVector4 &first)
 	{
 		x /= first.x;
 		y /= first.y;
 		z /= first.z;
 		w /= first.w;
+		return *this;
+	}
+
+	MUTIL_CONSTEXPR IntVector4 &IntVector4::operator/=(int32_t scalar)
+	{
+		x /= scalar;
+		y /= scalar;
+		z /= scalar;
+		w /= scalar;
 		return *this;
 	}
 }

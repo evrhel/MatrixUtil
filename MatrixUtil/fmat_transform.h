@@ -94,7 +94,7 @@ namespace mutil
 
 	@return The perspective projection matrix.
 	*/
-	MUTIL_INLINE Matrix4 perspective(const float fov, const float aspect, const float zNear, const float zFar)
+	MUTIL_INLINE Matrix4 perspective(float fov, float aspect, float zNear, float zFar)
 	{
 		float const tanHalfFOV = tanf(fov / 2.0f);
 		Matrix4 result(0.0f);
@@ -115,7 +115,7 @@ namespace mutil
 
 	@return A rotated version of the input matrix.
 	*/
-	MUTIL_INLINE Matrix4 rotate(const Matrix4 &mat4, const float angle, const Vector3 &axis)
+	MUTIL_INLINE Matrix4 rotate(const Matrix4 &mat4, float angle, const Vector3 &axis)
 	{
 		const float c = cosf(angle);
 		const float s = sinf(angle);
@@ -164,7 +164,7 @@ namespace mutil
 
 	@return A translated version of the input matrix.
 	*/
-	MUTIL_INLINE Matrix4 translate(Matrix4 const &mat4, Vector3 const &translation)
+	MUTIL_INLINE Matrix4 translate(const Matrix4 &mat4, const Vector3 &translation)
 	{
 		return Matrix4(
 			mat4.columns[0],
