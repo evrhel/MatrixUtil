@@ -106,7 +106,9 @@ namespace mutil
 	}
 
 	/*!
-	Normalizes a Vector2, making its length 1.
+	Normalizes a Vector2, making its length 1. This function does not
+	guarantee that the length is exactly 1, as this function uses a fast
+	approximation. For a higher-precision result, use normalizeExact.
 
 	@param vec The vector to normalize.
 
@@ -114,11 +116,19 @@ namespace mutil
 	*/
 	MUTIL_INLINE Vector2 normalize(const Vector2 &vec)
 	{
-#if defined(NO_FAST_INVERSE_SQRT)
-		return vec * inverseSqrt(dot(vec, vec));
-#else
 		return vec * fastInverseSqrt(dot(vec, vec));
-#endif
+	}
+
+	/*
+	Normalizes a Vector2, making its length 1.
+
+	@param vec The vector to normalize.
+
+	@return The normalized vector.
+	*/
+	MUTIL_INLINE Vector2 normalizeExact(const Vector2 &vec)
+	{
+		return vec * inverseSqrt(dot(vec, vec));
 	}
 
 
@@ -158,8 +168,6 @@ namespace mutil
 	{
 		return Vector2(degrees(vec.x), degrees(vec.y));
 	}
-
-	MUTIL_INLINE
 
 	/*!
 	Returns a Vector2 with each component being the absolute value of
@@ -253,7 +261,9 @@ namespace mutil
 	}
 
 	/*!
-	Normalizes a Vector3, making its length 1.
+	Normalizes a Vector3, making its length 1. This function does not
+	guarantee that the length is exactly 1, as this function uses a fast
+	approximation. For a higher-precision result, use normalizeExact.
 
 	@param vec The vector to normalize.
 
@@ -261,26 +271,36 @@ namespace mutil
 	*/
 	MUTIL_INLINE Vector3 normalize(const Vector3 &vec)
 	{
-#if defined(NO_FAST_INVERSE_SQRT)
-		return vec * inverseSqrt(dot(vec, vec));
-#else
 		return vec * fastInverseSqrt(dot(vec, vec));
-#endif
+	}
+
+	/*
+	Normalizes a Vector3, making its length 1.
+
+	@param vec The vector to normalize.
+
+	@return The normalized vector.
+	*/
+	MUTIL_INLINE Vector3 normalizeExact(const Vector3 &vec)
+	{
+		return vec * inverseSqrt(dot(vec, vec));
 	}
 
 	MUTIL_INLINE Vector3 &normalizethis(Vector3 &vec)
 	{
-#if defined(NO_FAST_INVERSE_SQRT)
-		const float dotinvsqrt = inverseSqrt(dot(vec, vec));
-		vec.x *= dotinvsqrt;
-		vec.y *= dotinvsqrt;
-		vec.z *= dotinvsqrt;
-#else
 		const float dotinvsqrt = fastInverseSqrt(dot(vec, vec));
 		vec.x *= dotinvsqrt;
 		vec.y *= dotinvsqrt;
 		vec.z *= dotinvsqrt;
-#endif
+		return vec;
+	}
+
+	MUTIL_INLINE Vector3 &normalizethisExact(Vector3 &vec)
+	{
+		const float dotinvsqrt = inverseSqrt(dot(vec, vec));
+		vec.x *= dotinvsqrt;
+		vec.y *= dotinvsqrt;
+		vec.z *= dotinvsqrt;
 		return vec;
 	}
 
@@ -425,7 +445,9 @@ namespace mutil
 	}
 
 	/*!
-	Normalizes a Vector4, making its length 1.
+	Normalizes a Vector4, making its length 1. This function does not
+	guarantee that the length is exactly 1, as this function uses a fast
+	approximation. For a higher-precision result, use normalizeExact.
 
 	@param vec The vector to normalize.
 
@@ -433,11 +455,19 @@ namespace mutil
 	*/
 	MUTIL_INLINE Vector4 normalize(const Vector4 &vec)
 	{
-#if defined(NO_FAST_INVERSE_SQRT)
-		return vec * inverseSqrt(dot(vec, vec));
-#else
 		return vec * fastInverseSqrt(dot(vec, vec));
-#endif
+	}
+
+	/*!
+	Normalizes a Vector, making its length 1. 
+	
+	@param vec The vector to normalize.
+
+	@return The normalized vector.
+	*/
+	MUTIL_INLINE Vector4 normalizeExact(const Vector4 &vec)
+	{
+		return vec * inverseSqrt(dot(vec, vec));
 	}
 
 	/*!
