@@ -9,6 +9,7 @@ Base include file, containing every needed type and function.
 
 #include "vec_types.h"
 #include "fvec_math.h"
+#include "ivec_math.h"
 
 #include "mat_types.h"
 #include "fmat_math.h"

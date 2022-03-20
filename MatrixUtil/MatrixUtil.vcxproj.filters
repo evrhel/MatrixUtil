@@ -45,5 +45,8 @@
     <ClInclude Include="fmat_math_defs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ivec_math.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

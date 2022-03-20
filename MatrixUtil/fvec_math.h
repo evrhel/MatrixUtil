@@ -20,40 +20,6 @@ Contains methods for performing operations on floating-point vectors.
 
 namespace mutil
 {
-	MUTIL_INLINE float inverseSqrt(const float num)
-	{
-#if defined(USE_SIMD)
-		float result;
-		_mm_store_ss(&result, _mm_sqrt_ss(_mm_load_ss(&num)));
-		return 1.0f / result;
-#else
-		return 1.0f / sqrtf(num);
-#endif
-	}
-
-	MUTIL_INLINE float fastInverseSqrt(const float num)
-	{
-#if defined(USE_SIMD)
-		float result;
-		_mm_store_ss(&result, _mm_rsqrt_ss(_mm_load_ss(&num)));
-		return result;
-#else
-		const float x2 = num * 0.5f;
-		const float threehalfs = 1.5f;
-
-		union
-		{
-			float f;
-			uint32_t i;
-		} un;
-
-		un.f = num;
-		un.i = 0x5f3759df - (un.i >> 1);
-		un.f *= threehalfs - (x2 * un.f * un.f);
-		return un.f;
-#endif
-	}
-
 	// Vector2 operations
 
 	/*!
@@ -459,7 +425,7 @@ namespace mutil
 	}
 
 	/*!
-	Normalizes a Vector, making its length 1. 
+	Normalizes a Vector4, making its length 1. 
 	
 	@param vec The vector to normalize.
 
@@ -496,9 +462,9 @@ namespace mutil
 	}
 
 	/*!
-	Converts a Vector3 containing angles in radians to degrees.
+	Converts a Vector4 containing angles in radians to degrees.
 
-	@param A Vector3 containing angles in radians.
+	@param A Vector4 containing angles in radians.
 
 	@return The same vector in degrees.
 	*/
