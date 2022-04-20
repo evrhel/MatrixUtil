@@ -77,7 +77,7 @@ namespace mutil
 	*/
 	MUTIL_INLINE IntVector2 normalize(const IntVector2 &vec)
 	{
-		return vec * fastInverseSqrt(dot(vec, vec));
+		return vec * (uint32_t)fastInverseSqrt(dot(vec, vec));
 	}
 
 	/*
@@ -89,7 +89,7 @@ namespace mutil
 	*/
 	MUTIL_INLINE IntVector2 normalizeExact(const IntVector2 &vec)
 	{
-		return vec * inverseSqrt(dot(vec, vec));
+		return vec * (uint32_t)inverseSqrt(dot(vec, vec));
 	}
 
 
@@ -115,7 +115,7 @@ namespace mutil
 	*/
 	MUTIL_INLINE IntVector2 radians(const IntVector2 &vec)
 	{
-		return IntVector2(radians(vec.x), radians(vec.y));
+		return IntVector2((uint32_t)radians(vec.x), (uint32_t)radians(vec.y));
 	}
 
 	/*!
@@ -127,7 +127,7 @@ namespace mutil
 	*/
 	MUTIL_INLINE IntVector2 degrees(const IntVector2 &vec)
 	{
-		return IntVector2(degrees(vec.x), degrees(vec.y));
+		return IntVector2((uint32_t)degrees(vec.x), (uint32_t)degrees(vec.y));
 	}
 
 	/*!
@@ -227,7 +227,7 @@ namespace mutil
 	*/
 	MUTIL_INLINE IntVector3 normalize(const IntVector3 &vec)
 	{
-		return vec * fastInverseSqrt(dot(vec, vec));
+		return vec * (uint32_t)fastInverseSqrt(dot(vec, vec));
 	}
 
 	/*
@@ -239,12 +239,12 @@ namespace mutil
 	*/
 	MUTIL_INLINE IntVector3 normalizeExact(const IntVector3 &vec)
 	{
-		return vec * inverseSqrt(dot(vec, vec));
+		return vec * (uint32_t)inverseSqrt(dot(vec, vec));
 	}
 
 	MUTIL_INLINE IntVector3 &normalizethis(IntVector3 &vec)
 	{
-		const float dotinvsqrt = fastInverseSqrt(dot(vec, vec));
+		const float dotinvsqrt = (uint32_t)fastInverseSqrt(dot(vec, vec));
 		vec.x *= dotinvsqrt;
 		vec.y *= dotinvsqrt;
 		vec.z *= dotinvsqrt;
@@ -253,7 +253,7 @@ namespace mutil
 
 	MUTIL_INLINE IntVector3 &normalizethisExact(IntVector3 &vec)
 	{
-		const float dotinvsqrt = inverseSqrt(dot(vec, vec));
+		const float dotinvsqrt = (uint32_t)inverseSqrt(dot(vec, vec));
 		vec.x *= dotinvsqrt;
 		vec.y *= dotinvsqrt;
 		vec.z *= dotinvsqrt;
@@ -291,14 +291,14 @@ namespace mutil
 	*/
 	MUTIL_INLINE IntVector3 radians(const IntVector3 &vec)
 	{
-		return IntVector3(radians(vec.x), radians(vec.y), radians(vec.z));
+		return IntVector3((uint32_t)radians(vec.x), (uint32_t)radians(vec.y), (uint32_t)radians(vec.z));
 	}
 
 	MUTIL_INLINE IntVector3 &radiansthis(IntVector3 &vec)
 	{
-		vec.x = radians(vec.x);
-		vec.y = radians(vec.y);
-		vec.z = radians(vec.z);
+		vec.x = (uint32_t)radians(vec.x);
+		vec.y = (uint32_t)radians(vec.y);
+		vec.z = (uint32_t)radians(vec.z);
 		return vec;
 	}
 
@@ -311,7 +311,7 @@ namespace mutil
 	*/
 	MUTIL_INLINE IntVector3 degrees(const IntVector3 &vec)
 	{
-		return IntVector3(degrees(vec.x), degrees(vec.y), degrees(vec.z));
+		return IntVector3((uint32_t)degrees(vec.x), (uint32_t)degrees(vec.y), (uint32_t)degrees(vec.z));
 	}
 
 	/*!
@@ -388,7 +388,7 @@ namespace mutil
 	*/
 	MUTIL_INLINE IntVector4 normalize(const IntVector4 &vec)
 	{
-		return vec * fastInverseSqrt(dot(vec, vec));
+		return vec * (uint32_t)fastInverseSqrt(dot(vec, vec));
 	}
 
 	/*!
@@ -400,7 +400,7 @@ namespace mutil
 	*/
 	MUTIL_INLINE IntVector4 normalizeExact(const IntVector4 &vec)
 	{
-		return vec * inverseSqrt(dot(vec, vec));
+		return vec * (uint32_t)inverseSqrt(dot(vec, vec));
 	}
 
 	/*!
@@ -425,7 +425,7 @@ namespace mutil
 	*/
 	MUTIL_INLINE IntVector4 radians(const IntVector4 &vec)
 	{
-		return IntVector4(radians(vec.x), radians(vec.y), radians(vec.z), radians(vec.w));
+		return IntVector4((uint32_t)radians(vec.x), (uint32_t)radians(vec.y), (uint32_t)radians(vec.z), (uint32_t)radians(vec.w));
 	}
 
 	/*!
@@ -437,7 +437,7 @@ namespace mutil
 	*/
 	MUTIL_INLINE IntVector4 degrees(const IntVector4 &vec)
 	{
-		return IntVector4(degrees(vec.x), degrees(vec.y), degrees(vec.z), degrees(vec.w));
+		return IntVector4((uint32_t)degrees(vec.x), (uint32_t)degrees(vec.y), (uint32_t)degrees(vec.z), (uint32_t)degrees(vec.w));
 	}
 
 	/*!
