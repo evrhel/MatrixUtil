@@ -235,7 +235,7 @@ namespace mutil
 	MUTIL_CONSTEXPR Vector4 operator *(const Vector4 &first, const Vector4 &second) { return Vector4(first.x * second.x, first.y * second.y, first.z * second.z, first.w * second.w); }
 	MUTIL_CONSTEXPR Vector4 operator *(const Vector4 &first, float scalar) { return Vector4(first.x * scalar, first.y * scalar, first.z * scalar, first.w * scalar); }
 	MUTIL_CONSTEXPR Vector4 operator /(const Vector4 &first, const Vector4 &second) { return Vector4(first.x / second.x, first.y / second.y, first.z / second.z, first.w / second.w); }
-	MUTIL_CONSTEXPR Vector4 operator /(const Vector4 &first, float scalar) { return Vector4(first.x / scalar, first.y / scalar, first.z / scalar, first.w * scalar); }
+	MUTIL_CONSTEXPR Vector4 operator /(const Vector4 &first, float scalar) { return Vector4(first.x / scalar, first.y / scalar, first.z / scalar, first.w / scalar); }
 
 	MUTIL_CONSTEXPR Vector4 operator -(const Vector4 &vec) { return Vector4(-vec.x, -vec.y, -vec.z, -vec.w); };
 	MUTIL_CONSTEXPR bool operator ==(const Vector4 &first, const Vector4 &second) { return first.x == second.x && first.y == second.y && first.z == second.z && first.w == second.w; }
@@ -361,7 +361,7 @@ namespace mutil
 	MUTIL_CONSTEXPR IntVector3 operator *(const IntVector3 &first, const IntVector3 &second) { return IntVector3(first.x * second.x, first.y * second.y, first.z * second.z); }
 	MUTIL_CONSTEXPR IntVector3 operator *(const IntVector3 &first, int32_t scalar) { return IntVector3(first.x * scalar, first.y * scalar, first.z * scalar); }
 	MUTIL_CONSTEXPR IntVector3 operator /(const IntVector3 &first, const IntVector3 &second) { return IntVector3(first.x / second.x, first.y / second.y, first.z / second.z); }
-	MUTIL_CONSTEXPR IntVector3 operator /(const IntVector3 &first, int32_t scalar) { return IntVector3(first.x / scalar, first.y / scalar, first.z * scalar); }
+	MUTIL_CONSTEXPR IntVector3 operator /(const IntVector3 &first, int32_t scalar) { return IntVector3(first.x / scalar, first.y / scalar, first.z / scalar); }
 
 	MUTIL_CONSTEXPR IntVector3 operator -(const IntVector3 &vec) { return IntVector3(-vec.x, -vec.y, -vec.z); };
 
@@ -425,7 +425,7 @@ namespace mutil
 	MUTIL_CONSTEXPR IntVector4 operator *(const IntVector4 &first, const IntVector4 &second) { return IntVector4(first.x * second.x, first.y * second.y, first.z * second.z, first.w * second.w); }
 	MUTIL_CONSTEXPR IntVector4 operator *(const IntVector4 &first, const int32_t &scalar) { return IntVector4(first.x * scalar, first.y * scalar, first.z * scalar, first.w * scalar); }
 	MUTIL_CONSTEXPR IntVector4 operator /(const IntVector4 &first, const IntVector4 &second) { return IntVector4(first.x / second.x, first.y / second.y, first.z / second.z, first.w / second.w); }
-	MUTIL_CONSTEXPR IntVector4 operator /(const IntVector4 &first, const int32_t &scalar) { return IntVector4(first.x / scalar, first.y / scalar, first.z * scalar, first.w / scalar); }
+	MUTIL_CONSTEXPR IntVector4 operator /(const IntVector4 &first, const int32_t &scalar) { return IntVector4(first.x / scalar, first.y / scalar, first.z / scalar, first.w / scalar); }
 
 	MUTIL_CONSTEXPR IntVector4 operator -(IntVector4 const &vec) { return IntVector4(-vec.x, -vec.y, -vec.z, -vec.w); };
 
