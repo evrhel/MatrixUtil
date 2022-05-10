@@ -346,7 +346,7 @@ namespace mutil
 			_11(diagonal),	_12(0.0f),		_13(0.0f),		_14(0.0f),
 			_21(0.0f),		_22(diagonal),	_23(0.0f),		_24(0.0f),
 			_31(0.0f),		_32(0.0f),		_33(diagonal),	_34(0.0f),
-			_41(0.0f),		_42(0.0f),		_43(0.0f),		_44(0.0f) { }
+			_41(0.0f),		_42(0.0f),		_43(0.0f),		_44(diagonal) { }
 
 		/*!
 		Constructs a matrix with four explicitly given columns.
