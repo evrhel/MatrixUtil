@@ -87,6 +87,22 @@ namespace mutil
 		return adjugate(mat2) * (1.0f / determinant(mat2));
 	}
 
+	MUTIL_CONSTEXPR Matrix2 clamp(const Matrix2 &val, float min, float max)
+	{
+		Matrix2 result;
+		for (size_t i = 0; i < 4; i++)
+			result[i] = clamp(val[i], min, max);
+		return result;
+	}
+
+	MUTIL_CONSTEXPR Matrix2 clamp(const Matrix2 &val, const Matrix2 &min, const Matrix2 &max)
+	{
+		Matrix2 result;
+		for (size_t i = 0; i < 4; i++)
+			result[i] = clamp(val[i], min[i], max[i]);
+		return result;
+	}
+
 	// Matrix3 operations
 
 	/*!
@@ -162,6 +178,22 @@ namespace mutil
 	MUTIL_CONSTEXPR Matrix3 inverse(const Matrix3 &mat3)
 	{
 		return adjugate(mat3) * (1.0f / determinant(mat3));
+	}
+
+	MUTIL_CONSTEXPR Matrix3 clamp(const Matrix3 &val, float min, float max)
+	{
+		Matrix3 result;
+		for (size_t i = 0; i < 9; i++)
+			result[i] = clamp(val[i], min, max);
+		return result;
+	}
+
+	MUTIL_CONSTEXPR Matrix3 clamp(const Matrix3 &val, const Matrix3 &min, const Matrix3 &max)
+	{
+		Matrix3 result;
+		for (size_t i = 0; i < 9; i++)
+			result[i] = clamp(val[i], min[i], max[i]);
+		return result;
 	}
 
 	// Matrix4 operations
@@ -244,6 +276,22 @@ namespace mutil
 	MUTIL_CONSTEXPR Matrix4 inverse(const Matrix4 &mat4)
 	{
 		return adjugate(mat4) * (1.0f / determinant(mat4));
+	}
+
+	MUTIL_CONSTEXPR Matrix4 clamp(const Matrix4 &val, float min, float max)
+	{
+		Matrix4 result;
+		for (size_t i = 0; i < 16; i++)
+			result[i] = clamp(val[i], min, max);
+		return result;
+	}
+
+	MUTIL_CONSTEXPR Matrix4 clamp(const Matrix4 &val, const Matrix4 &min, const Matrix4 &max)
+	{
+		Matrix4 result;
+		for (size_t i = 0; i < 16; i++)
+			result[i] = clamp(val[i], min[i], max[i]);
+		return result;
 	}
 }
 

@@ -20,6 +20,11 @@ Contains methods for performing operations on floating-point vectors.
 
 namespace mutil
 {
+	MUTIL_CONSTEXPR int32_t clamp(int32_t val, int32_t min, int32_t max)
+	{
+		return val < min ? min : ((val > max) ? max : val);
+	}
+
 	// IntVector2 operations
 
 	/*!
@@ -151,6 +156,22 @@ namespace mutil
 		vec.x = vec.x < 0 ? -vec.x : vec.x;
 		vec.y = vec.y < 0 ? -vec.y : vec.y;
 		return vec;
+	}
+
+	MUTIL_CONSTEXPR IntVector2 clamp(const IntVector2 &val, int32_t min, int32_t max)
+	{
+		IntVector2 result;
+		for (size_t i = 0; i < 2; i++)
+			result[i] = clamp(val[i], min, max);
+		return result;
+	}
+
+	MUTIL_CONSTEXPR IntVector2 clamp(const IntVector2 &val, const IntVector2 &min, const IntVector2 &max)
+	{
+		IntVector2 result;
+		for (size_t i = 0; i < 2; i++)
+			result[i] = clamp(val[i], min[i], max[i]);
+		return result;
 	}
 
 	// Vector3 operations
@@ -331,6 +352,22 @@ namespace mutil
 		);
 	}
 
+	MUTIL_CONSTEXPR IntVector3 clamp(const IntVector3 &val, int32_t min, int32_t max)
+	{
+		IntVector3 result;
+		for (size_t i = 0; i < 3; i++)
+			result[i] = clamp(val[i], min, max);
+		return result;
+	}
+
+	MUTIL_CONSTEXPR IntVector3 clamp(const IntVector3 &val, const IntVector3 &min, const IntVector3 &max)
+	{
+		IntVector3 result;
+		for (size_t i = 0; i < 3; i++)
+			result[i] = clamp(val[i], min[i], max[i]);
+		return result;
+	}
+
 	// Vector4 operations
 
 	/*!
@@ -456,6 +493,22 @@ namespace mutil
 			vec.z < 0 ? -vec.z : vec.z,
 			vec.w < 0 ? -vec.w : vec.w
 		);
+	}
+
+	MUTIL_CONSTEXPR IntVector4 clamp(const IntVector4 &val, int32_t min, int32_t max)
+	{
+		IntVector4 result;
+		for (size_t i = 0; i < 4; i++)
+			result[i] = clamp(val[i], min, max);
+		return result;
+	}
+
+	MUTIL_CONSTEXPR IntVector4 clamp(const IntVector4 &val, const IntVector4 &min, const IntVector4 &max)
+	{
+		IntVector4 result;
+		for (size_t i = 0; i < 4; i++)
+			result[i] = clamp(val[i], min[i], max[i]);
+		return result;
 	}
 }
 
