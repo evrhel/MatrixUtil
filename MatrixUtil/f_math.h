@@ -67,7 +67,7 @@ namespace mutil
 		union
 		{
 			float f;
-			uint32_t i;
+			int32_t i;
 		} un;
 
 		un.f = num;
