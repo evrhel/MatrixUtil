@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+	<Type Name="mutil::Vector2">
+		<DisplayString>({x}, {y})</DisplayString>
+		<Expand>
+			<Item Name="x">x</Item>
+			<Item Name="y">y</Item>
+		</Expand>
+	</Type>
+	
+	<Type Name="mutil::Vector3">
+		<DisplayString>({x}, {y}, {z})</DisplayString>
+		<Expand>
+			<Item Name="x">x</Item>
+			<Item Name="y">y</Item>
+			<Item Name="z">z</Item>
+		</Expand>
+	</Type>
+
+	<Type Name="mutil::Vector4">
+		<DisplayString>({x}, {y}, {z}, {w})</DisplayString>
+		<Expand>
+			<Item Name="x">x</Item>
+			<Item Name="y">y</Item>
+			<Item Name="z">z</Item>
+			<Item Name="w">w</Item>
+		</Expand>
+	</Type>
+
+	<Type Name="mutil::IntVector2">
+		<DisplayString>({x}, {y})</DisplayString>
+		<Expand>
+			<Item Name="x">x</Item>
+			<Item Name="y">y</Item>
+		</Expand>
+	</Type>
+
+	<Type Name="mutil::IntVector3">
+		<DisplayString>({x}, {y}, {z})</DisplayString>
+		<Expand>
+			<Item Name="x">x</Item>
+			<Item Name="y">y</Item>
+			<Item Name="z">z</Item>
+		</Expand>
+	</Type>
+
+	<Type Name="mutil::IntVector4">
+		<DisplayString>({x}, {y}, {z}, {w})</DisplayString>
+		<Expand>
+			<Item Name="x">x</Item>
+			<Item Name="y">y</Item>
+			<Item Name="z">z</Item>
+			<Item Name="w">w</Item>
+		</Expand>
+	</Type>
+
+	<Type Name="mutil::Matrix2">
+		<DisplayString>({columns[0]}, {columns[1]})</DisplayString>
+		<Expand>
+			<Item Name="col1">columns[0]</Item>
+			<Item Name="col2">columns[1]</Item>
+		</Expand>
+	</Type>
+
+	<Type Name="mutil::Matrix3">
+		<DisplayString>({columns[0]}, {columns[1]}, {columns[2]})</DisplayString>
+		<Expand>
+			<Item Name="col1">columns[0]</Item>
+			<Item Name="col2">columns[1]</Item>
+			<Item Name="col3">columns[2]</Item>
+		</Expand>
+	</Type>
+
+	<Type Name="mutil::Matrix4">
+		<DisplayString>({columns[0]}, {columns[1]}, {columns[2]}, {columns[3]})</DisplayString>
+		<Expand>
+			<Item Name="col1">columns[0]</Item>
+			<Item Name="col2">columns[1]</Item>
+			<Item Name="col3">columns[2]</Item>
+			<Item Name="col4">columns[3]</Item>
+		</Expand>
+	</Type>
+
+	<Type Name="mutil::IntMatrix2">
+		<DisplayString>({columns[0]}, {columns[1]})</DisplayString>
+		<Expand>
+			<Item Name="col1">columns[0]</Item>
+			<Item Name="col2">columns[1]</Item>
+		</Expand>
+	</Type>
+
+	<Type Name="mutil::IntMatrix3">
+		<DisplayString>({columns[0]}, {columns[1]}, {columns[2]})</DisplayString>
+		<Expand>
+			<Item Name="col1">columns[0]</Item>
+			<Item Name="col2">columns[1]</Item>
+			<Item Name="col3">columns[2]</Item>
+		</Expand>
+	</Type>
+
+	<Type Name="mutil::IntMatrix4">
+		<DisplayString>({columns[0]}, {columns[1]}, {columns[2]}, {columns[3]})</DisplayString>
+		<Expand>
+			<Item Name="col1">columns[0]</Item>
+			<Item Name="col2">columns[1]</Item>
+			<Item Name="col3">columns[2]</Item>
+			<Item Name="col4">columns[3]</Item>
+		</Expand>
+	</Type>
+</AutoVisualizer>
