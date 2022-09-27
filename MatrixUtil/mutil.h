@@ -14,3 +14,5 @@ Base include file, containing every needed type and function.
 #include "mat_types.h"
 #include "fmat_math.h"
 #include "fmat_transform.h"
+
+#include "quaternion.h"
