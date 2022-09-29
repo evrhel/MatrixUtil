@@ -22,7 +22,7 @@ namespace mutil
 
 	@return The determinant.
 	*/
-	MUTIL_CONSTEXPR float determinant(const Matrix2 &mat2)
+	constexpr float determinant(const Matrix2 &mat2)
 	{
 		return __determinant2x2(
 			mat2._11, mat2._12,
@@ -37,7 +37,7 @@ namespace mutil
 
 	@return The transpose.
 	*/
-	MUTIL_CONSTEXPR Matrix2 transpose(const Matrix2 &mat2)
+	constexpr Matrix2 transpose(const Matrix2 &mat2)
 	{
 		return __transpose2x2(
 			mat2._11, mat2._12,
@@ -52,7 +52,7 @@ namespace mutil
 	
 	@return The cofactor matrix.
 	*/
-	MUTIL_CONSTEXPR Matrix2 cofactor(const Matrix2 &mat2)
+	constexpr Matrix2 cofactor(const Matrix2 &mat2)
 	{
 		return __cofactor2x2(
 			mat2._11, mat2._12,
@@ -67,7 +67,7 @@ namespace mutil
 
 	@return The adjugate matrix.
 	*/
-	MUTIL_CONSTEXPR Matrix2 adjugate(const Matrix2 &mat2)
+	constexpr Matrix2 adjugate(const Matrix2 &mat2)
 	{
 		return __adjugate2x2(
 			mat2._11, mat2._12,
@@ -82,12 +82,12 @@ namespace mutil
 
 	@return The inverse of the matrix. There is undefined behavior if the matrix does not have an inverse.
 	*/
-	MUTIL_CONSTEXPR Matrix2 inverse(const Matrix2 &mat2)
+	constexpr Matrix2 inverse(const Matrix2 &mat2)
 	{
 		return adjugate(mat2) * (1.0f / determinant(mat2));
 	}
 
-	MUTIL_CONSTEXPR Matrix2 clamp(const Matrix2 &val, float min, float max)
+	constexpr Matrix2 clamp(const Matrix2 &val, float min, float max)
 	{
 		Matrix2 result;
 		for (size_t i = 0; i < 4; i++)
@@ -95,7 +95,7 @@ namespace mutil
 		return result;
 	}
 
-	MUTIL_CONSTEXPR Matrix2 clamp(const Matrix2 &val, const Matrix2 &min, const Matrix2 &max)
+	constexpr Matrix2 clamp(const Matrix2 &val, const Matrix2 &min, const Matrix2 &max)
 	{
 		Matrix2 result;
 		for (size_t i = 0; i < 4; i++)
@@ -112,7 +112,7 @@ namespace mutil
 
 	@return The determinant.
 	*/
-	MUTIL_CONSTEXPR float determinant(const Matrix3 &mat3)
+	constexpr float determinant(const Matrix3 &mat3)
 	{
 		return __determinant3x3(
 			mat3._11, mat3._12, mat3._13,
@@ -127,7 +127,7 @@ namespace mutil
 
 	@return The transpose.
 	*/
-	MUTIL_CONSTEXPR Matrix3 transpose(const Matrix3 &mat3)
+	constexpr Matrix3 transpose(const Matrix3 &mat3)
 	{
 		return __transpose3x3(
 			mat3._11, mat3._12, mat3._13,
@@ -143,7 +143,7 @@ namespace mutil
 
 	@return The cofactor matrix.
 	*/
-	MUTIL_CONSTEXPR Matrix3 cofator(const Matrix3 &mat3)
+	constexpr Matrix3 cofator(const Matrix3 &mat3)
 	{
 		return __cofactor3x3(
 			mat3._11, mat3._12, mat3._13,
@@ -159,7 +159,7 @@ namespace mutil
 	
 	@return The adjugate matrix.
 	*/
-	MUTIL_CONSTEXPR Matrix3 adjugate(const Matrix3 &mat3)
+	constexpr Matrix3 adjugate(const Matrix3 &mat3)
 	{
 		return __adjugate3x3(
 			mat3._11, mat3._12, mat3._13,
@@ -175,12 +175,12 @@ namespace mutil
 
 	@return The inverse of the matrix. There is undefined behavior if the matrix does not have an inverse.
 	*/
-	MUTIL_CONSTEXPR Matrix3 inverse(const Matrix3 &mat3)
+	constexpr Matrix3 inverse(const Matrix3 &mat3)
 	{
 		return adjugate(mat3) * (1.0f / determinant(mat3));
 	}
 
-	MUTIL_CONSTEXPR Matrix3 clamp(const Matrix3 &val, float min, float max)
+	constexpr Matrix3 clamp(const Matrix3 &val, float min, float max)
 	{
 		Matrix3 result;
 		for (size_t i = 0; i < 9; i++)
@@ -188,7 +188,7 @@ namespace mutil
 		return result;
 	}
 
-	MUTIL_CONSTEXPR Matrix3 clamp(const Matrix3 &val, const Matrix3 &min, const Matrix3 &max)
+	constexpr Matrix3 clamp(const Matrix3 &val, const Matrix3 &min, const Matrix3 &max)
 	{
 		Matrix3 result;
 		for (size_t i = 0; i < 9; i++)
@@ -205,7 +205,7 @@ namespace mutil
 
 	@return The determinant.
 	*/
-	MUTIL_CONSTEXPR float determinant(const Matrix4 &mat4)
+	constexpr float determinant(const Matrix4 &mat4)
 	{
 		return __determinant4x4(
 			mat4._11, mat4._12, mat4._13, mat4._14,
@@ -222,7 +222,7 @@ namespace mutil
 
 	@return The transpose.
 	*/
-	MUTIL_CONSTEXPR Matrix4 transpose(const Matrix4 &mat4)
+	constexpr Matrix4 transpose(const Matrix4 &mat4)
 	{
 		return __transpose4x4(
 			mat4._11, mat4._12, mat4._13, mat4._14,
@@ -239,7 +239,7 @@ namespace mutil
 
 	@return The cofactor matrix.
 	*/
-	MUTIL_CONSTEXPR Matrix4 cofactor(const Matrix4 &mat4)
+	constexpr Matrix4 cofactor(const Matrix4 &mat4)
 	{
 		return __cofactor4x4(
 			mat4._11, mat4._12, mat4._13, mat4._14,
@@ -256,7 +256,7 @@ namespace mutil
 
 	@return The adjugate matrix.
 	*/
-	MUTIL_CONSTEXPR Matrix4 adjugate(const Matrix4 &mat4)
+	constexpr Matrix4 adjugate(const Matrix4 &mat4)
 	{
 		return __adjugate4x4(
 			mat4._11, mat4._12, mat4._13, mat4._14,
@@ -273,12 +273,12 @@ namespace mutil
 
 	@return The inverse of the matrix. There is undefined behavior if the matrix does not have an inverse.
 	*/
-	MUTIL_CONSTEXPR Matrix4 inverse(const Matrix4 &mat4)
+	constexpr Matrix4 inverse(const Matrix4 &mat4)
 	{
 		return adjugate(mat4) * (1.0f / determinant(mat4));
 	}
 
-	MUTIL_CONSTEXPR Matrix4 clamp(const Matrix4 &val, float min, float max)
+	constexpr Matrix4 clamp(const Matrix4 &val, float min, float max)
 	{
 		Matrix4 result;
 		for (size_t i = 0; i < 16; i++)
@@ -286,7 +286,7 @@ namespace mutil
 		return result;
 	}
 
-	MUTIL_CONSTEXPR Matrix4 clamp(const Matrix4 &val, const Matrix4 &min, const Matrix4 &max)
+	constexpr Matrix4 clamp(const Matrix4 &val, const Matrix4 &min, const Matrix4 &max)
 	{
 		Matrix4 result;
 		for (size_t i = 0; i < 16; i++)
