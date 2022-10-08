@@ -20,16 +20,6 @@ Contains methods for performing operations on floating-point vectors.
 
 namespace mutil
 {
-	constexpr float clamp(float val, float min, float max)
-	{
-		return val < min ? min : ((val > max) ? max : val);
-	}
-
-	inline float fract(float val)
-	{
-		return val - floorf(val);
-	}
-
 	// Vector2 operations
 
 	/*!
@@ -187,6 +177,88 @@ namespace mutil
 	inline Vector2 fract(const Vector2 &val)
 	{
 		return Vector2(fract(val.x), fract(val.y));
+	}
+
+	inline Vector2 mod(const Vector2 &a, float b)
+	{
+		return Vector2(fmodf(a.x, b), fmodf(a.y, b));
+	}
+
+	inline Vector2 mod(const Vector2 &a, const Vector2 &b)
+	{
+		return Vector2(fmodf(a.x, b.x), fmodf(a.y, b.y));
+	}
+
+	inline Vector2 sin(const Vector2 &v)
+	{
+		return Vector2(sinf(v.x), sinf(v.y));
+	}
+
+	inline Vector2 cos(const Vector2 &v)
+	{
+		return Vector2(cosf(v.x), cosf(v.y));
+	}
+
+	inline Vector2 tan(const Vector2 &v)
+	{
+		return Vector2(tanf(v.x), tanf(v.y));
+	}
+
+	inline Vector2 asin(const Vector2 &v)
+	{
+		return Vector2(asinf(v.x), asinf(v.y));
+	}
+
+	inline Vector2 acos(const Vector2 &v)
+	{
+		return Vector2(acosf(v.x), acosf(v.y));
+	}
+
+	inline Vector2 atan(const Vector2 &v)
+	{
+		return Vector2(atanf(v.x), atanf(v.y));
+	}
+
+	constexpr Vector2 lerp(const Vector2 &a, const Vector2 &b, float t)
+	{
+		return a + t * (b - a);
+	}
+
+	constexpr Vector2 lerp(const Vector2 &a, const Vector2 &b, const Vector2 &t)
+	{
+		return Vector2(lerp(a.x, b.x, t.x), lerp(a.y, b.y, t.y));
+	}
+
+	constexpr Vector2 smoothstep(const Vector2 &a, const Vector2 &b, float x)
+	{
+		return Vector2(
+			smoothstep(a.x, b.x, x),
+			smoothstep(a.y, b.y, x)
+		);
+	}
+
+	constexpr Vector2 smoothstep(const Vector2 &a, const Vector2 &b, const Vector2 &x)
+	{
+		return Vector2(
+			smoothstep(a.x, b.x, x.x),
+			smoothstep(a.y, b.y, x.y)
+		);
+	}
+
+	constexpr Vector2 smootherstep(const Vector2 &a, const Vector2 &b, float x)
+	{
+		return Vector2(
+			smootherstep(a.x, b.x, x),
+			smootherstep(a.y, b.y, x)
+		);
+	}
+
+	constexpr Vector2 smootherstep(const Vector2 &a, const Vector2 &b, const Vector2 &x)
+	{
+		return Vector2(
+			smootherstep(a.x, b.x, x.x),
+			smootherstep(a.y, b.y, x.y)
+		);
 	}
 
 	// Vector3 operations
@@ -411,6 +483,52 @@ namespace mutil
 		return result;
 	}
 
+	constexpr Vector3 lerp(const Vector3 &a, const Vector3 &b, float t)
+	{
+		return a + t * (b - a);
+	}
+
+	constexpr Vector3 lerp(const Vector3 &a, const Vector3 &b, const Vector3 &t)
+	{
+		return Vector3(lerp(a.x, b.x, t.x), lerp(a.y, b.y, t.y), lerp(a.z, b.z, t.z));
+	}
+
+	constexpr Vector3 smoothstep(const Vector3 &a, const Vector3 &b, float x)
+	{
+		return Vector3(
+			smoothstep(a.x, b.x, x),
+			smoothstep(a.y, b.y, x),
+			smoothstep(a.z, b.z, x)
+		);
+	}
+
+	constexpr Vector3 smoothstep(const Vector3 &a, const Vector3 &b, const Vector3 &x)
+	{
+		return Vector3(
+			smoothstep(a.x, b.x, x.x),
+			smoothstep(a.y, b.y, x.y),
+			smoothstep(a.z, b.z, x.z)
+		);
+	}
+
+	constexpr Vector3 smootherstep(const Vector3 &a, const Vector3 &b, float x)
+	{
+		return Vector3(
+			smootherstep(a.x, b.x, x),
+			smootherstep(a.y, b.y, x),
+			smootherstep(a.z, b.z, x)
+		);
+	}
+
+	constexpr Vector3 smootherstep(const Vector3 &a, const Vector3 &b, const Vector3 &x)
+	{
+		return Vector3(
+			smootherstep(a.x, b.x, x.x),
+			smootherstep(a.y, b.y, x.y),
+			smootherstep(a.z, b.z, x.z)
+		);
+	}
+
 	// Vector4 operations
 
 	/*!
@@ -557,6 +675,56 @@ namespace mutil
 		for (size_t i = 0; i < 4; i++)
 			result[i] = clamp(val[i], min[i], max[i]);
 		return result;
+	}
+
+	constexpr Vector4 lerp(const Vector4 &a, const Vector4 &b, float t)
+	{
+		return a + t * (b - a);
+	}
+
+	constexpr Vector4 lerp(const Vector4 &a, const Vector4 &b, const Vector4 &t)
+	{
+		return Vector4(lerp(a.x, b.x, t.x), lerp(a.y, b.y, t.y), lerp(a.z, b.z, t.z), lerp(a.w, b.w, t.w));
+	}
+
+	constexpr Vector4 smoothstep(const Vector4 &a, const Vector4 &b, float x)
+	{
+		return Vector4(
+			smoothstep(a.x, b.x, x),
+			smoothstep(a.y, b.y, x),
+			smoothstep(a.z, b.z, x),
+			smoothstep(a.w, b.w, x)
+		);
+	}
+
+	constexpr Vector4 smoothstep(const Vector4 &a, const Vector4 &b, const Vector4 &x)
+	{
+		return Vector4(
+			smoothstep(a.x, b.x, x.x),
+			smoothstep(a.y, b.y, x.y),
+			smoothstep(a.z, b.z, x.z),
+			smoothstep(a.w, b.w, x.w)
+		);
+	}
+
+	constexpr Vector4 smootherstep(const Vector4 &a, const Vector4 &b, float x)
+	{
+		return Vector4(
+			smootherstep(a.x, b.x, x),
+			smootherstep(a.y, b.y, x),
+			smootherstep(a.z, b.z, x),
+			smootherstep(a.w, b.w, x)
+		);
+	}
+
+	constexpr Vector4 smootherstep(const Vector4 &a, const Vector4 &b, const Vector4 &x)
+	{
+		return Vector4(
+			smootherstep(a.x, b.x, x.x),
+			smootherstep(a.y, b.y, x.y),
+			smootherstep(a.z, b.z, x.z),
+			smootherstep(a.w, b.w, x.w)
+		);
 	}
 }
 

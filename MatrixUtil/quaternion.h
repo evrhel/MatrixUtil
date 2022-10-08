@@ -43,18 +43,6 @@ namespace mutil
 	}
 
 	/*!
-	Returns conjugate of a quaternion.
-
-	@param q The quaternion to conjugate.
-
-	@return The conjugated quaternion.
-	*/
-	constexpr Quaternion conjugate(const Quaternion &q)
-	{
-		return Quaternion(q.w, -q.x, -q.y, -q.z);
-	}
-
-	/*!
 	Returns the length of a quaternion.
 
 	@param q The quaternion to get the length of.
@@ -77,6 +65,24 @@ namespace mutil
 	{
 		float invsqrt = fastInverseSqrt(q.w * q.w + q.x * q.x + q.y * q.y + q.z * q.z);
 		return q * invsqrt;
+	}
+
+	/*!
+	Returns conjugate of a quaternion.
+
+	@param q The quaternion to conjugate.
+
+	@return The conjugated quaternion.
+	*/
+	constexpr Quaternion conjugate(const Quaternion &q)
+	{
+		return Quaternion(q.w, -q.x, -q.y, -q.z);
+	}
+
+	constexpr Quaternion inverse(const Quaternion &q)
+	{
+		float lensq = q.w * q.w + q.x * q.x + q.y * q.y + q.z * q.z;
+		return conjugate(q) / lensq;
 	}
 
 	/*!
@@ -226,10 +232,38 @@ namespace mutil
 
 	@return The rotated point.
 	*/
-	inline Vector3 rotate(const Quaternion &q, const Vector3 &p)
+	inline Vector3 rotatevector(const Quaternion &q, const Vector3 &p)
 	{
 		// q * p * q'
 		Quaternion r = q * Quaternion(0.0f, p) * conjugate(q);
 		return r.imag;
+	}
+
+	inline float dot(const Quaternion &a, const Quaternion &b)
+	{
+		return dot((const Vector4 &)a, (const Vector4 &)b);
+	}
+
+	constexpr Quaternion lerp(const Quaternion &a, const Quaternion &b, float t)
+	{
+		Vector4 l = lerp((const Vector4 &)a, (const Vector4 &)b, t);
+		return *((Quaternion *)&l);
+	}
+
+	/*!
+	Spherical linear interpolation.
+	
+	@param a Quaternion to interpolate from.
+	@param b Quaternion to interpolate to.
+	@param t Number [0.0, 1.0] specifying the interpolation amount.
+	*/
+	inline Quaternion slerp(const Quaternion &a, const Quaternion &b, float t)
+	{
+		const float theta = acosf(dot(a, b)) / 2;  // half angle between a and b
+		const float stheta = sinf(theta);
+		const float l = sinf((1.0f - t) * theta);
+		const float r = sinf(t * theta);
+
+		return ((a * l) + (b * r)) / stheta;
 	}
 }

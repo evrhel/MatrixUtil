@@ -26,7 +26,7 @@ namespace mutil
 
 	@return The same angle in radians.
 	*/
-	MUTIL_CONSTEXPR float radians(float degrees)
+	constexpr float radians(float degrees)
 	{
 		return degrees / 180 * (float)M_PI;
 	}
@@ -38,12 +38,12 @@ namespace mutil
 
 	@return The same angle in degrees.
 	*/
-	MUTIL_CONSTEXPR float degrees(float radians)
+	constexpr float degrees(float radians)
 	{
 		return radians / (float)M_PI * 180;
 	}
 
-	MUTIL_INLINE float inverseSqrt(const float num)
+	inline float inverseSqrt(const float num)
 	{
 #if defined(USE_SIMD)
 		float result;
@@ -54,7 +54,7 @@ namespace mutil
 #endif
 	}
 
-	MUTIL_INLINE float fastInverseSqrt(const float num)
+	inline float fastInverseSqrt(const float num)
 	{
 #if defined(USE_SIMD)
 		float result;
@@ -75,6 +75,47 @@ namespace mutil
 		un.f *= threehalfs - (x2 * un.f * un.f);
 		return un.f;
 #endif
+	}
+
+	constexpr float clamp(float val, float min, float max)
+	{
+		return val < min ? min : ((val > max) ? max : val);
+	}
+
+	inline float fract(float val)
+	{
+		return val - floorf(val);
+	}
+
+	constexpr float lerp(float a, float b, float t)
+	{
+		return a + t * (b - a);
+	}
+
+	/*!
+	Smoothstep function. b must be strictly greater than a.
+
+	@param a Left edge.
+	@param b Right edge.
+	@param x Value to compute smoothstep at. Value is clamped to [0.0, 1.0].
+	*/
+	constexpr float smoothstep(float a, float b, float x)
+	{
+		x = clamp((x - a) / (b - a), 0.0f, 1.0f);
+		return x * x * (3.0f - 2.0f * x);
+	}
+
+	/*!
+	Smootherstep function. b must be strictly greater than a.
+
+	@param a Left edge.
+	@param b Right edge.
+	@param x Value to compute smootherstep at. Value is clamped to [0.0, 1.0].
+	*/
+	constexpr float smootherstep(float a, float b, float x)
+	{
+		x = clamp((x - a) / (b - a), 0.0f, 1.0f);
+		return x * x * x * (x * (x * 6.0f - 15.0f) + 10.f);
 	}
 }
 
