@@ -34,3 +34,15 @@ All matrices are stored in column-major order.
 - `IntMatrix4` - A 4x4 signed 32-bit integer matrix.
 
 Like vectors, each matrix type has multiple ways to access its data. For an `N`x`N`, a member variable exists named `columns[N]` which stores each column of the matrix. Additionally, there are member variables named in the format: `_RC` where `R` is the row in the matrix and `C` is the column in the matrix. This means, for the `N`x`N` matrix, this ranges from `_11` to `_NN`. Finally, like in vectors, there is an array member which contains the raw elements of the matrix in column major order. For a matrix containing type `T`, the member is defined as: `T mat[N * N]`.
+
+### Quaternions
+
+Quaternions are a number system in 4D space which are generally used in 3D to more naturally represent rotations. They consist of a real part and three imaginary parts. Normal Euler angles are suseptiable to [Gimbal Lock](https://en.wikipedia.org/wiki/Gimbal_lock). When used correctly, quaternions can easily avoid this limitation using much less trigonometry and multiplication operations. Applying multiple rotations is as simple as multiplying quaternions together, and a quaternion representing a rotation around an arbitrary vector requires only two trigonometric operations! Additioanlly, interpolation between quaternions results in a much more natural animation than linearly interpolating euler angles.
+
+Quaternions can be used via the `Quaternion` class.
+
+- Quaternions can be converted in to either a `Matrix3` or `Matrix4` rotation matrix via the `torotation3` and the `torotation` functions, respectively.
+- Conversion functions between Eueler angles and quaternions are avaliable through the `toeuler` and `fromeuler` functions.
+- The function with the lowest overhead to create quaternions is the `rotateaxis` function which creates a quaternion that represents a rotation around a direction vector.
+- A point can be rotated with lower overhead using the `rotatevector` function.
+- Interpolation between quaternions should be done with `slerp`.
