@@ -12,15 +12,25 @@ namespace mutil
 	public:
 		union
 		{
-			struct { float w, x, y, z; };
-			struct { float a, i, j, k; };
-			struct { float real; Vector3 imag; };
+			struct
+			{
+				float w, x, y, z;
+			};
+			struct
+			{
+				float a, i, j, k;
+			};
+			struct
+			{
+				float real;
+				Vector3 imag;
+			};
 			float q[4];
 		};
 
-		constexpr Quaternion() : w(1.0f), x(0.0f), y(0.0f), z(0.0f) { }
-		constexpr Quaternion(float w, float x, float y, float z) : w(w), x(x), y(y), z(z) { }
-		constexpr Quaternion(float real, const Vector3 &imag) : real(real), imag(imag) { }
+		constexpr Quaternion() : w(1.0f), x(0.0f), y(0.0f), z(0.0f) {}
+		constexpr Quaternion(float w, float x, float y, float z) : w(w), x(x), y(y), z(z) {}
+		constexpr Quaternion(float real, const Vector3 &imag) : real(real), imag(imag) {}
 
 		constexpr float &operator[](size_t idx) { return q[idx]; }
 		constexpr const float &operator[](size_t idx) const { return q[idx]; }
@@ -38,8 +48,7 @@ namespace mutil
 			a.w * b.w - a.x * b.x - a.y * b.y - a.z * b.z,
 			a.w * b.x + a.x * b.w + a.y * b.z - a.z * b.y,
 			a.w * b.y + a.y * b.w + a.z * b.x - a.x * b.z,
-			a.w * b.z + a.z * b.w + a.x * b.y - a.y * b.x
-		);
+			a.w * b.z + a.z * b.w + a.x * b.y - a.y * b.x);
 	}
 
 	/*!
@@ -109,8 +118,7 @@ namespace mutil
 			1 - 2 * y2 - 2 * z2, 2 * xy - 2 * zw, 2 * xz + 2 * yw, 0,
 			2 * xy + 2 * zw, 1 - 2 * x2 - 2 * z2, 2 * yz - 2 * xw, 0,
 			2 * xz - 2 * yw, 2 * yz + 2 * xw, 1 - 2 * x2 - 2 * y2, 0,
-			0, 0, 0, 1
-		);
+			0, 0, 0, 1);
 	}
 
 	/*!
@@ -136,15 +144,14 @@ namespace mutil
 		return Matrix3(
 			1 - 2 * y2 - 2 * z2, 2 * xy - 2 * zw, 2 * xz + 2 * yw,
 			2 * xy + 2 * zw, 1 - 2 * x2 - 2 * z2, 2 * yz - 2 * xw,
-			2 * xz - 2 * yw, 2 * yz + 2 * xw, 1 - 2 * x2 - 2 * y2
-		);
+			2 * xz - 2 * yw, 2 * yz + 2 * xw, 1 - 2 * x2 - 2 * y2);
 	}
 
 	/*!
 	Converts a quaternion to euler angles.
 
 	@param q A unit quaternion to convert.
-	
+
 	@return The converted angles, in the form { roll, pitch, yaw }.
 	*/
 	inline Vector3 toeuler(const Quaternion &q)
@@ -157,11 +164,11 @@ namespace mutil
 
 		// pitch
 		float sinPitch = 2 * (q[0] * q[2] - q[3] * q[1]);
-		//if (sinPitch < 1 || sinPitch > 1)
+		// if (sinPitch < 1 || sinPitch > 1)
 		//	sinPitch = 1.0f - fract(sinPitch);
 		if (sinPitch > 1.0f || sinPitch < 1.0f)
 			sinPitch = 1 - fract(sinPitch);
-		//sinPitch = (fract(sinPitch * 0.5f + 0.5f) - 0.5f) * 2.0f;
+		// sinPitch = (fract(sinPitch * 0.5f + 0.5f) - 0.5f) * 2.0f;
 		euler.y = asinf(sinPitch);
 
 		// yaw
@@ -220,8 +227,7 @@ namespace mutil
 	{
 		return Quaternion(
 			cosf(angle / 2),
-			sinf(angle / 2) * axis
-		);
+			sinf(angle / 2) * axis);
 	}
 
 	/*!
@@ -246,20 +252,20 @@ namespace mutil
 
 	constexpr Quaternion lerp(const Quaternion &a, const Quaternion &b, float t)
 	{
-		Vector4 l = lerp((const Vector4 &)a, (const Vector4 &)b, t);
-		return *((Quaternion *)&l);
+		Vector4 l = lerp(*(Vector4 *)&a, *(Vector4 *)&b, t);
+		return Quaternion(l.x, l.y, l.z, l.w);
 	}
 
 	/*!
 	Spherical linear interpolation.
-	
+
 	@param a Quaternion to interpolate from.
 	@param b Quaternion to interpolate to.
 	@param t Number [0.0, 1.0] specifying the interpolation amount.
 	*/
 	inline Quaternion slerp(const Quaternion &a, const Quaternion &b, float t)
 	{
-		const float theta = acosf(dot(a, b)) / 2;  // half angle between a and b
+		const float theta = acosf(dot(a, b)) / 2; // half angle between a and b
 		const float stheta = sinf(theta);
 		const float l = sinf((1.0f - t) * theta);
 		const float r = sinf(t * theta);
