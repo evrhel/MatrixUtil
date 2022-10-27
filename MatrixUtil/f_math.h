@@ -13,8 +13,12 @@ Contains methods for performing floating-point math operations.
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-#if defined(USE_SIMD)
+#if MUTIL_USE_INTRINSICS
+#if MUTIL_X86
 #include <smmintrin.h>
+#elif MUTIL_ARM
+#include <arm_neon.h>
+#endif
 #endif
 
 namespace mutil
@@ -45,10 +49,14 @@ namespace mutil
 
 	inline float inverseSqrt(const float num)
 	{
-#if defined(USE_SIMD)
+#if MUTIL_USE_INTRINSICS
+#if MUTIL_X86
 		float result;
 		_mm_store_ss(&result, _mm_sqrt_ss(_mm_load_ss(&num)));
 		return 1.0f / result;
+#elif MUTIL_ARM
+		return 1.0f / sqrtf(num);
+#endif
 #else
 		return 1.0f / sqrtf(num);
 #endif
@@ -56,7 +64,7 @@ namespace mutil
 
 	inline float fastInverseSqrt(const float num)
 	{
-#if defined(USE_SIMD)
+#if MUTIL_USE_INTRINSICS && MUTIL_X86
 		float result;
 		_mm_store_ss(&result, _mm_rsqrt_ss(_mm_load_ss(&num)));
 		return result;

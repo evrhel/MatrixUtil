@@ -14,8 +14,12 @@ Contains methods for performing operations on floating-point vectors.
 #include <cmath>
 #include "f_math.h"
 
-#if defined(USE_SIMD)
+#if MUTIL_USE_INTRINSICS
+#if MUTIL_X86
 #include <smmintrin.h>
+#elif MUTIL_ARM
+#include <arm_neon.h>
+#endif
 #endif
 
 namespace mutil
@@ -32,9 +36,21 @@ namespace mutil
 	*/
 	inline float dot(const Vector2 &first, const Vector2 &second)
 	{
-#if defined(USE_SIMD)
+#if MUTIL_USE_INTRINSICS
+#if MUTIL_X86
 		constexpr int MASK = 0x31;
 		return _mm_cvtss_f32(_mm_dp_ps(_mm_loadu_ps((float *)&first), _mm_loadu_ps((float *)&second), MASK));
+#elif MUTIL_ARM
+		float32x2_t a, b;
+
+		a = vld1_f32((float32_t *)&first);
+		b = vld1_f32((float32_t *)&second);
+
+		a = vmul_f32(a, b);
+		a = vpadd_f32(a, a);
+
+		return vget_lane_f32(a, 0);
+#endif
 #else
 		return (first.x * second.x) + (first.y * second.y);
 #endif
@@ -49,10 +65,17 @@ namespace mutil
 	*/
 	inline float length(const Vector2 &vec)
 	{
-#if defined(USE_SIMD)
+#if MUTIL_USE_INTRINSICS
+#if MUTIL_X86
 		float result = dot(vec, vec);
 		_mm_store_ss(&result, _mm_sqrt_ss(_mm_load_ss(&result)));
 		return result;
+#elif MUTIL_ARM
+		float32_t result = dot(vec, vec);
+		float32x2_t a = vld1_f32(&result);
+		a = vsqrt_f32(a);
+		return vget_lane_f32(a, 0);
+#endif
 #else
 		return sqrtf(dot(vec, vec));
 #endif
@@ -96,7 +119,6 @@ namespace mutil
 	{
 		return vec * inverseSqrt(dot(vec, vec));
 	}
-
 
 	/*!
 	Reflects a Vector2 over a normal, returning the reflected vector.
@@ -147,8 +169,7 @@ namespace mutil
 	{
 		return Vector2(
 			vec.x < 0.0 ? -vec.x : vec.x,
-			vec.y < 0.0 ? -vec.y : vec.y
-			);
+			vec.y < 0.0 ? -vec.y : vec.y);
 	}
 
 	constexpr Vector2 &absthis(Vector2 &vec)
@@ -233,32 +254,28 @@ namespace mutil
 	{
 		return Vector2(
 			smoothstep(a.x, b.x, x),
-			smoothstep(a.y, b.y, x)
-		);
+			smoothstep(a.y, b.y, x));
 	}
 
 	constexpr Vector2 smoothstep(const Vector2 &a, const Vector2 &b, const Vector2 &x)
 	{
 		return Vector2(
 			smoothstep(a.x, b.x, x.x),
-			smoothstep(a.y, b.y, x.y)
-		);
+			smoothstep(a.y, b.y, x.y));
 	}
 
 	constexpr Vector2 smootherstep(const Vector2 &a, const Vector2 &b, float x)
 	{
 		return Vector2(
 			smootherstep(a.x, b.x, x),
-			smootherstep(a.y, b.y, x)
-		);
+			smootherstep(a.y, b.y, x));
 	}
 
 	constexpr Vector2 smootherstep(const Vector2 &a, const Vector2 &b, const Vector2 &x)
 	{
 		return Vector2(
 			smootherstep(a.x, b.x, x.x),
-			smootherstep(a.y, b.y, x.y)
-		);
+			smootherstep(a.y, b.y, x.y));
 	}
 
 	// Vector3 operations
@@ -294,8 +311,7 @@ namespace mutil
 		return Vector3(
 			(first.y * second.z - second.y * first.z),
 			(first.z * second.x - second.z * first.x),
-			(first.x * second.y - second.x * first.y)
-		);
+			(first.x * second.y - second.x * first.y));
 	}
 
 	/*!
@@ -458,8 +474,7 @@ namespace mutil
 		return Vector3(
 			vec.x < 0.0 ? -vec.x : vec.x,
 			vec.y < 0.0 ? -vec.y : vec.y,
-			vec.z < 0.0 ? -vec.z : vec.z
-			);
+			vec.z < 0.0 ? -vec.z : vec.z);
 	}
 
 	constexpr Vector3 clamp(const Vector3 &val, float min, float max)
@@ -498,8 +513,7 @@ namespace mutil
 		return Vector3(
 			smoothstep(a.x, b.x, x),
 			smoothstep(a.y, b.y, x),
-			smoothstep(a.z, b.z, x)
-		);
+			smoothstep(a.z, b.z, x));
 	}
 
 	constexpr Vector3 smoothstep(const Vector3 &a, const Vector3 &b, const Vector3 &x)
@@ -507,8 +521,7 @@ namespace mutil
 		return Vector3(
 			smoothstep(a.x, b.x, x.x),
 			smoothstep(a.y, b.y, x.y),
-			smoothstep(a.z, b.z, x.z)
-		);
+			smoothstep(a.z, b.z, x.z));
 	}
 
 	constexpr Vector3 smootherstep(const Vector3 &a, const Vector3 &b, float x)
@@ -516,8 +529,7 @@ namespace mutil
 		return Vector3(
 			smootherstep(a.x, b.x, x),
 			smootherstep(a.y, b.y, x),
-			smootherstep(a.z, b.z, x)
-		);
+			smootherstep(a.z, b.z, x));
 	}
 
 	constexpr Vector3 smootherstep(const Vector3 &a, const Vector3 &b, const Vector3 &x)
@@ -525,8 +537,7 @@ namespace mutil
 		return Vector3(
 			smootherstep(a.x, b.x, x.x),
 			smootherstep(a.y, b.y, x.y),
-			smootherstep(a.z, b.z, x.z)
-		);
+			smootherstep(a.z, b.z, x.z));
 	}
 
 	// Vector4 operations
@@ -595,8 +606,8 @@ namespace mutil
 	}
 
 	/*!
-	Normalizes a Vector4, making its length 1. 
-	
+	Normalizes a Vector4, making its length 1.
+
 	@param vec The vector to normalize.
 
 	@return The normalized vector.
@@ -657,8 +668,7 @@ namespace mutil
 			vec.x < 0.0 ? -vec.x : vec.x,
 			vec.y < 0.0 ? -vec.y : vec.y,
 			vec.z < 0.0 ? -vec.z : vec.z,
-			vec.w < 0.0 ? -vec.w : vec.w
-			);
+			vec.w < 0.0 ? -vec.w : vec.w);
 	}
 
 	constexpr Vector4 clamp(const Vector4 &val, float min, float max)
@@ -693,8 +703,7 @@ namespace mutil
 			smoothstep(a.x, b.x, x),
 			smoothstep(a.y, b.y, x),
 			smoothstep(a.z, b.z, x),
-			smoothstep(a.w, b.w, x)
-		);
+			smoothstep(a.w, b.w, x));
 	}
 
 	constexpr Vector4 smoothstep(const Vector4 &a, const Vector4 &b, const Vector4 &x)
@@ -703,8 +712,7 @@ namespace mutil
 			smoothstep(a.x, b.x, x.x),
 			smoothstep(a.y, b.y, x.y),
 			smoothstep(a.z, b.z, x.z),
-			smoothstep(a.w, b.w, x.w)
-		);
+			smoothstep(a.w, b.w, x.w));
 	}
 
 	constexpr Vector4 smootherstep(const Vector4 &a, const Vector4 &b, float x)
@@ -713,8 +721,7 @@ namespace mutil
 			smootherstep(a.x, b.x, x),
 			smootherstep(a.y, b.y, x),
 			smootherstep(a.z, b.z, x),
-			smootherstep(a.w, b.w, x)
-		);
+			smootherstep(a.w, b.w, x));
 	}
 
 	constexpr Vector4 smootherstep(const Vector4 &a, const Vector4 &b, const Vector4 &x)
@@ -723,8 +730,7 @@ namespace mutil
 			smootherstep(a.x, b.x, x.x),
 			smootherstep(a.y, b.y, x.y),
 			smootherstep(a.z, b.z, x.z),
-			smootherstep(a.w, b.w, x.w)
-		);
+			smootherstep(a.w, b.w, x.w));
 	}
 }
 

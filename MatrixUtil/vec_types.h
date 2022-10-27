@@ -15,13 +15,13 @@ Contains classes for handling different types of vectors.
 
 namespace mutil
 {
-	typedef class Vector2 Vector2;
-	typedef class Vector3 Vector3;
-	typedef class Vector4 Vector4;
+	class Vector2;
+	class Vector3;
+	class Vector4;
 
-	typedef class IntVector2 IntVector2;
-	typedef class IntVector3 IntVector3;
-	typedef class IntVector4 IntVector4;
+	class IntVector2;
+	class IntVector3;
+	class IntVector4;
 
 	typedef Vector3 Vector;
 	typedef IntVector3 IntVector;
