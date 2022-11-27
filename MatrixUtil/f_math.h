@@ -21,9 +21,9 @@ Contains methods for performing floating-point math operations.
 #endif
 
 #define MUTIL_PI 3.14159265358979323846f
-#define MUTIL_PI2 (3.14159265358979323846f/2.0f)
-#define MUTIL_PI4 (3.14159265358979323846f/4.0f)
-#define MUTIL_2PI (3.14159265358979323846f*2.0f)
+#define MUTIL_PI2 (3.14159265358979323846f / 2.0f)
+#define MUTIL_PI4 (3.14159265358979323846f / 4.0f)
+#define MUTIL_2PI (3.14159265358979323846f * 2.0f)
 
 namespace mutil
 {
@@ -69,10 +69,10 @@ namespace mutil
 	inline float fastInverseSqrt(const float num)
 	{
 #if MUTIL_USE_INTRINSICS
+#if MUTIL_X86
 		float result;
 		_mm_store_ss(&result, _mm_rsqrt_ss(_mm_load_ss(&num)));
 		return result;
-#if MUTIL_X86
 #elif MUTIL_ARM
 		const float x2 = num * 0.5f;
 		const float threehalfs = 1.5f;
