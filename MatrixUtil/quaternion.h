@@ -42,6 +42,8 @@ namespace mutil
 	constexpr Quaternion operator*(float s, const Quaternion &a) { return a * s; }
 	constexpr Quaternion operator/(const Quaternion &a, float s) { return Quaternion(a.w / s, a.x / s, a.y / s, a.z / s); }
 
+	constexpr Quaternion operator-(const Quaternion &a) { return Quaternion(-a.w, -a.x, -a.y, -a.z); }
+
 	constexpr Quaternion operator*(const Quaternion &a, const Quaternion &b)
 	{
 		return Quaternion(
@@ -148,73 +150,6 @@ namespace mutil
 	}
 
 	/*!
-	Converts a quaternion to euler angles.
-
-	@param q A unit quaternion to convert.
-
-	@return The converted angles, in the form { roll, pitch, yaw }.
-	*/
-	inline Vector3 toeuler(const Quaternion &q)
-	{
-		Vector3 euler;
-
-		// roll
-		const float tanRoll = (2 * q[0] * q[1] + q[2] * q[3]) / (1 - 2 * (q[1] * q[1] + q[2] * q[2]));
-		euler.x = atanf(tanRoll);
-
-		// pitch
-		float sinPitch = 2 * (q[0] * q[2] - q[3] * q[1]);
-		// if (sinPitch < 1 || sinPitch > 1)
-		//	sinPitch = 1.0f - fract(sinPitch);
-		if (sinPitch > 1.0f || sinPitch < 1.0f)
-			sinPitch = 1 - fract(sinPitch);
-		// sinPitch = (fract(sinPitch * 0.5f + 0.5f) - 0.5f) * 2.0f;
-		euler.y = asinf(sinPitch);
-
-		// yaw
-		const float tanYaw = (2 * q[0] * q[3] + q[1] * q[2]) / (1 - 2 * (q[2] * q[2] + q[3] * q[3]));
-		euler.z = atanf(tanYaw);
-
-		return euler;
-	}
-
-	/*!
-	Converts euler angles to a quaternion.
-
-	@param roll The roll.
-	@param pitch The pitch.
-	@param yaw The yaw.
-
-	@return The converted quaternion.
-	*/
-	inline Quaternion fromeuler(float roll, float pitch, float yaw)
-	{
-		const float cr = cosf(roll / 2);
-		const float sr = sinf(roll / 2);
-		const float cp = cosf(pitch / 2);
-		const float sp = sinf(pitch / 2);
-		const float cy = cosf(yaw / 2);
-		const float sy = sinf(yaw / 2);
-
-		Quaternion q;
-		q.w = cr * cp * cy + sr * sp * sy;
-		q.x = sr * cp * cy - cr * sp * sy;
-		q.y = cr * sp * cy + sr * cp * sy;
-		q.z = cr * cp * sy - sr * sp * cy;
-
-		return q;
-	}
-
-	/*!
-	Converts euler angles to a quaternion.
-
-	@param euler Euler angles in the form { roll, pitch, yaw }.
-
-	@return The converted quaternion.
-	*/
-	inline Quaternion fromeuler(const Vector3 &euler) { return fromeuler(euler.x, euler.y, euler.z); }
-
-	/*!
 	Returns a quaternion that represents a rotation of some angle around
 	an axis.
 
@@ -245,6 +180,68 @@ namespace mutil
 		return r.imag;
 	}
 
+	/*!
+	Converts a quaternion to euler angles.
+
+	@param q A unit quaternion to convert.
+
+	@return The converted angles, with each element being the rotation
+	around the respective axis.
+	*/
+	inline Vector3 toeuler(const Quaternion &q)
+	{
+		Vector3 euler;
+		float a, b;
+
+		a = 2.0f * (q.w * q.x + q.y * q.z);
+		b = 1.0f - 2.0f * (q.x * q.x + q.y * q.y);
+		euler.x = atan2f(a, b);
+
+		float sinp = 2.0f * (q.w * q.y - q.z * q.x);
+		if (fabsf(sinp) >= 1.0f) euler.y = sinp > 0 ? MUTIL_PI2 : -MUTIL_PI2;
+		else euler.y = asinf(sinp);
+
+		a = 2.0f * (q.w * q.z + q.z * q.y);
+		b = 1.0f - 2.0f * (q.y * q.y + q.z * q.z);
+		euler.z = atan2f(b, a);
+
+		return euler;
+	}
+
+	/*!
+	Converts euler angles to a quaternion. Applies the rotations in the
+	xyz order.
+
+	@param x x-axis rotation
+	@param y y-axis rotation
+	@param z z-axis rotation
+
+	@return The converted quaternion.
+	*/
+	inline Quaternion fromeuler(float x, float y, float z)
+	{
+		Quaternion qx = rotateaxis(Vector3(1.0f, 0.0f, 0.0f), x);
+		Quaternion qy = rotateaxis(Vector3(0.0f, 1.0f, 0.0f), y);
+		Quaternion qz = rotateaxis(Vector3(0.0f, 0.0f, 1.0f), z);
+
+		return qx * qy * qz;
+	}
+
+	/*!
+	Converts euler angles to a quaternion. Applies the rotations in the
+	xyz order.
+
+	@param x x-axis rotation
+	@param y y-axis rotation
+	@param z z-axis rotation
+
+	@return The converted quaternion.
+	*/
+	inline Quaternion fromeuler(const Vector3 &euler)
+	{
+		return fromeuler(euler.x, euler.y, euler.z);
+	}
+
 	inline float dot(const Quaternion &a, const Quaternion &b)
 	{
 		return dot((const Vector4 &)a, (const Vector4 &)b);
@@ -252,7 +249,7 @@ namespace mutil
 
 	constexpr Quaternion lerp(const Quaternion &a, const Quaternion &b, float t)
 	{
-		Vector4 l = lerp(*(Vector4 *)&a, *(Vector4 *)&b, t);
+		Vector4 l = lerp((const Vector4 &)a, (const Vector4 &)b, t);
 		return Quaternion(l.x, l.y, l.z, l.w);
 	}
 
@@ -263,7 +260,7 @@ namespace mutil
 	@param b Quaternion to interpolate to.
 	@param t Number [0.0, 1.0] specifying the interpolation amount.
 	*/
-	inline Quaternion slerp(const Quaternion &a, const Quaternion &b, float t)
+	inline Quaternion slerpNotShortest(const Quaternion &a, const Quaternion &b, float t)
 	{
 		const float theta = acosf(dot(a, b)) / 2; // half angle between a and b
 		const float stheta = sinf(theta);
@@ -271,5 +268,69 @@ namespace mutil
 		const float r = sinf(t * theta);
 
 		return ((a * l) + (b * r)) / stheta;
+	}
+
+	/*!
+	Spherical linear interpolation. Will always take the shortest path, to perform
+	a normal interpolation, use slerpNotShortest.
+
+	@param a Quaternion to interpolate from.
+	@param b Quaternion to interpolate to.
+	@param t Number [0.0, 1.0] specifying the interpolation amount.
+	*/
+	inline Quaternion slerp(const Quaternion &a, const Quaternion &b, float t)
+	{
+		return dot(a, b) > 0
+			? slerpNotShortest(a, b, t)
+			: slerpNotShortest(a, -b, t);
+	}
+
+	/*!
+	Normalized linear interpolation. Much faster than slerp and may give similar
+	results when a and b are not far apart.
+
+	@param a Quaternion to interpolate from.
+	@param b Quaternion to interpolate to.
+	@param t Number [0.0, 1.0] specifying the interpolation amount.
+	*/
+	inline Quaternion nlerp(const Quaternion &a, const Quaternion &b, float t)
+	{
+		return normalize(lerp(a, b, t));
+	}
+
+	inline Quaternion sqrt(const Quaternion &a)
+	{
+		const float mag = length(a);
+		const float coeff1 = sqrtf((mag + a.real) / 2.0f);
+		const float coeff2 = sqrtf((mag - a.real) / 2.0f);
+		return Quaternion(coeff1, normalize(a.imag) * coeff2);
+	}
+
+	inline Quaternion exp(const Quaternion &a)
+	{
+		const float ea = expf(a.real);
+		const float mag = length(a);
+
+		const float cosmag = cosf(mag);
+		const float sinmag = sinf(mag);
+
+		return ea * Quaternion(cosmag, normalize(a.imag) * sinmag);
+	}
+
+	inline Quaternion log(const Quaternion &a)
+	{
+		const float mag = length(a);
+		const float lnmag = logf(mag);
+		return Quaternion(lnmag, normalize(a.imag) * acosf(a.real / lnmag));
+	}
+
+	/*!
+	Geodesic distance.
+	*/
+	inline float geodistance(const Quaternion &a, const Quaternion &b)
+	{
+		const float d = dot(a, b);
+		const float d2 = d * d;
+		return acosf(2.0f * d2 - 1.0f);
 	}
 }

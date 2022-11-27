@@ -10,7 +10,6 @@ Contains methods for performing floating-point math operations.
 
 #include "settings.h"
 
-#define _USE_MATH_DEFINES
 #include <math.h>
 
 #if MUTIL_USE_INTRINSICS
@@ -20,6 +19,11 @@ Contains methods for performing floating-point math operations.
 #include <arm_neon.h>
 #endif
 #endif
+
+#define MUTIL_PI 3.14159265358979323846f
+#define MUTIL_PI2 (3.14159265358979323846f/2.0f)
+#define MUTIL_PI4 (3.14159265358979323846f/4.0f)
+#define MUTIL_2PI (3.14159265358979323846f*2.0f)
 
 namespace mutil
 {
@@ -32,7 +36,7 @@ namespace mutil
 	*/
 	constexpr float radians(float degrees)
 	{
-		return degrees / 180 * (float)M_PI;
+		return degrees / 180 * MUTIL_PI;
 	}
 
 	/*!
@@ -44,7 +48,7 @@ namespace mutil
 	*/
 	constexpr float degrees(float radians)
 	{
-		return radians / (float)M_PI * 180;
+		return radians / MUTIL_PI * 180;
 	}
 
 	inline float inverseSqrt(const float num)
@@ -64,10 +68,26 @@ namespace mutil
 
 	inline float fastInverseSqrt(const float num)
 	{
-#if MUTIL_USE_INTRINSICS && MUTIL_X86
+#if MUTIL_USE_INTRINSICS
 		float result;
 		_mm_store_ss(&result, _mm_rsqrt_ss(_mm_load_ss(&num)));
 		return result;
+#if MUTIL_X86
+#elif MUTIL_ARM
+		const float x2 = num * 0.5f;
+		const float threehalfs = 1.5f;
+
+		union
+		{
+			float f;
+			int32_t i;
+		} un;
+
+		un.f = num;
+		un.i = 0x5f3759df - (un.i >> 1);
+		un.f *= threehalfs - (x2 * un.f * un.f);
+		return un.f;
+#endif
 #else
 		const float x2 = num * 0.5f;
 		const float threehalfs = 1.5f;
@@ -90,9 +110,22 @@ namespace mutil
 		return val < min ? min : ((val > max) ? max : val);
 	}
 
-	inline float fract(float val)
+	constexpr float fract(float val)
 	{
-		return val - floorf(val);
+		constexpr long long LLMAX = (1ll << 63) - 1;
+		constexpr long long LLMIN = (1ll << 63);
+
+		float floor = 0;
+		if (val > LLMAX || val < LLMIN || val != val)
+			floor = (float)((long long)val);
+		else
+		{
+			floor = (float)((long long)val);
+			if (floor != val && floor < 0)
+				floor = floor - 1;
+		}
+
+		return val - floor;
 	}
 
 	constexpr float lerp(float a, float b, float t)

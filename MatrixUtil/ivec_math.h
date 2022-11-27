@@ -14,8 +14,11 @@ Contains methods for performing operations on floating-point vectors.
 #include <cmath>
 #include "f_math.h"
 
-#if defined(USE_SIMD)
+#if defined(MUTIL_USE_INTRINSICS)
+#if defined(MUTIL_X86)
 #include <smmintrin.h>
+#elif defined(MUTIL_ARM)
+#endif
 #endif
 
 namespace mutil
@@ -49,10 +52,14 @@ namespace mutil
 	*/
 	inline int32_t length(const IntVector2 &vec)
 	{
-#if defined(USE_SIMD)
+#if defined(MUTIL_USE_INTRINSICS)
+#if defined(MUTIL_X86)
 		float result = (float)dot(vec, vec);
 		_mm_store_ss(&result, _mm_sqrt_ss(_mm_load_ss(&result)));
 		return (int32_t)result;
+#elif defined(MUTIL_ARM)
+		return (int32_t)sqrtf((float)dot(vec, vec));
+#endif
 #else
 		return (int32_t)sqrtf((float)dot(vec, vec));
 #endif
@@ -82,7 +89,7 @@ namespace mutil
 	*/
 	inline IntVector2 normalize(const IntVector2 &vec)
 	{
-		return vec * (int32_t)fastInverseSqrt((float)dot(vec, vec));
+		return IntVector2(normalize(Vector2(vec)));
 	}
 
 	/*
@@ -94,7 +101,7 @@ namespace mutil
 	*/
 	inline IntVector2 normalizeExact(const IntVector2 &vec)
 	{
-		return vec * (int32_t)inverseSqrt((float)dot(vec, vec));
+		return IntVector2(normalizeExact(Vector2(vec)));
 	}
 
 	/*!
@@ -212,10 +219,14 @@ namespace mutil
 	*/
 	inline int32_t length(const IntVector3 &vec)
 	{
-#if defined(USE_SIMD)
+#if defined(MUTIL_USE_INTRINSICS)
+#if defined(MUTIL_X86)
 		float result = (float)dot(vec, vec);
 		_mm_store_ss(&result, _mm_sqrt_ss(_mm_load_ss(&result)));
 		return (int32_t)result;
+#elif defined(MUTIL_ARM)
+		return (int32_t)sqrtf((float)dot(vec, vec));
+#endif
 #else
 		return (int32_t)sqrtf((float)dot(vec, vec));
 #endif
@@ -245,7 +256,7 @@ namespace mutil
 	*/
 	inline IntVector3 normalize(const IntVector3 &vec)
 	{
-		return vec * (int32_t)fastInverseSqrt((float)dot(vec, vec));
+		return IntVector3(normalize(Vector3(vec)));
 	}
 
 	/*
@@ -257,24 +268,20 @@ namespace mutil
 	*/
 	inline IntVector3 normalizeExact(const IntVector3 &vec)
 	{
-		return vec * (int32_t)inverseSqrt((float)dot(vec, vec));
+		return IntVector3(normalizeExact(Vector3(vec)));
 	}
 
 	inline IntVector3 &normalizethis(IntVector3 &vec)
 	{
-		const int32_t dotinvsqrt = (int32_t)fastInverseSqrt((float)dot(vec, vec));
-		vec.x *= dotinvsqrt;
-		vec.y *= dotinvsqrt;
-		vec.z *= dotinvsqrt;
+		Vector3 normalized = normalize(Vector3(vec));
+		vec = IntVector3(normalized);
 		return vec;
 	}
 
 	inline IntVector3 &normalizethisExact(IntVector3 &vec)
 	{
-		const int32_t dotinvsqrt = (int32_t)inverseSqrt((float)dot(vec, vec));
-		vec.x *= dotinvsqrt;
-		vec.y *= dotinvsqrt;
-		vec.z *= dotinvsqrt;
+		Vector3 normalized = normalizeExact(Vector3(vec));
+		vec = IntVector3(normalized);
 		return vec;
 	}
 
@@ -388,10 +395,14 @@ namespace mutil
 	*/
 	inline int32_t length(const IntVector4 &vec)
 	{
-#if defined(USE_SIMD)
+#if defined(MUTIL_USE_INTRINSICS)
+#if defined(MUTIL_X86)
 		float result = (float)dot(vec, vec);
 		_mm_store_ss(&result, _mm_sqrt_ss(_mm_load_ss(&result)));
 		return (int32_t)result;
+#elif defined(MUTIL_ARM)
+		return (int32_t)sqrtf((float)dot(vec, vec));
+#endif
 #else
 		return (int32_t)sqrtf((float)dot(vec, vec));
 #endif
@@ -421,7 +432,7 @@ namespace mutil
 	*/
 	inline IntVector4 normalize(const IntVector4 &vec)
 	{
-		return vec * (int32_t)fastInverseSqrt((float)dot(vec, vec));
+		return IntVector4(normalize(Vector4(vec)));
 	}
 
 	/*!
@@ -433,7 +444,7 @@ namespace mutil
 	*/
 	inline IntVector4 normalizeExact(const IntVector4 &vec)
 	{
-		return vec * (int32_t)inverseSqrt((float)dot(vec, vec));
+		return IntVector4(normalize(Vector4(vec)));
 	}
 
 	/*!

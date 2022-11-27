@@ -148,8 +148,10 @@ namespace mutil
 		constexpr Vector3() : x(0.0f), y(0.0f), z(0.0f) {}
 		explicit constexpr Vector3(const float &scalar) : x(scalar), y(scalar), z(scalar) {}
 		constexpr Vector3(const float x, const float y, const float z) : x(x), y(y), z(z) {}
-		explicit constexpr Vector3(const Vector2 &vec2, const float z);
 		explicit constexpr Vector3(const IntVector3 &ivec3);
+
+		constexpr Vector3(const Vector2 &xy, float z) : x(xy.x), y(xy.y), z(z) {}
+		constexpr Vector3(float x, const Vector2 &yz) : x(x), y(yz.x), z(yz.y) {}
 
 		/*!
 		Constructs a Vector3 with the x and y components of
@@ -221,9 +223,14 @@ namespace mutil
 		constexpr Vector4() : x(0.0f), y(0.0f), z(0.0f), w(0.0f) {}
 		explicit constexpr Vector4(const float scalar) : x(scalar), y(scalar), z(scalar), w(scalar) {}
 		constexpr Vector4(const float x, const float y, const float z, const float w) : x(x), y(y), z(z), w(w) {}
-		explicit constexpr Vector4(const Vector2 &first, const Vector2 &second);
-		explicit constexpr Vector4(const Vector3 &vec, const float w);
 		explicit constexpr Vector4(const IntVector4 &vec);
+
+		constexpr Vector4(const Vector2 &xy, float z, float w) : x(xy.x), y(xy.y), z(z), w(w) {}
+		constexpr Vector4(const Vector3 &xyz,  float w) : x(xyz.x), y(xyz.y), z(xyz.z), w(w) {}
+		constexpr Vector4(const Vector2 &xy, const Vector2 &zw) : x(xy.x), y(xy.y), z(zw.x), w(zw.y) {}
+		constexpr Vector4(float x, const Vector3 &yzw) : x(x), y(yzw.x), z(yzw.y), w(yzw.z) {}
+		constexpr Vector4(float x, float y, const Vector2 &zw) : x(x), y(y), z(zw.x), w(zw.y) {}
+		constexpr Vector4(float x, const Vector2 &yz, float w) : x(x), y(yz.x), z(yz.y), w(w) {}
 
 		/*!
 		Constructs a Vector4 with the x and y components of
@@ -368,8 +375,10 @@ namespace mutil
 		constexpr IntVector3() : x(0), y(0), z(0) {}
 		explicit constexpr IntVector3(const int32_t scalar) : x(scalar), y(scalar), z(scalar) {}
 		constexpr IntVector3(const int32_t x, const int32_t y, const int32_t z) : x(x), y(y), z(z) {}
-		explicit constexpr IntVector3(const IntVector2 &vec, const int32_t z);
 		explicit constexpr IntVector3(const Vector3 &vec);
+
+		constexpr IntVector3(const IntVector3 &xy, int32_t z) : x(xy.x), y(xy.y), z(z) {}
+		constexpr IntVector3(int32_t x, const IntVector3 &yz) : x(x), y(yz.x), z(yz.y) {}
 
 		/*!
 		Constructs an IntVector3 with the x and y components of
@@ -441,9 +450,14 @@ namespace mutil
 		constexpr IntVector4() : x(0), y(0), z(0), w(0) {}
 		explicit constexpr IntVector4(const int32_t scalar) : x(scalar), y(scalar), z(scalar), w(scalar) {}
 		constexpr IntVector4(const int32_t x, const int32_t y, const int32_t z, const int32_t w) : x(x), y(y), z(z), w(w) {}
-		explicit constexpr IntVector4(const IntVector2 &first, const IntVector2 &second);
-		explicit constexpr IntVector4(const IntVector3 &vec, const int32_t w);
 		explicit constexpr IntVector4(const Vector4 &vec);
+
+		constexpr IntVector4(const IntVector2 &xy, int32_t z, int32_t w) : x(xy.x), y(xy.y), z(z), w(w) {}
+		constexpr IntVector4(const IntVector3 &xyz, int32_t w) : x(xyz.x), y(xyz.y), z(xyz.z), w(w) {}
+		constexpr IntVector4(const IntVector2 &xy, const IntVector2 &zw) : x(xy.x), y(xy.y), z(zw.x), w(zw.y) {}
+		constexpr IntVector4(int32_t x, const IntVector3 &yzw) : x(x), y(yzw.x), z(yzw.y), w(yzw.z) {}
+		constexpr IntVector4(int32_t x, int32_t y, const IntVector2 &zw) : x(x), y(y), z(zw.x), w(zw.y) {}
+		constexpr IntVector4(int32_t x, const IntVector2 &yz, int32_t w) : x(x), y(yz.x), z(yz.y), w(w) {}
 
 		/*!
 		Constructs an IntVector4 with the x and y components of
@@ -697,7 +711,6 @@ namespace mutil
 		return *this;
 	}
 
-	constexpr IntVector3::IntVector3(const IntVector2 &vec, const int32_t z) : x(vec.x), y(vec.y), z(z) {}
 	constexpr IntVector3::IntVector3(const Vector3 &vec) : x((int32_t)vec.x), y((int32_t)vec.y), z((int32_t)vec.z) {}
 	constexpr IntVector3::IntVector3(const IntVector2 &vec) : x(vec.x), y(vec.x), z(0) {}
 	constexpr IntVector3::IntVector3(const IntVector4 &vec) : x(vec.x), y(vec.y), z(vec.z) {}
