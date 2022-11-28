@@ -81,6 +81,11 @@ namespace mutil
 #endif
 	}
 
+	inline float lengthSq(const Vector2 &vec)
+	{
+		return dot(vec, vec);
+	}
+
 	/*!
 	Finds the distance between two Vector2's.
 
@@ -123,6 +128,11 @@ namespace mutil
 	inline float Vector2::length() const
 	{
 		return mutil::length(*this);
+	}
+
+	inline float Vector2::lengthSq() const
+	{
+		return mutil::lengthSq(*this);
 	}
 
 	inline Vector2 Vector2::normalized() const
@@ -342,6 +352,11 @@ namespace mutil
 #endif
 	}
 
+	inline float lengthSq(const Vector3 &vec)
+	{
+		return dot(vec, vec);
+	}
+
 	/*!
 	Finds the distance between two Vector3's.
 
@@ -402,6 +417,11 @@ namespace mutil
 	inline float Vector3::length() const
 	{
 		return mutil::length(*this);
+	}
+
+	inline float Vector3::lengthSq() const
+	{
+		return mutil::lengthSq(*this);
 	}
 
 	inline Vector3 Vector3::normalized() const
@@ -598,6 +618,11 @@ namespace mutil
 #endif
 	}
 
+	inline float lengthSq(const Vector4 &vec)
+	{
+		return dot(vec, vec);
+	}
+
 	/*!
 	Finds the distance between two Vector4's.
 
@@ -640,6 +665,11 @@ namespace mutil
 	inline float Vector4::length() const
 	{
 		return mutil::length(*this);
+	}
+
+	inline float Vector4::lengthSq() const
+	{
+		return mutil::lengthSq(*this);
 	}
 
 	inline Vector4 Vector4::normalized() const

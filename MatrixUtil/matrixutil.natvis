@@ -107,4 +107,14 @@
 			<Item Name="col4">columns[3]</Item>
 		</Expand>
 	</Type>
+
+	<Type Name="mutil::Quaternion">
+		<DisplayString>({w}, {x}, {y}, {z})</DisplayString>
+		<Expand>
+			<Item Name="w">w</Item>
+			<Item Name="x">x</Item>
+			<Item Name="y">y</Item>
+			<Item Name="z">z</Item>
+		</Expand>
+	</Type>
 </AutoVisualizer>

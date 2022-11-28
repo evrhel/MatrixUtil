@@ -33,8 +33,62 @@ namespace mutil
 		constexpr Quaternion(float w, float x, float y, float z) : w(w), x(x), y(y), z(z) {}
 		constexpr Quaternion(float real, const Vector3 &imag) : real(real), imag(imag) {}
 
+		constexpr Quaternion &operator+=(const Quaternion &a)
+		{
+			w += a.w;
+			x += a.x;
+			y += a.y;
+			z += a.z;
+			return *this;
+		}
+
+		constexpr Quaternion &operator-=(const Quaternion &a)
+		{
+			w -= a.w;
+			x -= a.x;
+			y -= a.y;
+			z -= a.z;
+			return *this;
+		}
+
+		constexpr Quaternion &operator*=(float a)
+		{
+			w *= a;
+			x *= a;
+			y *= a;
+			z *= a;
+			return *this;
+		}
+
+		constexpr Quaternion &operator/=(float a)
+		{
+			w /= a;
+			x /= a;
+			y /= a;
+			z /= a;
+			return *this;
+		}
+
+		constexpr Quaternion &operator*=(const Quaternion &a)
+		{
+			w = w * a.w - x * a.x - y * a.y - z * a.z;
+			x = w * a.x + x * a.w + y * a.z - z * a.y;
+			y = w * a.y + y * a.w + z * a.x - x * a.z;
+			z = w * a.z + z * a.w + x * a.y - y * a.x;
+			return *this;
+		}
+
 		constexpr float &operator[](size_t idx) { return q[idx]; }
 		constexpr const float &operator[](size_t idx) const { return q[idx]; }
+
+		inline float length() const;
+		inline float lengthSq() const;
+		inline Quaternion normalized() const;
+		constexpr Quaternion conjugate() const;
+		constexpr Quaternion inverse() const;
+		constexpr Matrix4 torotation() const;
+		constexpr Matrix3 torotation3() const;
+		inline Vector3 toeuler() const;
 	};
 
 	constexpr Quaternion operator+(const Quaternion &a, const Quaternion &b) { return Quaternion(a.w + b.w, a.x + b.x, a.y + b.y, a.z + b.z); }
@@ -63,7 +117,12 @@ namespace mutil
 	*/
 	inline float length(const Quaternion &q)
 	{
-		return sqrtf(q.w * q.w + q.x * q.x + q.y * q.y + q.z * q.z);
+		return length(q.v4);
+	}
+
+	inline float lengthSq(const Quaternion &q)
+	{
+		return lengthSq(q.v4);
 	}
 
 	/*!
@@ -131,7 +190,7 @@ namespace mutil
 
 	@return The resultant rotation matrix.
 	*/
-	inline Matrix3 torotation3(const Quaternion &q)
+	constexpr Matrix3 torotation3(const Quaternion &q)
 	{
 		const float x2 = q.x * q.x;
 		const float y2 = q.y * q.y;
@@ -335,5 +394,45 @@ namespace mutil
 		const float d = dot(a, b);
 		const float d2 = d * d;
 		return acosf(2.0f * d2 - 1.0f);
+	}
+
+	inline float Quaternion::length() const
+	{
+		return mutil::length(*this);
+	}
+
+	inline float Quaternion::lengthSq() const
+	{
+		return mutil::lengthSq(*this);
+	}
+
+	inline Quaternion Quaternion::normalized() const
+	{
+		return mutil::normalize(*this);
+	}
+
+	constexpr Quaternion Quaternion::conjugate() const
+	{
+		return mutil::conjugate(*this);
+	}
+
+	constexpr Quaternion Quaternion::inverse() const
+	{
+		return mutil::inverse(*this);
+	}
+
+	constexpr Matrix4 Quaternion::torotation() const
+	{
+		return mutil::torotation(*this);
+	}
+
+	constexpr Matrix3 Quaternion::torotation3() const
+	{
+		return mutil::torotation3(*this);
+	}
+
+	inline Vector3 Quaternion::toeuler() const
+	{
+		return mutil::toeuler(*this);
 	}
 }

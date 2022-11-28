@@ -109,6 +109,10 @@ namespace mutil
 		{
 			return mat[index];
 		}
+
+		constexpr float determinant() const;
+		constexpr Matrix2 transpose() const;
+		constexpr Matrix2 inverse() const;
 	};
 
 	constexpr Matrix2 operator+(const Matrix2 &first, const Matrix2 &second)
@@ -240,6 +244,10 @@ namespace mutil
 		{
 			return mat[index];
 		}
+
+		constexpr float determinant() const;
+		constexpr Matrix3 transpose() const;
+		constexpr Matrix3 inverse() const;
 	};
 
 	constexpr Matrix3 operator+(const Matrix3 &first, const Matrix3 &second)
@@ -387,6 +395,10 @@ namespace mutil
 		{
 			return mat[index];
 		}
+
+		constexpr float determinant() const;
+		constexpr Matrix4 transpose() const;
+		constexpr Matrix4 inverse() const;
 	};
 
 	constexpr Matrix4 operator+(const Matrix4 &first, const Matrix4 &second)

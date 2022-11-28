@@ -112,6 +112,7 @@ namespace mutil
 		}
 
 		inline float length() const;
+		inline float lengthSq() const;
 		inline Vector2 normalized() const;
 	};
 
@@ -190,6 +191,7 @@ namespace mutil
 		}
 
 		inline float length() const;
+		inline float lengthSq() const;
 		inline Vector3 normalized() const;
 	};
 
@@ -272,6 +274,7 @@ namespace mutil
 		}
 
 		inline float length() const;
+		inline float lengthSq() const;
 		inline Vector4 normalized() const;
 	};
 

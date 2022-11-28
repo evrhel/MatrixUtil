@@ -103,6 +103,10 @@ namespace mutil
 		return result;
 	}
 
+	constexpr float Matrix2::determinant() const { return mutil::determinant(*this); }
+	constexpr Matrix2 Matrix2::transpose() const { return mutil::transpose(*this); }
+	constexpr Matrix2 Matrix2::inverse() const { return mutil::inverse(*this); };
+
 	// Matrix3 operations
 
 	/*!
@@ -195,6 +199,10 @@ namespace mutil
 			result[i] = clamp(val[i], min[i], max[i]);
 		return result;
 	}
+
+	constexpr float Matrix3::determinant() const { return mutil::determinant(*this); }
+	constexpr Matrix3 Matrix3::transpose() const { return mutil::transpose(*this); }
+	constexpr Matrix3 Matrix3::inverse() const { return mutil::inverse(*this); };
 
 	// Matrix4 operations
 
@@ -293,6 +301,10 @@ namespace mutil
 			result[i] = clamp(val[i], min[i], max[i]);
 		return result;
 	}
+
+	constexpr float Matrix4::determinant() const { return mutil::determinant(*this); }
+	constexpr Matrix4 Matrix4::transpose() const { return mutil::transpose(*this); }
+	constexpr Matrix4 Matrix4::inverse() const { return mutil::inverse(*this); };
 }
 
 #endif
