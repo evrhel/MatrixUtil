@@ -110,6 +110,9 @@ namespace mutil
 		{
 			return vec[index];
 		}
+
+		inline float length() const;
+		inline Vector2 normalized() const;
 	};
 
 	constexpr Vector2 operator+(const Vector2 &first, const Vector2 &second) { return Vector2(first.x + second.x, first.y + second.y); }
@@ -185,6 +188,9 @@ namespace mutil
 		{
 			return vec[index];
 		}
+
+		inline float length() const;
+		inline Vector3 normalized() const;
 	};
 
 	constexpr Vector3 operator+(const Vector3 &first, const Vector3 &second) { return Vector3(first.x + second.x, first.y + second.y, first.z + second.z); }
@@ -226,7 +232,7 @@ namespace mutil
 		explicit constexpr Vector4(const IntVector4 &vec);
 
 		constexpr Vector4(const Vector2 &xy, float z, float w) : x(xy.x), y(xy.y), z(z), w(w) {}
-		constexpr Vector4(const Vector3 &xyz,  float w) : x(xyz.x), y(xyz.y), z(xyz.z), w(w) {}
+		constexpr Vector4(const Vector3 &xyz, float w) : x(xyz.x), y(xyz.y), z(xyz.z), w(w) {}
 		constexpr Vector4(const Vector2 &xy, const Vector2 &zw) : x(xy.x), y(xy.y), z(zw.x), w(zw.y) {}
 		constexpr Vector4(float x, const Vector3 &yzw) : x(x), y(yzw.x), z(yzw.y), w(yzw.z) {}
 		constexpr Vector4(float x, float y, const Vector2 &zw) : x(x), y(y), z(zw.x), w(zw.y) {}
@@ -264,6 +270,9 @@ namespace mutil
 		{
 			return vec[index];
 		}
+
+		inline float length() const;
+		inline Vector4 normalized() const;
 	};
 
 	constexpr Vector4 operator+(const Vector4 &first, const Vector4 &second) { return Vector4(first.x + second.x, first.y + second.y, first.z + second.z, first.w + second.w); }
@@ -450,7 +459,7 @@ namespace mutil
 		constexpr IntVector4() : x(0), y(0), z(0), w(0) {}
 		explicit constexpr IntVector4(const int32_t scalar) : x(scalar), y(scalar), z(scalar), w(scalar) {}
 		constexpr IntVector4(const int32_t x, const int32_t y, const int32_t z, const int32_t w) : x(x), y(y), z(z), w(w) {}
-		explicit constexpr IntVector4(const Vector4 &vec);
+		explicit constexpr IntVector4(const Vector4 &vec) : x((int32_t)vec.x), y((int32_t)vec.y), z((int32_t)vec.z), w((int32_t)vec.w) {}
 
 		constexpr IntVector4(const IntVector2 &xy, int32_t z, int32_t w) : x(xy.x), y(xy.y), z(z), w(w) {}
 		constexpr IntVector4(const IntVector3 &xyz, int32_t w) : x(xyz.x), y(xyz.y), z(xyz.z), w(w) {}
@@ -552,10 +561,7 @@ namespace mutil
 		return *this;
 	}
 
-	constexpr Vector3::Vector3(const Vector2 &vec2, const float z) : x(vec2.x), y(vec2.y), z(z) {}
 	constexpr Vector3::Vector3(const IntVector3 &ivec3) : x((float)ivec3.x), y((float)ivec3.y), z((float)ivec3.z) {}
-	constexpr Vector3::Vector3(const Vector2 &vec) : x(vec.x), y(vec.y), z(0.0f) {}
-	constexpr Vector3::Vector3(const Vector4 &vec) : x(vec.x), y(vec.y), z(vec.z) {}
 
 	constexpr Vector3 &Vector3::operator+=(const Vector3 &first)
 	{
@@ -605,11 +611,7 @@ namespace mutil
 		return *this;
 	}
 
-	constexpr Vector4::Vector4(const Vector2 &first, const Vector2 &second) : x(first.x), y(first.y), z(second.x), w(second.y) {}
-	constexpr Vector4::Vector4(const Vector3 &vec, const float w) : x(vec.x), y(vec.y), z(vec.z), w(w) {}
 	constexpr Vector4::Vector4(const IntVector4 &vec) : x((float)vec.x), y((float)vec.y), z((float)vec.z), w((float)vec.w) {}
-	constexpr Vector4::Vector4(const Vector2 &vec) : x(vec.x), y(vec.y), z(0.0f), w(0.0f) {}
-	constexpr Vector4::Vector4(const Vector3 &vec) : x(vec.x), y(vec.y), z(vec.z), w(0.0f) {}
 
 	constexpr Vector4 &Vector4::operator+=(const Vector4 &first)
 	{
@@ -762,12 +764,6 @@ namespace mutil
 		z /= scalar;
 		return *this;
 	}
-
-	constexpr IntVector4::IntVector4(const IntVector2 &first, const IntVector2 &second) : x(first.x), y(first.y), z(second.x), w(second.y) {}
-	constexpr IntVector4::IntVector4(const IntVector3 &vec, const int32_t w) : x(vec.x), y(vec.y), z(vec.z), w(w) {}
-	constexpr IntVector4::IntVector4(const Vector4 &vec) : x((int32_t)vec.x), y((int32_t)vec.y), z((int32_t)vec.z), w((int32_t)vec.w) {}
-	constexpr IntVector4::IntVector4(const IntVector2 &vec) : x(vec.x), y(vec.y), z(0), w(0) {}
-	constexpr IntVector4::IntVector4(const IntVector3 &vec) : x(vec.x), y(vec.y), z(vec.z), w(0) {}
 
 	constexpr IntVector4 &IntVector4::operator+=(const IntVector4 &first)
 	{

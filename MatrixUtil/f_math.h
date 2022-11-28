@@ -112,8 +112,8 @@ namespace mutil
 
 	constexpr float fract(float val)
 	{
-		constexpr long long LLMAX = (1ll << 63) - 1;
-		constexpr long long LLMIN = (1ll << 63);
+		constexpr long long LLMAX = 0x7fffffffffffffff;
+		constexpr long long LLMIN = 0x8000000000000000;
 
 		float floor = 0;
 		if (val > LLMAX || val < LLMIN || val != val)

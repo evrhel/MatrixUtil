@@ -25,6 +25,7 @@ namespace mutil
 				float real;
 				Vector3 imag;
 			};
+			Vector4 v4;
 			float q[4];
 		};
 
@@ -198,8 +199,10 @@ namespace mutil
 		euler.x = atan2f(a, b);
 
 		float sinp = 2.0f * (q.w * q.y - q.z * q.x);
-		if (fabsf(sinp) >= 1.0f) euler.y = sinp > 0 ? MUTIL_PI2 : -MUTIL_PI2;
-		else euler.y = asinf(sinp);
+		if (fabsf(sinp) >= 1.0f)
+			euler.y = sinp > 0 ? MUTIL_PI2 : -MUTIL_PI2;
+		else
+			euler.y = asinf(sinp);
 
 		a = 2.0f * (q.w * q.z + q.z * q.y);
 		b = 1.0f - 2.0f * (q.y * q.y + q.z * q.z);
@@ -244,12 +247,12 @@ namespace mutil
 
 	inline float dot(const Quaternion &a, const Quaternion &b)
 	{
-		return dot((const Vector4 &)a, (const Vector4 &)b);
+		return dot(a.v4, b.v4);
 	}
 
 	constexpr Quaternion lerp(const Quaternion &a, const Quaternion &b, float t)
 	{
-		Vector4 l = lerp((const Vector4 &)a, (const Vector4 &)b, t);
+		Vector4 l = lerp(a.v4, b.v4, t);
 		return Quaternion(l.x, l.y, l.z, l.w);
 	}
 
@@ -281,8 +284,8 @@ namespace mutil
 	inline Quaternion slerp(const Quaternion &a, const Quaternion &b, float t)
 	{
 		return dot(a, b) > 0
-			? slerpNotShortest(a, b, t)
-			: slerpNotShortest(a, -b, t);
+				   ? slerpNotShortest(a, b, t)
+				   : slerpNotShortest(a, -b, t);
 	}
 
 	/*!

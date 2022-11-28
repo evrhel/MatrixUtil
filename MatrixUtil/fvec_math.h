@@ -24,18 +24,6 @@ Contains methods for performing operations on floating-point vectors.
 
 namespace mutil
 {
-	// Vector4(vec, 1)
-	constexpr Vector4 nvec4(const Vector3 &vec)
-	{
-		return Vector4(vec, 1.0f);
-	}
-
-	// vec.xyz / vec.w
-	constexpr Vector3 nvec3(const Vector4 &vec)
-	{
-		return Vector3(vec) / vec.w;
-	}
-
 	// Vector2 operations
 
 	/*!
@@ -132,6 +120,16 @@ namespace mutil
 		return vec * inverseSqrt(dot(vec, vec));
 	}
 
+	inline float Vector2::length() const
+	{
+		return mutil::length(*this);
+	}
+
+	inline Vector2 Vector2::normalized() const
+	{
+		return mutil::normalize(*this);
+	}
+
 	/*!
 	Reflects a Vector2 over a normal, returning the reflected vector.
 
@@ -207,7 +205,7 @@ namespace mutil
 		return result;
 	}
 
-	constexpr Vector2 fract(const Vector2 &val)
+	inline Vector2 fract(const Vector2 &val)
 	{
 		return Vector2(fract(val.x), fract(val.y));
 	}
@@ -250,16 +248,6 @@ namespace mutil
 	inline Vector2 atan(const Vector2 &v)
 	{
 		return Vector2(atanf(v.x), atanf(v.y));
-	}
-
-	inline Vector2 exp(const Vector2 &v)
-	{
-		return Vector2(expf(v.x), expf(v.y));
-	}
-
-	inline Vector2 exp2(const Vector2 &v)
-	{
-		return Vector2(exp2f(v.x), exp2f(v.y));
 	}
 
 	constexpr Vector2 lerp(const Vector2 &a, const Vector2 &b, float t)
@@ -312,13 +300,9 @@ namespace mutil
 	*/
 	inline float dot(const Vector3 &first, const Vector3 &second)
 	{
-#if defined(MUTIL_USE_INTRINSICS)
-#if defined(MUTIL_X86)
+#if defined(USE_SIMD)
 		constexpr int MASK = 0x71;
 		return _mm_cvtss_f32(_mm_dp_ps(_mm_loadu_ps((float *)&first), _mm_loadu_ps((float *)&second), MASK));
-#elif defined(MUTIL_ARM)
-		return (first.x * second.x) + (first.y * second.y) + (first.z * second.z);
-#endif
 #else
 		return (first.x * second.x) + (first.y * second.y) + (first.z * second.z);
 #endif
@@ -415,6 +399,16 @@ namespace mutil
 		return vec;
 	}
 
+	inline float Vector3::length() const
+	{
+		return mutil::length(*this);
+	}
+
+	inline Vector3 Vector3::normalized() const
+	{
+		return mutil::normalize(*this);
+	}
+
 	/*!
 	Reflects a Vector3 over a normal, returning the reflected vector.
 
@@ -446,14 +440,10 @@ namespace mutil
 	*/
 	inline Vector3 refract(const Vector3 &vec, const Vector3 &normal, float ratio)
 	{
-#if defined(MUTIL_USE_INTRINSICS)
-#if defined(MUTIL_X86)
+#if defined(USE_SIMD)
 		float sqrtresult = 1 - (ratio * ratio) * dot(cross(normal, vec), cross(normal, vec));
 		_mm_store_ss(&sqrtresult, _mm_sqrt_ss(_mm_load_ss(&sqrtresult)));
 		return ((cross(normal, cross(-normal, vec))) * ratio) - (normal * sqrtresult);
-#elif defined(MUTIL_ARM)
-		return ((cross(normal, cross(-normal, vec))) * ratio) - (normal * sqrtf(1 - (ratio * ratio) * dot(cross(normal, vec), cross(normal, vec))));
-#endif
 #else
 		return ((cross(normal, cross(-normal, vec))) * ratio) - (normal * sqrtf(1 - (ratio * ratio) * dot(cross(normal, vec), cross(normal, vec))));
 #endif
@@ -466,12 +456,12 @@ namespace mutil
 
 	@return The same vector in radians.
 	*/
-	constexpr Vector3 radians(const Vector3 &vec)
+	inline Vector3 radians(const Vector3 &vec)
 	{
 		return Vector3(radians(vec.x), radians(vec.y), radians(vec.z));
 	}
 
-	constexpr Vector3 &radiansthis(Vector3 &vec)
+	inline Vector3 &radiansthis(Vector3 &vec)
 	{
 		vec.x = radians(vec.x);
 		vec.y = radians(vec.y);
@@ -486,7 +476,7 @@ namespace mutil
 
 	@return The same vector in degrees.
 	*/
-	constexpr Vector3 degrees(const Vector3 &vec)
+	inline Vector3 degrees(const Vector3 &vec)
 	{
 		return Vector3(degrees(vec.x), degrees(vec.y), degrees(vec.z));
 	}
@@ -499,7 +489,7 @@ namespace mutil
 
 	@return The absolute value.
 	*/
-	constexpr Vector3 abs(const Vector3 &vec)
+	inline Vector3 abs(const Vector3 &vec)
 	{
 		return Vector3(
 			vec.x < 0.0 ? -vec.x : vec.x,
@@ -515,59 +505,9 @@ namespace mutil
 		return result;
 	}
 
-	constexpr Vector3 fract(const Vector3 &val)
+	inline Vector3 fract(const Vector3 &val)
 	{
 		return Vector3(fract(val.x), fract(val.y), fract(val.z));
-	}
-
-	inline Vector3 mod(const Vector3 &a, float b)
-	{
-		return Vector3(fmodf(a.x, b), fmodf(a.y, b), fmodf(a.z, b));
-	}
-
-	inline Vector3 mod(const Vector3 &a, const Vector3 &b)
-	{
-		return Vector3(fmodf(a.x, b.x), fmodf(a.y, b.y), fmodf(a.z, b.z));
-	}
-
-	inline Vector3 sin(const Vector3 &v)
-	{
-		return Vector3(sinf(v.x), sinf(v.y), sinf(v.z));
-	}
-
-	inline Vector3 cos(const Vector3 &v)
-	{
-		return Vector3(cosf(v.x), cosf(v.y), cosf(v.z));
-	}
-
-	inline Vector3 tan(const Vector3 &v)
-	{
-		return Vector3(tanf(v.x), tanf(v.y), tanf(v.z));
-	}
-
-	inline Vector3 asin(const Vector3 &v)
-	{
-		return Vector3(asinf(v.x), asinf(v.y), sinf(v.z));
-	}
-
-	inline Vector3 acos(const Vector3 &v)
-	{
-		return Vector3(acosf(v.x), acosf(v.y), acosf(v.z));
-	}
-
-	inline Vector3 atan(const Vector3 &v)
-	{
-		return Vector3(atanf(v.x), atanf(v.y), atanf(v.z));
-	}
-
-	inline Vector3 exp(const Vector3 &v)
-	{
-		return Vector3(expf(v.x), expf(v.y), expf(v.z));
-	}
-
-	inline Vector3 exp2(const Vector3 &v)
-	{
-		return Vector3(exp2f(v.x), exp2f(v.y), exp2f(v.z));
 	}
 
 	constexpr Vector3 clamp(const Vector3 &val, const Vector3 &min, const Vector3 &max)
@@ -586,28 +526,6 @@ namespace mutil
 	constexpr Vector3 lerp(const Vector3 &a, const Vector3 &b, const Vector3 &t)
 	{
 		return Vector3(lerp(a.x, b.x, t.x), lerp(a.y, b.y, t.y), lerp(a.z, b.z, t.z));
-	}
-
-	inline Vector3 slerp(const Vector3 &a, const Vector3 &b, float t)
-	{
-		float d = dot(a, b);
-		d = clamp(d, -1.0f, 1.0f);
-		float theta = acosf(d) * t;
-		Vector3 rel = normalize(b - (a * d));
-		return (a * cosf(theta)) + (rel * sinf(theta));
-	}
-
-	inline Vector3 nlerp(const Vector3 &a, const Vector3 &b, float t)
-	{
-		return normalize(lerp(a, b, t));
-	}
-
-	/*!
-	Geodesic distance.
-	*/
-	inline float geodistance(const Vector3 &a, const Vector3 &b)
-	{
-		return acosf(dot(a, b));
 	}
 
 	constexpr Vector3 smoothstep(const Vector3 &a, const Vector3 &b, float x)
@@ -654,12 +572,9 @@ namespace mutil
 	*/
 	inline float dot(const Vector4 &first, const Vector4 &second)
 	{
-#if defined(MUTIL_USE_INTRINSICS)
-#if defined(MUTIL_X86)
+#if defined(USE_SIMD)
 		constexpr int MASK = 0xf1;
 		return _mm_cvtss_f32(_mm_dp_ps(_mm_loadu_ps((float *)&first), _mm_loadu_ps((float *)&second), MASK));
-#elif defined(MUTIL_ARM)
-#endif
 #else
 		return (first.x * second.x) + (first.y * second.y) + (first.z * second.z) + (first.w * second.w);
 #endif
@@ -674,14 +589,10 @@ namespace mutil
 	*/
 	inline float length(const Vector4 &vec)
 	{
-#if defined(MUTIL_USE_INTRINSICS)
-#if defined(MUTIL_X86)
+#if defined(USE_SIMD)
 		float result = dot(vec, vec);
 		_mm_store_ss(&result, _mm_sqrt_ss(_mm_load_ss(&result)));
 		return result;
-#elif defined(MUTIL_ARM)
-		return sqrtf(dot(vec, vec));
-#endif
 #else
 		return sqrtf(dot(vec, vec));
 #endif
@@ -726,6 +637,16 @@ namespace mutil
 		return vec * inverseSqrt(dot(vec, vec));
 	}
 
+	inline float Vector4::length() const
+	{
+		return mutil::length(*this);
+	}
+
+	inline Vector4 Vector4::normalized() const
+	{
+		return mutil::normalize(*this);
+	}
+
 	/*!
 	Reflects a Vector4 over a normal, returning the reflected vector.
 
@@ -746,7 +667,7 @@ namespace mutil
 
 	@return The same vector in radians.
 	*/
-	constexpr Vector4 radians(const Vector4 &vec)
+	inline Vector4 radians(const Vector4 &vec)
 	{
 		return Vector4(radians(vec.x), radians(vec.y), radians(vec.z), radians(vec.w));
 	}
@@ -758,7 +679,7 @@ namespace mutil
 
 	@return The same vector in degrees.
 	*/
-	constexpr Vector4 degrees(const Vector4 &vec)
+	inline Vector4 degrees(const Vector4 &vec)
 	{
 		return Vector4(degrees(vec.x), degrees(vec.y), degrees(vec.z), degrees(vec.w));
 	}
@@ -771,7 +692,7 @@ namespace mutil
 
 	@return The absolute value.
 	*/
-	constexpr Vector4 abs(const Vector4 &vec)
+	inline Vector4 abs(const Vector4 &vec)
 	{
 		return Vector4(
 			vec.x < 0.0 ? -vec.x : vec.x,
@@ -794,61 +715,6 @@ namespace mutil
 		for (size_t i = 0; i < 4; i++)
 			result[i] = clamp(val[i], min[i], max[i]);
 		return result;
-	}
-
-	constexpr Vector4 fract(const Vector4 &val)
-	{
-		return Vector4(fract(val.x), fract(val.y), fract(val.z), fract(val.z));
-	}
-
-	inline Vector4 mod(const Vector4 &a, float b)
-	{
-		return Vector4(fmodf(a.x, b), fmodf(a.y, b), fmodf(a.z, b), fmodf(a.w, b));
-	}
-
-	inline Vector4 mod(const Vector4 &a, const Vector4 &b)
-	{
-		return Vector4(fmodf(a.x, b.x), fmodf(a.y, b.y), fmodf(a.z, b.z), fmodf(a.w, b.w));
-	}
-
-	inline Vector4 sin(const Vector4 &v)
-	{
-		return Vector4(sinf(v.x), sinf(v.y), sinf(v.z), sinf(v.w));
-	}
-
-	inline Vector4 cos(const Vector4 &v)
-	{
-		return Vector4(cosf(v.x), cosf(v.y), cosf(v.z), cosf(v.w));
-	}
-
-	inline Vector4 tan(const Vector4 &v)
-	{
-		return Vector4(tanf(v.x), tanf(v.y), tanf(v.z), tanf(v.w));
-	}
-
-	inline Vector4 asin(const Vector4 &v)
-	{
-		return Vector4(asinf(v.x), asinf(v.y), sinf(v.z), sinf(v.w));
-	}
-
-	inline Vector4 acos(const Vector4 &v)
-	{
-		return Vector4(acosf(v.x), acosf(v.y), acosf(v.z), acosf(v.w));
-	}
-
-	inline Vector4 atan(const Vector4 &v)
-	{
-		return Vector4(atanf(v.x), atanf(v.y), atanf(v.z), atanf(v.w));
-	}
-
-	inline Vector4 exp(const Vector4 &v)
-	{
-		return Vector4(expf(v.x), expf(v.y), expf(v.z), expf(v.w));
-	}
-
-	inline Vector4 exp2(const Vector4 &v)
-	{
-		return Vector4(exp2f(v.x), exp2f(v.y), expf(v.z), expf(v.w));
 	}
 
 	constexpr Vector4 lerp(const Vector4 &a, const Vector4 &b, float t)
