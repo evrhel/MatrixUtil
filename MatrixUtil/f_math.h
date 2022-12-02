@@ -59,7 +59,9 @@ namespace mutil
 		_mm_store_ss(&result, _mm_sqrt_ss(_mm_load_ss(&num)));
 		return 1.0f / result;
 #elif MUTIL_ARM
-		return 1.0f / sqrtf(num);
+		float32x2_t vec = vdup_n_f32(num);
+		float32x2_t sqrt = vsqrt_f32(vec);
+		return 1.0f / vget_lane_f32(sqrt, 0);
 #endif
 #else
 		return 1.0f / sqrtf(num);
@@ -74,19 +76,10 @@ namespace mutil
 		_mm_store_ss(&result, _mm_rsqrt_ss(_mm_load_ss(&num)));
 		return result;
 #elif MUTIL_ARM
-		const float x2 = num * 0.5f;
-		const float threehalfs = 1.5f;
-
-		union
-		{
-			float f;
-			int32_t i;
-		} un;
-
-		un.f = num;
-		un.i = 0x5f3759df - (un.i >> 1);
-		un.f *= threehalfs - (x2 * un.f * un.f);
-		return un.f;
+		float32x2_t vec = vdup_n_f32(num);
+		float32x2_t result = vrsqrte_f32(vec);
+		result = vmul_f32(vrsqrts_f32(vmul_f32(vec, result), result), result);
+		return vget_lane_f32(result, 0);
 #endif
 #else
 		const float x2 = num * 0.5f;
