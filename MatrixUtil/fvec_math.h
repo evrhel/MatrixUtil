@@ -72,8 +72,7 @@ namespace mutil
 		return result;
 #elif MUTIL_ARM
 		float32_t result = dot(vec, vec);
-		float32x2_t a = vld1_f32(&result);
-		a = vsqrt_f32(a);
+		float32x2_t a = vsqrt_f32(vld1_f32(&result));
 		return vget_lane_f32(a, 0);
 #endif
 #else
@@ -310,9 +309,22 @@ namespace mutil
 	*/
 	inline float dot(const Vector3 &first, const Vector3 &second)
 	{
-#if defined(USE_SIMD)
+#if MUTIL_USE_INTRINSICS
+#if MUTIL_X86
 		constexpr int MASK = 0x71;
 		return _mm_cvtss_f32(_mm_dp_ps(_mm_loadu_ps((float *)&first), _mm_loadu_ps((float *)&second), MASK));
+#elif MUTIL_ARM
+		Vector4 va(first, 0.0f);
+		Vector4 vb(second, 0.0f);
+
+		float32x4_t vaq = vld1q_f32((float *)&va);
+		float32x4_t vbq = vld1q_f32((float *)&vb);
+
+		float32x4_t vab = vmulq_f32(vaq, vbq);
+		float32x2_t vab2 = vpadd_f32(vget_low_f32(vab), vget_high_f32(vab));
+
+		return vget_lane_f32(vab2, 0) + vget_lane_f32(vab2, 1);
+#endif
 #else
 		return (first.x * second.x) + (first.y * second.y) + (first.z * second.z);
 #endif
@@ -343,10 +355,16 @@ namespace mutil
 	*/
 	inline float length(const Vector3 &vec)
 	{
-#if defined(USE_SIMD)
+#if MUTIL_USE_INTRINSICS
+#if MUTIL_X86
 		float result = dot(vec, vec);
 		_mm_store_ss(&result, _mm_sqrt_ss(_mm_load_ss(&result)));
 		return result;
+#elif MUTIL_ARM
+		float32_t result = dot(vec, vec);
+		float32x2_t a = vsqrt_f32(vld1_f32(&result));
+		return vget_lane_f32(a, 0);
+#endif
 #else
 		return sqrtf(dot(vec, vec));
 #endif
@@ -460,10 +478,16 @@ namespace mutil
 	*/
 	inline Vector3 refract(const Vector3 &vec, const Vector3 &normal, float ratio)
 	{
-#if defined(USE_SIMD)
+#if MUTIL_USE_INTRINSICS
+#if MUTIL_X86
 		float sqrtresult = 1 - (ratio * ratio) * dot(cross(normal, vec), cross(normal, vec));
 		_mm_store_ss(&sqrtresult, _mm_sqrt_ss(_mm_load_ss(&sqrtresult)));
 		return ((cross(normal, cross(-normal, vec))) * ratio) - (normal * sqrtresult);
+#elif MUTIL_ARM
+		float32_t sqrtresult = 1 - (ratio * ratio) * dot(cross(normal, vec), cross(normal, vec));
+		sqrtresult = vget_lane_f32(vsqrt_f32(vld1_f32(&sqrtresult)), 0);
+		return ((cross(normal, cross(-normal, vec))) * ratio) - (normal * sqrtresult);
+#endif
 #else
 		return ((cross(normal, cross(-normal, vec))) * ratio) - (normal * sqrtf(1 - (ratio * ratio) * dot(cross(normal, vec), cross(normal, vec))));
 #endif
@@ -592,9 +616,23 @@ namespace mutil
 	*/
 	inline float dot(const Vector4 &first, const Vector4 &second)
 	{
-#if defined(USE_SIMD)
+#if MUTIL_USE_INTRINSICS
+#if MUTIL_X86
 		constexpr int MASK = 0xf1;
 		return _mm_cvtss_f32(_mm_dp_ps(_mm_loadu_ps((float *)&first), _mm_loadu_ps((float *)&second), MASK));
+#elif MUTIL_ARM
+		float32x4_t vaq = vld1q_f32((float *)&first);
+		float32x4_t vbq = vld1q_f32((float *)&second);
+
+		float32x4_t vab = vmulq_f32(vaq, vbq);
+
+		float32x2_t vab1 = vget_low_f32(vab);
+		float32x2_t vab2 = vget_high_f32(vab);
+
+		float32x2_t vab3 = vpadd_f32(vab1, vab2);
+
+		return vget_lane_f32(vab3, 0) + vget_lane_f32(vab3, 1);
+#endif
 #else
 		return (first.x * second.x) + (first.y * second.y) + (first.z * second.z) + (first.w * second.w);
 #endif
@@ -609,10 +647,16 @@ namespace mutil
 	*/
 	inline float length(const Vector4 &vec)
 	{
-#if defined(USE_SIMD)
+#if MUTIL_USE_INTRINSICS
+#if MUTL_X86
 		float result = dot(vec, vec);
 		_mm_store_ss(&result, _mm_sqrt_ss(_mm_load_ss(&result)));
 		return result;
+#elif MUTIL_ARM
+		float32_t result = dot(vec, vec);
+		float32x2_t a = vsqrt_f32(vld1_f32(&result));
+		return vget_lane_f32(a, 0);
+#endif
 #else
 		return sqrtf(dot(vec, vec));
 #endif

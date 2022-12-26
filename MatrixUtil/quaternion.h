@@ -363,8 +363,8 @@ namespace mutil
 	inline Quaternion sqrt(const Quaternion &a)
 	{
 		const float mag = length(a);
-		const float coeff1 = sqrtf((mag + a.real) / 2.0f);
-		const float coeff2 = sqrtf((mag - a.real) / 2.0f);
+		const float coeff1 = mutil::sqrt((mag + a.real) / 2.0f);
+		const float coeff2 = mutil::sqrt((mag - a.real) / 2.0f);
 		return Quaternion(coeff1, normalize(a.imag) * coeff2);
 	}
 
@@ -373,8 +373,8 @@ namespace mutil
 		const float ea = expf(a.real);
 		const float mag = length(a);
 
-		const float cosmag = cosf(mag);
-		const float sinmag = sinf(mag);
+		const float cosmag = mutil::cos(mag);
+		const float sinmag = mutil::sin(mag);
 
 		return ea * Quaternion(cosmag, normalize(a.imag) * sinmag);
 	}
