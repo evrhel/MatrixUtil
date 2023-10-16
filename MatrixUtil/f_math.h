@@ -11,12 +11,10 @@ Contains methods for performing floating-point math operations.
 #include "settings.h"
 #include <math.h>
 
-#if MUTIL_USE_INTRINSICS
-#if MUTIL_X86
+#if MUTIL_USE_SSE
 #include <smmintrin.h>
-#elif MUTIL_ARM
+#elif MUTIL_USE_NEON
 #include <arm_neon.h>
-#endif
 #endif
 
 #define MUTIL_PI (3.14159265358979323846f)
@@ -26,6 +24,8 @@ Contains methods for performing floating-point math operations.
 #define MUTIL_PI4 (3.14159265358979323846f / 4.0f)
 #define MUTIL_2PI (3.14159265358979323846f * 2.0f)
 #define MUTIL_NAN (0.0f / 0.0f)
+#define MUTIL_TO_RAD (0.0174532925199432f)
+#define MUTIL_TO_DEG (57.2957795130823f)
 
 namespace mutil
 {
@@ -38,7 +38,7 @@ namespace mutil
 	*/
 	constexpr float radians(float degrees)
 	{
-		return degrees / 180 * MUTIL_PI;
+		return degrees * MUTIL_TO_RAD;
 	}
 
 	/*!
@@ -50,7 +50,7 @@ namespace mutil
 	*/
 	constexpr float degrees(float radians)
 	{
-		return radians / MUTIL_PI * 180;
+		return radians * MUTIL_TO_DEG;
 	}
 
 	constexpr float sgn(float x)
@@ -64,14 +64,12 @@ namespace mutil
 
 	inline float sqrt(float x)
 	{
-#if MUTIL_USE_INTRINSICS
-#if MUTIL_X86
+#if MUTIL_USE_SSE
 		float result;
 		_mm_store_ss(&result, _mm_sqrt_ss(_mm_load_ss(&x)));
 		return result;
-#elif MUTIL_ARM
+#elif MUTIL_USE_NEON
 		return vget_lane_f32(vsqrt_f32(vdup_n_f32(x)), 0);
-#endif
 #else
 		return sqrtf(x);
 #endif
@@ -79,14 +77,12 @@ namespace mutil
 
 	inline float inverseSqrt(const float num)
 	{
-#if MUTIL_USE_INTRINSICS
-#if MUTIL_X86
+#if MUTIL_USE_SSE
 		float result;
 		_mm_store_ss(&result, _mm_sqrt_ss(_mm_load_ss(&num)));
 		return 1.0f / result;
-#elif MUTIL_ARM
+#elif MUTIL_USE_NEON
 		return vget_lane_f32(vrecpe_f32(vsqrt_f32(vdup_n_f32(num))), 0);
-#endif
 #else
 		return 1.0f / sqrtf(num);
 #endif
@@ -94,17 +90,15 @@ namespace mutil
 
 	inline float fastInverseSqrt(const float num)
 	{
-#if MUTIL_USE_INTRINSICS
-#if MUTIL_X86
+#if MUTIL_USE_SSE
 		float result;
 		_mm_store_ss(&result, _mm_rsqrt_ss(_mm_load_ss(&num)));
 		return result;
-#elif MUTIL_ARM
+#elif MUTIL_USE_NEON
 		float32x2_t vec = vdup_n_f32(num);
 		float32x2_t result = vrsqrte_f32(vec);
 		result = vmul_f32(vrsqrts_f32(vmul_f32(vec, result), result), result);
 		return vget_lane_f32(result, 0);
-#endif
 #else
 		const float x2 = num * 0.5f;
 		const float threehalfs = 1.5f;
@@ -140,53 +134,61 @@ namespace mutil
 
 	inline float ceil(float x)
 	{
-#if MUTIL_USE_INTRINSICS
-#if MUTIL_X86
-#elif MUTIL_ARM
+#if MUTIL_USE_SSE
+		const float zero = 0.0f;
+		float result;
+		_mm_store_ss(&result, _mm_ceil_ss(_mm_load_ss(&x), _mm_load_ss(&zero)));
+		return result;
+#elif MUTIL_USE_NEON
 		float32x2_t result = vcvt_f32_s32(vcvt_s32_f32(vdup_n_f32(x)));
 		return vget_lane_f32(result, 0) + (x > vget_lane_f32(result, 0));
-#endif
-#elif
+#else
 		return ceilf(x);
 #endif
 	}
 
 	inline float floor(float x)
 	{
-#if MUTIL_USE_INTRINSICS
-#if MUTIL_X86
-#elif MUTIL_ARM
+#if MUTIL_USE_SSE
+		const float zero = 0.0f;
+		float result;
+		_mm_store_ss(&result, _mm_floor_ss(_mm_load_ss(&x), _mm_load_ss(&zero)));
+		return result;
+#elif MUTIL_USE_NEON
 		float32x2_t result = vcvt_f32_s32(vcvt_s32_f32(vdup_n_f32(x)));
 		return vget_lane_f32(result, 0) - (x < vget_lane_f32(result, 0));
-#endif
-#elif
+#else
 		return floorf(x);
 #endif
 	}
 
+	inline float trunc(float x)
+	{
+		return x < 0 ? ceil(x) : floor(x);
+	}
+
 	inline float mod(float a, float b)
 	{
-#if MUTIL_USE_INTRINSICS
-#if MUTIL_X86
-#elif MUTIL_ARM
+#if MUTIL_USE_ARM
 		float32x2_t result = vdup_n_f32(a);
 		float32x2_t divisor = vdup_n_f32(b);
 		float32x2_t quotient = vcvt_f32_s32(vcvt_s32_f32(vdiv_f32(result, divisor)));
 		return vget_lane_f32(vsub_f32(result, vmul_f32(quotient, divisor)), 0);
-#endif
 #else
-		return fmodf(a, b);
+		return a - trunc(a / b) * b;
 #endif
 	}
 
 	inline float fract(float val)
 	{
-#if MUTIL_USE_INTRINSICS
-#if MUTIL_X86
-#elif MUTIL_ARM
+#if MUTIL_USE_SSE
+		const float zero = 0.0f;
+		float result;
+		_mm_store_ss(&result, _mm_sub_ss(_mm_load_ss(&val), _mm_floor_ss(_mm_load_ss(&val), _mm_load_ss(&zero))));
+		return result;
+#elif MUTIL_USE_ARM
 		float32x2_t result = vcvt_f32_s32(vcvt_s32_f32(vdup_n_f32(val)));
 		return vget_lane_f32(vsub_f32(vdup_n_f32(val), result), 0);
-#endif
 #else
 		return val - floor(val);
 #endif
@@ -223,9 +225,8 @@ namespace mutil
 		return x * x * x * (x * (x * 6.0f - 15.0f) + 10.f);
 	}
 
-#if MUTIL_USE_INTRINSICS
-#if MUTIL_X86
-#elif MUTIL_ARM
+#if MUTIL_USE_SSE
+#elif MUTIL_USE_NEON
 
 	// make vector from two floats
 	inline float32x2_t __makev2(float x, float y)
@@ -269,8 +270,7 @@ namespace mutil
 		return t1;
 	}
 
-#endif
-#endif
+#else
 
 	// wrap x to [-pi, pi]
 	inline float __wrapnpipi(float x)
@@ -283,13 +283,11 @@ namespace mutil
 		return x;
 	}
 
+#endif
 	inline float sin(float x)
 	{
-#if MUTIL_USE_INTRINSICS
-#if MUTIL_X86
-#elif MUTIL_ARM
+#if MUTIL_USE_NEON
 		return vget_lane_f32(__sincos_neon(__wrapnpipi(x)), 0);
-#endif
 #else
 		return sinf(x);
 #endif
@@ -297,11 +295,8 @@ namespace mutil
 
 	inline float cos(float x)
 	{
-#if MUTIL_USE_INTRINSICS
-#if MUTIL_X86
-#elif MUTIL_ARM
+#if MUTIL_USE_INTRINSICS && MUTIL_ARM
 		return vget_lane_f32(__sincos_neon(__wrapnpipi(x)), 1);
-#endif
 #else
 		return cosf(x);
 #endif
@@ -309,12 +304,9 @@ namespace mutil
 
 	inline float tan(float x)
 	{
-#if MUTIL_USE_INTRINSICS
-#if MUTIL_X86
-#elif MUTIL_ARM
+#if MUTIL_USE_NEON
 		float32x2_t sc = __sincos_neon(__wrapnpipi(x));
 		return vget_lane_f32(sc, 0) / vget_lane_f32(sc, 1);
-#endif
 #else
 		return tanf(x);
 #endif
@@ -388,7 +380,7 @@ namespace mutil
 	}
 
 	// https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6928950/
-	// accurate for (-1.1308, 1.1308)
+	// accurate for [-1.1308, 1.1308]
 	constexpr float __atan_fast_arctan(float x)
 	{
 		constexpr float b1 = 0.0443f;

@@ -36,11 +36,10 @@ namespace mutil
 	*/
 	inline float dot(const Vector2 &first, const Vector2 &second)
 	{
-#if MUTIL_USE_INTRINSICS
-#if MUTIL_X86
+#if MUTIL_USE_SSE
 		constexpr int MASK = 0x31;
 		return _mm_cvtss_f32(_mm_dp_ps(_mm_loadu_ps((float *)&first), _mm_loadu_ps((float *)&second), MASK));
-#elif MUTIL_ARM
+#elif MUTIL_USE_NEON
 		float32x2_t a, b;
 
 		a = vld1_f32((float32_t *)&first);
@@ -50,7 +49,6 @@ namespace mutil
 		a = vpadd_f32(a, a);
 
 		return vget_lane_f32(a, 0);
-#endif
 #else
 		return (first.x * second.x) + (first.y * second.y);
 #endif
@@ -65,16 +63,14 @@ namespace mutil
 	*/
 	inline float length(const Vector2 &vec)
 	{
-#if MUTIL_USE_INTRINSICS
-#if MUTIL_X86
+#if MUTIL_USE_SSE
 		float result = dot(vec, vec);
 		_mm_store_ss(&result, _mm_sqrt_ss(_mm_load_ss(&result)));
 		return result;
-#elif MUTIL_ARM
+#elif MUTIL_USE_NEON
 		float32_t result = dot(vec, vec);
 		float32x2_t a = vsqrt_f32(vld1_f32(&result));
 		return vget_lane_f32(a, 0);
-#endif
 #else
 		return sqrtf(dot(vec, vec));
 #endif
@@ -309,11 +305,10 @@ namespace mutil
 	*/
 	inline float dot(const Vector3 &first, const Vector3 &second)
 	{
-#if MUTIL_USE_INTRINSICS
-#if MUTIL_X86
+#if MUTIL_USE_SSE
 		constexpr int MASK = 0x71;
 		return _mm_cvtss_f32(_mm_dp_ps(_mm_loadu_ps((float *)&first), _mm_loadu_ps((float *)&second), MASK));
-#elif MUTIL_ARM
+#elif MUTIL_USE_NEON
 		Vector4 va(first, 0.0f);
 		Vector4 vb(second, 0.0f);
 
@@ -324,7 +319,6 @@ namespace mutil
 		float32x2_t vab2 = vpadd_f32(vget_low_f32(vab), vget_high_f32(vab));
 
 		return vget_lane_f32(vab2, 0) + vget_lane_f32(vab2, 1);
-#endif
 #else
 		return (first.x * second.x) + (first.y * second.y) + (first.z * second.z);
 #endif
@@ -355,16 +349,14 @@ namespace mutil
 	*/
 	inline float length(const Vector3 &vec)
 	{
-#if MUTIL_USE_INTRINSICS
-#if MUTIL_X86
+#if MUTIL_USE_SSE
 		float result = dot(vec, vec);
 		_mm_store_ss(&result, _mm_sqrt_ss(_mm_load_ss(&result)));
 		return result;
-#elif MUTIL_ARM
+#elif MUTIL_USE_NEON
 		float32_t result = dot(vec, vec);
 		float32x2_t a = vsqrt_f32(vld1_f32(&result));
 		return vget_lane_f32(a, 0);
-#endif
 #else
 		return sqrtf(dot(vec, vec));
 #endif
@@ -478,16 +470,14 @@ namespace mutil
 	*/
 	inline Vector3 refract(const Vector3 &vec, const Vector3 &normal, float ratio)
 	{
-#if MUTIL_USE_INTRINSICS
-#if MUTIL_X86
+#if MUTIL_USE_SSE
 		float sqrtresult = 1 - (ratio * ratio) * dot(cross(normal, vec), cross(normal, vec));
 		_mm_store_ss(&sqrtresult, _mm_sqrt_ss(_mm_load_ss(&sqrtresult)));
 		return ((cross(normal, cross(-normal, vec))) * ratio) - (normal * sqrtresult);
-#elif MUTIL_ARM
+#elif MUTIL_USE_ARM
 		float32_t sqrtresult = 1 - (ratio * ratio) * dot(cross(normal, vec), cross(normal, vec));
 		sqrtresult = vget_lane_f32(vsqrt_f32(vld1_f32(&sqrtresult)), 0);
 		return ((cross(normal, cross(-normal, vec))) * ratio) - (normal * sqrtresult);
-#endif
 #else
 		return ((cross(normal, cross(-normal, vec))) * ratio) - (normal * sqrtf(1 - (ratio * ratio) * dot(cross(normal, vec), cross(normal, vec))));
 #endif
@@ -616,11 +606,10 @@ namespace mutil
 	*/
 	inline float dot(const Vector4 &first, const Vector4 &second)
 	{
-#if MUTIL_USE_INTRINSICS
-#if MUTIL_X86
+#if MUTIL_USE_SSE
 		constexpr int MASK = 0xf1;
 		return _mm_cvtss_f32(_mm_dp_ps(_mm_loadu_ps((float *)&first), _mm_loadu_ps((float *)&second), MASK));
-#elif MUTIL_ARM
+#elif MUTIL_USE_NEON
 		float32x4_t vaq = vld1q_f32((float *)&first);
 		float32x4_t vbq = vld1q_f32((float *)&second);
 
@@ -632,7 +621,6 @@ namespace mutil
 		float32x2_t vab3 = vpadd_f32(vab1, vab2);
 
 		return vget_lane_f32(vab3, 0) + vget_lane_f32(vab3, 1);
-#endif
 #else
 		return (first.x * second.x) + (first.y * second.y) + (first.z * second.z) + (first.w * second.w);
 #endif
@@ -647,16 +635,14 @@ namespace mutil
 	*/
 	inline float length(const Vector4 &vec)
 	{
-#if MUTIL_USE_INTRINSICS
-#if MUTL_X86
+#if MUTIL_USE_SSE
 		float result = dot(vec, vec);
 		_mm_store_ss(&result, _mm_sqrt_ss(_mm_load_ss(&result)));
 		return result;
-#elif MUTIL_ARM
+#elif MUTIL_USE_NEON
 		float32_t result = dot(vec, vec);
 		float32x2_t a = vsqrt_f32(vld1_f32(&result));
 		return vget_lane_f32(a, 0);
-#endif
 #else
 		return sqrtf(dot(vec, vec));
 #endif

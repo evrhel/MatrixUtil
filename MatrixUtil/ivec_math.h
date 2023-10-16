@@ -52,14 +52,10 @@ namespace mutil
 	*/
 	inline int32_t length(const IntVector2 &vec)
 	{
-#if defined(MUTIL_USE_INTRINSICS)
-#if defined(MUTIL_X86)
+#if MUTIL_USE_SSE
 		float result = (float)dot(vec, vec);
 		_mm_store_ss(&result, _mm_sqrt_ss(_mm_load_ss(&result)));
 		return (int32_t)result;
-#elif defined(MUTIL_ARM)
-		return (int32_t)sqrtf((float)dot(vec, vec));
-#endif
 #else
 		return (int32_t)sqrtf((float)dot(vec, vec));
 #endif
@@ -219,14 +215,10 @@ namespace mutil
 	*/
 	inline int32_t length(const IntVector3 &vec)
 	{
-#if defined(MUTIL_USE_INTRINSICS)
-#if defined(MUTIL_X86)
+#if MUTIL_USE_SSE
 		float result = (float)dot(vec, vec);
 		_mm_store_ss(&result, _mm_sqrt_ss(_mm_load_ss(&result)));
 		return (int32_t)result;
-#elif defined(MUTIL_ARM)
-		return (int32_t)sqrtf((float)dot(vec, vec));
-#endif
 #else
 		return (int32_t)sqrtf((float)dot(vec, vec));
 #endif
@@ -395,14 +387,10 @@ namespace mutil
 	*/
 	inline int32_t length(const IntVector4 &vec)
 	{
-#if defined(MUTIL_USE_INTRINSICS)
-#if defined(MUTIL_X86)
+#if MUTIL_USE_SSE
 		float result = (float)dot(vec, vec);
 		_mm_store_ss(&result, _mm_sqrt_ss(_mm_load_ss(&result)));
 		return (int32_t)result;
-#elif defined(MUTIL_ARM)
-		return (int32_t)sqrtf((float)dot(vec, vec));
-#endif
 #else
 		return (int32_t)sqrtf((float)dot(vec, vec));
 #endif
