@@ -11,8 +11,8 @@ release:
 	cp MatrixUtil/*.h release/MatrixUtil/include
 	cp MatrixUtil/matrixutil.natvis release/MatrixUtil/include
 
-	zip -r release/MatrixUtil.zip release/MatrixUtil
-	tar -czf release/MatrixUtil.tar.gz release/MatrixUtil
+	(cd release/MatrixUtil && zip -r ../MatrixUtil.zip include)
+	(cd release/MatrixUtil && tar -czf ../MatrixUtil.tar.gz include)
 
 clean:
 	rm -rf release
