@@ -6,14 +6,9 @@ matrices, and transformation matrices.
 
 #pragma once
 
-#ifndef FMAT_TRANSFORM_H
-#define FMAT_TRANSFORM_H
-
 #include "settings.h"
 #include "fmat_math.h"
 #include "vec_types.h"
-
-#include <cmath>
 
 #include "fvec_math.h"
 
@@ -28,11 +23,11 @@ namespace mutil
 
 	@return The look matrix.
 	*/
-	inline Matrix4 lookAt(const Vector3 &eye, const Vector3 &at, const Vector3 &up)
+	inline Matrix4 MUTIL_VECTORCALL lookAt(const Vector3 &eye, const Vector3 &at, const Vector3 &up)
 	{
-		Vector3 const f = normalize(at - eye);
-		Vector3 const r = normalize(cross(f, up));
-		Vector3 const u = cross(r, f);
+		const Vector3 f = normalize(at - eye);
+		const Vector3 r = normalize(cross(f, up));
+		const Vector3 u = cross(r, f);
 
 		return Matrix4(
 			Vector4(r.x, u.x, -f.x, 0.0f),
@@ -54,7 +49,7 @@ namespace mutil
 
 	@return The orthographic projection matrix.
 	*/
-	constexpr Matrix4 ortho(float left, float right, float bottom, float top, float zNear, float zFar)
+	constexpr Matrix4 MUTIL_VECTORCALL ortho(float left, float right, float bottom, float top, float zNear, float zFar)
 	{
 		return Matrix4(
 			Vector4(2.0f / (right - left), 0.0f, 0.0f, 0.0f),
@@ -74,7 +69,7 @@ namespace mutil
 
 	@return The orthographic projection matrix.
 	*/
-	constexpr Matrix4 ortho(float left, float right, float bottom, float top)
+	constexpr Matrix4 MUTIL_VECTORCALL ortho(float left, float right, float bottom, float top)
 	{
 		return Matrix4(
 			Vector4(2.0f / (right - left), 0.0f, 0.0f, 0.0f),
@@ -94,9 +89,9 @@ namespace mutil
 
 	@return The perspective projection matrix.
 	*/
-	inline Matrix4 perspective(float fov, float aspect, float zNear, float zFar)
+	inline Matrix4 MUTIL_VECTORCALL perspective(float fov, float aspect, float zNear, float zFar)
 	{
-		float const tanHalfFOV = tanf(fov / 2.0f);
+		const float tanHalfFOV = tanf(fov / 2.0f);
 		Matrix4 result(0.0f);
 		result.columns[0].x = 1.0f / (aspect * tanHalfFOV);
 		result.columns[1].y = 1.0f / (tanHalfFOV);
@@ -115,7 +110,7 @@ namespace mutil
 
 	@return A rotated version of the input matrix.
 	*/
-	inline Matrix4 rotate(const Matrix4 &mat4, float angle, const Vector3 &axis)
+	inline Matrix4 MUTIL_VECTORCALL rotate(const Matrix4 &mat4, float angle, const Vector3 &axis)
 	{
 		const float c = cosf(angle);
 		const float s = sinf(angle);
@@ -146,7 +141,7 @@ namespace mutil
 
 	@return A scaled version of the input matrix.
 	*/
-	constexpr Matrix4 scale(const Matrix4 &mat4, const Vector3 &scale)
+	constexpr Matrix4 MUTIL_VECTORCALL scale(const Matrix4 &mat4, const Vector3 &scale)
 	{
 		return Matrix4(
 			mat4.columns[0] * scale.x,
@@ -164,7 +159,7 @@ namespace mutil
 
 	@return A translated version of the input matrix.
 	*/
-	constexpr Matrix4 translate(const Matrix4 &mat4, const Vector3 &translation)
+	constexpr Matrix4 MUTIL_VECTORCALL translate(const Matrix4 &mat4, const Vector3 &translation)
 	{
 		return Matrix4(
 			mat4.columns[0],
@@ -174,4 +169,3 @@ namespace mutil
 		);
 	}
 }
-#endif

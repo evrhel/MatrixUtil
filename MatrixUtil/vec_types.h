@@ -5,9 +5,6 @@ Contains classes for handling different types of vectors.
 
 #pragma once
 
-#ifndef FVEC_TYPES_H
-#define FVEC_TYPES_H
-
 #include <stdint.h>
 #include <memory>
 
@@ -36,62 +33,17 @@ namespace mutil
 	public:
 		union
 		{
-			struct
-			{
-				float x, y;
-			};
-			struct
-			{
-				float r, g;
-			};
-			struct
-			{
-				float s, t;
-			};
+			struct { float x, y; };
+			struct { float r, g; };
+			struct { float s, t; };
 			float vec[2];
 		};
 
-		/*!
-		Constructs a zeroed vector.
-		*/
 		constexpr Vector2() : x(0.0f), y(0.0f) {}
-
-		/*!
-		Constructs a vector filled with one value.
-
-		@param scale The value to fill with.
-		*/
 		explicit constexpr Vector2(const float scalar) : x(scalar), y(scalar) {}
-
-		/*!
-		Constructs a vector with two explicit values.
-
-		@param x The x value.
-		@param y The y value.
-		*/
 		constexpr Vector2(const float x, const float y) : x(x), y(y) {}
-
-		/*!
-		Typecasts from an 32-bit integer vector.
-
-		@param ivec2 The vector to cast from.
-		*/
 		explicit constexpr Vector2(const IntVector2 &ivec2);
-
-		/*!
-		Constructs a Vector2 with only the x and y components of
-		the input vector.
-
-		@param vec A vector.
-		*/
 		explicit constexpr Vector2(const Vector3 &vec);
-
-		/*!
-		Constructs a Vector2 with only the x and y components of
-		the input vector.
-
-		@param vec A vector.
-		*/
 		explicit constexpr Vector2(const Vector4 &vec);
 
 		constexpr Vector2 &operator+=(const Vector2 &first);
@@ -101,19 +53,16 @@ namespace mutil
 		constexpr Vector2 &operator/=(const Vector2 &first);
 		constexpr Vector2 &operator/=(float scalar);
 
-		constexpr const float &operator[](size_t index) const
-		{
-			return vec[index];
-		}
+		constexpr const float &operator[](size_t index) const { return vec[index]; }
+		constexpr float &operator[](size_t index) { return vec[index]; }
 
-		constexpr float &operator[](size_t index)
-		{
-			return vec[index];
-		}
+		MUTIL_FORCEINLINE float MUTIL_VECTORCALL length() const;
+		MUTIL_FORCEINLINE float MUTIL_VECTORCALL lengthSq() const;
+		MUTIL_FORCEINLINE Vector2 MUTIL_VECTORCALL normalized() const;
 
-		inline float length() const;
-		inline float lengthSq() const;
-		inline Vector2 normalized() const;
+		constexpr Vector2 swizzle(size_t x, size_t y) const;
+		constexpr Vector3 swizzle(size_t x, size_t y, size_t z) const;
+		constexpr Vector4 swizzle(size_t x, size_t y, size_t z, size_t w) const;
 	};
 
 	constexpr Vector2 operator+(const Vector2 &first, const Vector2 &second) { return Vector2(first.x + second.x, first.y + second.y); }
@@ -134,18 +83,9 @@ namespace mutil
 	public:
 		union
 		{
-			struct
-			{
-				float x, y, z;
-			};
-			struct
-			{
-				float r, g, b;
-			};
-			struct
-			{
-				float s, t, p;
-			};
+			struct { float x, y, z; };
+			struct { float r, g, b; };
+			struct { float s, t, p; };
 			float vec[3];
 		};
 
@@ -156,21 +96,7 @@ namespace mutil
 
 		constexpr Vector3(const Vector2 &xy, float z) : x(xy.x), y(xy.y), z(z) {}
 		constexpr Vector3(float x, const Vector2 &yz) : x(x), y(yz.x), z(yz.y) {}
-
-		/*!
-		Constructs a Vector3 with the x and y components of
-		the input vector, and the rest zeroed.
-
-		@param vec A vector.
-		*/
 		explicit constexpr Vector3(const Vector2 &vec);
-
-		/*!
-		Constructs a Vector3 with only the x, y, and z components of
-		the input vector.
-
-		@param vec A vector.
-		*/
 		explicit constexpr Vector3(const Vector4 &vec);
 
 		constexpr Vector3 &operator+=(const Vector3 &first);
@@ -180,19 +106,16 @@ namespace mutil
 		constexpr Vector3 &operator/=(const Vector3 &first);
 		constexpr Vector3 &operator/=(float scalar);
 
-		constexpr const float &operator[](size_t index) const
-		{
-			return vec[index];
-		}
+		constexpr const float &operator[](size_t index) const { return vec[index]; }
+		constexpr float &operator[](size_t index) { return vec[index]; }
 
-		constexpr float &operator[](size_t index)
-		{
-			return vec[index];
-		}
+		MUTIL_FORCEINLINE float MUTIL_VECTORCALL length() const;
+		MUTIL_FORCEINLINE float MUTIL_VECTORCALL lengthSq() const;
+		MUTIL_FORCEINLINE Vector3 MUTIL_VECTORCALL normalized() const;
 
-		inline float length() const;
-		inline float lengthSq() const;
-		inline Vector3 normalized() const;
+		constexpr Vector2 swizzle(size_t x, size_t y) const;
+		constexpr Vector3 swizzle(size_t x, size_t y, size_t z) const;
+		constexpr Vector4 swizzle(size_t x, size_t y, size_t z, size_t w) const;
 	};
 
 	constexpr Vector3 operator+(const Vector3 &first, const Vector3 &second) { return Vector3(first.x + second.x, first.y + second.y, first.z + second.z); }
@@ -213,18 +136,9 @@ namespace mutil
 	public:
 		union
 		{
-			struct
-			{
-				float x, y, z, w;
-			};
-			struct
-			{
-				float r, g, b, a;
-			};
-			struct
-			{
-				float s, t, p, q;
-			};
+			struct { float x, y, z, w; };
+			struct { float r, g, b, a; };
+			struct { float s, t, p, q; };
 			float vec[4];
 		};
 
@@ -239,21 +153,7 @@ namespace mutil
 		constexpr Vector4(float x, const Vector3 &yzw) : x(x), y(yzw.x), z(yzw.y), w(yzw.z) {}
 		constexpr Vector4(float x, float y, const Vector2 &zw) : x(x), y(y), z(zw.x), w(zw.y) {}
 		constexpr Vector4(float x, const Vector2 &yz, float w) : x(x), y(yz.x), z(yz.y), w(w) {}
-
-		/*!
-		Constructs a Vector4 with the x and y components of
-		the input vector, and the rest zeroed.
-
-		@param vec A vector.
-		*/
 		explicit constexpr Vector4(const Vector2 &vec);
-
-		/*!
-		Constructs a Vector4 with the x, y, and z components of
-		the input vector, and the rest zeroed.
-
-		@param vec A vector.
-		*/
 		explicit constexpr Vector4(const Vector3 &vec);
 
 		constexpr Vector4 &operator+=(const Vector4 &first);
@@ -263,19 +163,16 @@ namespace mutil
 		constexpr Vector4 &operator/=(const Vector4 &first);
 		constexpr Vector4 &operator/=(float scalar);
 
-		constexpr const float &operator[](size_t index) const
-		{
-			return vec[index];
-		}
+		constexpr const float &operator[](size_t index) const { return vec[index]; }
+		constexpr float &operator[](size_t index) { return vec[index]; }
 
-		constexpr float &operator[](size_t index)
-		{
-			return vec[index];
-		}
+		MUTIL_FORCEINLINE float MUTIL_VECTORCALL length() const;
+		MUTIL_FORCEINLINE float MUTIL_VECTORCALL lengthSq() const;
+		MUTIL_FORCEINLINE Vector4 MUTIL_VECTORCALL normalized() const;
 
-		inline float length() const;
-		inline float lengthSq() const;
-		inline Vector4 normalized() const;
+		constexpr Vector2 swizzle(size_t x, size_t y) const;
+		constexpr Vector3 swizzle(size_t x, size_t y, size_t z) const;
+		constexpr Vector4 swizzle(size_t x, size_t y, size_t z, size_t w) const;
 	};
 
 	constexpr Vector4 operator+(const Vector4 &first, const Vector4 &second) { return Vector4(first.x + second.x, first.y + second.y, first.z + second.z, first.w + second.w); }
@@ -297,18 +194,9 @@ namespace mutil
 	public:
 		union
 		{
-			struct
-			{
-				int32_t x, y;
-			};
-			struct
-			{
-				int32_t r, g;
-			};
-			struct
-			{
-				int32_t s, t;
-			};
+			struct { int32_t x, y; };
+			struct { int32_t r, g; };
+			struct { int32_t s, t; };
 			int32_t vec[2];
 		};
 
@@ -316,21 +204,7 @@ namespace mutil
 		explicit constexpr IntVector2(const int32_t scalar) : x(scalar), y(scalar) {}
 		constexpr IntVector2(const int32_t x, const int32_t y) : x(x), y(y) {}
 		explicit constexpr IntVector2(const Vector2 &vec);
-
-		/*!
-		Constructs an IntVector2 with only the x and y components of
-		the input vector.
-
-		@param vec A vector.
-		*/
 		explicit constexpr IntVector2(const IntVector3 &vec);
-
-		/*!
-		Constructs an IntVector2 with only the x and y components of
-		the input vector.
-
-		@param vec A vector.
-		*/
 		explicit constexpr IntVector2(const IntVector4 &vec);
 
 		constexpr IntVector2 &operator+=(const IntVector2 &first);
@@ -340,15 +214,12 @@ namespace mutil
 		constexpr IntVector2 &operator/=(const IntVector2 &first);
 		constexpr IntVector2 &operator/=(int32_t first);
 
-		constexpr const int32_t &operator[](size_t index) const
-		{
-			return vec[index];
-		}
+		constexpr const int32_t &operator[](size_t index) const { return vec[index]; }
+		constexpr int32_t &operator[](size_t index) { return vec[index]; }
 
-		constexpr int32_t &operator[](size_t index)
-		{
-			return vec[index];
-		}
+		constexpr IntVector2 swizzle(size_t x, size_t y) const;
+		constexpr IntVector3 swizzle(size_t x, size_t y, size_t z) const;
+		constexpr IntVector4 swizzle(size_t x, size_t y, size_t z, size_t w) const;
 	};
 
 	constexpr IntVector2 operator+(const IntVector2 &first, const IntVector2 &second) { return IntVector2(first.x + second.x, first.y + second.y); }
@@ -369,18 +240,9 @@ namespace mutil
 	public:
 		union
 		{
-			struct
-			{
-				int32_t x, y, z;
-			};
-			struct
-			{
-				int32_t r, g, b;
-			};
-			struct
-			{
-				int32_t s, t, p;
-			};
+			struct { int32_t x, y, z; };
+			struct { int32_t r, g, b; };
+			struct { int32_t s, t, p; };
 			int32_t vec[3];
 		};
 
@@ -391,21 +253,7 @@ namespace mutil
 
 		constexpr IntVector3(const IntVector3 &xy, int32_t z) : x(xy.x), y(xy.y), z(z) {}
 		constexpr IntVector3(int32_t x, const IntVector3 &yz) : x(x), y(yz.x), z(yz.y) {}
-
-		/*!
-		Constructs an IntVector3 with the x and y components of
-		the input vector, and the rest zeroed.
-
-		@param vec A vector.
-		*/
 		explicit constexpr IntVector3(const IntVector2 &vec);
-
-		/*!
-		Constructs an IntVector3 with only the x and y components of
-		the input vector.
-
-		@param vec A vector.
-		*/
 		explicit constexpr IntVector3(const IntVector4 &vec);
 
 		constexpr IntVector3 &operator+=(const IntVector3 &first);
@@ -415,15 +263,12 @@ namespace mutil
 		constexpr IntVector3 &operator/=(const IntVector3 &first);
 		constexpr IntVector3 &operator/=(int32_t scalar);
 
-		constexpr const int32_t &operator[](size_t index) const
-		{
-			return vec[index];
-		}
+		constexpr const int32_t &operator[](size_t index) const { return vec[index]; }
+		constexpr int32_t &operator[](size_t index) { return vec[index]; }
 
-		constexpr int32_t &operator[](size_t index)
-		{
-			return vec[index];
-		}
+		constexpr IntVector2 swizzle(size_t x, size_t y) const;
+		constexpr IntVector3 swizzle(size_t x, size_t y, size_t z) const;
+		constexpr IntVector4 swizzle(size_t x, size_t y, size_t z, size_t w) const;
 	};
 
 	constexpr IntVector3 operator+(const IntVector3 &first, const IntVector3 &second) { return IntVector3(first.x + second.x, first.y + second.y, first.z + second.z); }
@@ -444,18 +289,9 @@ namespace mutil
 	public:
 		union
 		{
-			struct
-			{
-				int32_t x, y, z, w;
-			};
-			struct
-			{
-				int32_t r, g, b, a;
-			};
-			struct
-			{
-				int32_t s, t, p, q;
-			};
+			struct { int32_t x, y, z, w; };
+			struct { int32_t r, g, b, a; };
+			struct { int32_t s, t, p, q; };
 			int32_t vec[4];
 		};
 
@@ -470,21 +306,7 @@ namespace mutil
 		constexpr IntVector4(int32_t x, const IntVector3 &yzw) : x(x), y(yzw.x), z(yzw.y), w(yzw.z) {}
 		constexpr IntVector4(int32_t x, int32_t y, const IntVector2 &zw) : x(x), y(y), z(zw.x), w(zw.y) {}
 		constexpr IntVector4(int32_t x, const IntVector2 &yz, int32_t w) : x(x), y(yz.x), z(yz.y), w(w) {}
-
-		/*!
-		Constructs an IntVector4 with the x and y components of
-		the input vector, and the rest zeroed.
-
-		@param vec A vector.
-		*/
 		explicit constexpr IntVector4(const IntVector2 &vec);
-
-		/*!
-		Constructs an IntVector4 with the x, y, and z components of
-		the input vector, and the rest zeroed.
-
-		@param vec A vector.
-		*/
 		explicit constexpr IntVector4(const IntVector3 &vec);
 
 		constexpr IntVector4 &operator+=(const IntVector4 &first);
@@ -494,15 +316,12 @@ namespace mutil
 		constexpr IntVector4 &operator/=(const IntVector4 &first);
 		constexpr IntVector4 &operator/=(int32_t scalar);
 
-		constexpr const int32_t &operator[](size_t index) const
-		{
-			return vec[index];
-		}
+		constexpr const int32_t &operator[](size_t index) const { return vec[index]; }
+		constexpr int32_t &operator[](size_t index) { return vec[index]; }
 
-		constexpr int32_t &operator[](size_t index)
-		{
-			return vec[index];
-		}
+		constexpr IntVector2 swizzle(size_t x, size_t y) const;
+		constexpr IntVector3 swizzle(size_t x, size_t y, size_t z) const;
+		constexpr IntVector4 swizzle(size_t x, size_t y, size_t z, size_t w) const;
 	};
 
 	constexpr IntVector4 operator+(const IntVector4 &first, const IntVector4 &second) { return IntVector4(first.x + second.x, first.y + second.y, first.z + second.z, first.w + second.w); }
@@ -521,6 +340,10 @@ namespace mutil
 	constexpr Vector2::Vector2(const IntVector2 &ivec2) : x((float)ivec2.x), y((float)ivec2.y) {}
 	constexpr Vector2::Vector2(const Vector3 &vec) : x(vec.x), y(vec.y) {}
 	constexpr Vector2::Vector2(const Vector4 &vec) : x(vec.x), y(vec.y) {}
+
+	constexpr Vector2 Vector2::swizzle(size_t x, size_t y) const { return Vector2(vec[x], vec[y]); }
+	constexpr Vector3 Vector2::swizzle(size_t x, size_t y, size_t z) const { return Vector3(vec[x], vec[y], vec[z]); }
+	constexpr Vector4 Vector2::swizzle(size_t x, size_t y, size_t z, size_t w) const { return Vector4(vec[x], vec[y], vec[z], vec[w]); }
 
 	constexpr Vector2 &Vector2::operator+=(const Vector2 &first)
 	{
@@ -565,6 +388,10 @@ namespace mutil
 	}
 
 	constexpr Vector3::Vector3(const IntVector3 &ivec3) : x((float)ivec3.x), y((float)ivec3.y), z((float)ivec3.z) {}
+
+	constexpr Vector2 Vector3::swizzle(size_t x, size_t y) const { return Vector2(vec[x], vec[y]); }
+	constexpr Vector3 Vector3::swizzle(size_t x, size_t y, size_t z) const { return Vector3(vec[x], vec[y], vec[z]); }
+	constexpr Vector4 Vector3::swizzle(size_t x, size_t y, size_t z, size_t w) const { return Vector4(vec[x], vec[y], vec[z], vec[w]); }
 
 	constexpr Vector3 &Vector3::operator+=(const Vector3 &first)
 	{
@@ -615,6 +442,10 @@ namespace mutil
 	}
 
 	constexpr Vector4::Vector4(const IntVector4 &vec) : x((float)vec.x), y((float)vec.y), z((float)vec.z), w((float)vec.w) {}
+
+	constexpr Vector2 Vector4::swizzle(size_t x, size_t y) const { return Vector2(vec[x], vec[y]); }
+	constexpr Vector3 Vector4::swizzle(size_t x, size_t y, size_t z) const { return Vector3(vec[x], vec[y], vec[z]); }
+	constexpr Vector4 Vector4::swizzle(size_t x, size_t y, size_t z, size_t w) const { return Vector4(vec[x], vec[y], vec[z], vec[w]); }
 
 	constexpr Vector4 &Vector4::operator+=(const Vector4 &first)
 	{
@@ -674,6 +505,10 @@ namespace mutil
 	constexpr IntVector2::IntVector2(const IntVector3 &vec) : x(vec.x), y(vec.y) {}
 	constexpr IntVector2::IntVector2(const IntVector4 &vec) : x(vec.x), y(vec.y) {}
 
+	constexpr IntVector2 IntVector2::swizzle(size_t x, size_t y) const { return IntVector2(vec[x], vec[y]); }
+	constexpr IntVector3 IntVector2::swizzle(size_t x, size_t y, size_t z) const { return IntVector3(vec[x], vec[y], vec[z]); }
+	constexpr IntVector4 IntVector2::swizzle(size_t x, size_t y, size_t z, size_t w) const { return IntVector4(vec[x], vec[y], vec[z], vec[w]); }
+
 	constexpr IntVector2 &IntVector2::operator+=(const IntVector2 &first)
 	{
 		x += first.x;
@@ -719,6 +554,10 @@ namespace mutil
 	constexpr IntVector3::IntVector3(const Vector3 &vec) : x((int32_t)vec.x), y((int32_t)vec.y), z((int32_t)vec.z) {}
 	constexpr IntVector3::IntVector3(const IntVector2 &vec) : x(vec.x), y(vec.x), z(0) {}
 	constexpr IntVector3::IntVector3(const IntVector4 &vec) : x(vec.x), y(vec.y), z(vec.z) {}
+
+	constexpr IntVector2 IntVector3::swizzle(size_t x, size_t y) const { return IntVector2(vec[x], vec[y]); }
+	constexpr IntVector3 IntVector3::swizzle(size_t x, size_t y, size_t z) const { return IntVector3(vec[x], vec[y], vec[z]); }
+	constexpr IntVector4 IntVector3::swizzle(size_t x, size_t y, size_t z, size_t w) const { return IntVector4(vec[x], vec[y], vec[z], vec[w]); }
 
 	constexpr IntVector3 &IntVector3::operator+=(const IntVector3 &first)
 	{
@@ -767,6 +606,10 @@ namespace mutil
 		z /= scalar;
 		return *this;
 	}
+
+	constexpr IntVector2 IntVector4::swizzle(size_t x, size_t y) const { return IntVector2(vec[x], vec[y]); }
+	constexpr IntVector3 IntVector4::swizzle(size_t x, size_t y, size_t z) const { return IntVector3(vec[x], vec[y], vec[z]); }
+	constexpr IntVector4 IntVector4::swizzle(size_t x, size_t y, size_t z, size_t w) const { return IntVector4(vec[x], vec[y], vec[z], vec[w]); }
 
 	constexpr IntVector4 &IntVector4::operator+=(const IntVector4 &first)
 	{
@@ -822,5 +665,3 @@ namespace mutil
 		return *this;
 	}
 }
-
-#endif

@@ -5,19 +5,10 @@ Contains classes for handling different types of matrices.
 
 #pragma once
 
-#ifndef MAT_TYPES_H
-#define MAT_TYPES_H
-
 #include "settings.h"
 #include "vec_types.h"
 
 #include <memory>
-#if defined(MUTIL_USE_INTRINSICS)
-#if defined(MUTIL_X86)
-#include <smmintrin.h>
-#elif defined(MUTIL_ARM)
-#endif
-#endif
 
 namespace mutil
 {
@@ -35,9 +26,6 @@ namespace mutil
 	class Matrix2
 	{
 	public:
-		/*!
-		The matrix's columns.
-		*/
 		union
 		{
 			Vector2 columns[2];
@@ -49,66 +37,22 @@ namespace mutil
 			float mat[4];
 		};
 
-		/*!
-		Constructs the identity matrix.
-		*/
+	
 		constexpr Matrix2() : Matrix2(1.0f) {}
-
-		/*!
-		Constructs a matrix with a value along its diagnol, and all elements being
-		0.
-
-		@param The value of the diagnol.
-		*/
 		explicit constexpr Matrix2(const float diagonal) : _11(diagonal), _12(0.0f),
 														   _21(0.0f), _22(diagonal) {}
-
-		/*!
-		Constructs a matrix with two explicitly given columns.
-
-		@param column1 The first column.
-		@param column2 The second column.
-		*/
 		explicit constexpr Matrix2(const Vector2 &column1, const Vector2 &column2) : _11(column1.x), _12(column2.x),
 																					 _21(column1.y), _22(column2.y) {}
-
 		explicit constexpr Matrix2(
 			float _11, float _12,
 			float _21, float _22) : _11(_11), _12(_12),
 									_21(_21), _22(_22) {}
-
-		/*!
-		Constructs a matrix by casting it from a 32-bit integer matrix.
-
-		@param mat2 The matrix to cast from.
-		*/
 		explicit constexpr Matrix2(const IntMatrix2 &mat);
-
-		/*!
-		Constructs a matrix by filling this matrix with the upper-left portion
-		of the input matrix.
-
-		@param mat A matrix.
-		*/
 		explicit constexpr Matrix2(const Matrix3 &mat);
-
-		/*!
-		Constructs a matrix by filling this matrix with the upper-left portion
-		of the input matrix.
-
-		@param mat A matrix.
-		*/
 		explicit constexpr Matrix2(const Matrix4 &mat);
 
-		constexpr const float &operator[](size_t index) const
-		{
-			return mat[index];
-		}
-
-		constexpr float &operator[](size_t index)
-		{
-			return mat[index];
-		}
+		constexpr const float &operator[](size_t index) const { return mat[index]; }
+		constexpr float &operator[](size_t index) { return mat[index]; }
 
 		constexpr float determinant() const;
 		constexpr Matrix2 transpose() const;
@@ -164,9 +108,6 @@ namespace mutil
 	class Matrix3
 	{
 	public:
-		/*!
-		The matrix's columns.
-		*/
 		union
 		{
 			Vector3 columns[3];
@@ -179,71 +120,25 @@ namespace mutil
 			float mat[9];
 		};
 
-		/*!
-		Constructs the identity matrix.
-		*/
 		constexpr Matrix3() : Matrix3(1.0f) {}
-
-		/*!
-		Constructs a matrix with a value along its diagnol, and all elements being
-		0.
-
-		@param The value of the diagnol.
-		*/
 		explicit constexpr Matrix3(const float diagonal) : _11(diagonal), _12(0.0f), _13(0.0f),
 														   _21(0.0f), _22(diagonal), _23(0.0f),
 														   _31(0.0f), _32(0.0f), _33(diagonal) {}
-
-		/*!
-		Constructs a matrix with three explicitly given columns.
-
-		@param column1 The first column.
-		@param column2 The second column.
-		@param column3 The third column.
-		*/
 		explicit constexpr Matrix3(const Vector3 &column1, const Vector3 &column2, const Vector3 &column3) : _11(column1.x), _12(column2.x), _13(column3.x),
 																											 _21(column1.y), _22(column2.y), _23(column3.y),
 																											 _31(column1.z), _32(column2.z), _33(column3.z) {}
-
 		explicit constexpr Matrix3(
 			float _11, float _12, float _13,
 			float _21, float _22, float _23,
 			float _31, float _32, float _33) : _11(_11), _12(_12), _13(_13),
 											   _21(_21), _22(_22), _23(_23),
 											   _31(_31), _32(_32), _33(_33) {}
-
-		/*!
-		Constructs a matrix by casting it from a 32-bit integer matrix.
-
-		@param mat3 The matrix to cast from.
-		*/
 		explicit constexpr Matrix3(const IntMatrix3 &mat);
-
-		/*!
-		Constructs a matrix by filling the upper left portion with input input matrix and
-		sets the remaining diagnol to 1 and the rest of the values to 0.
-
-		@param mat A matrix.
-		*/
 		explicit constexpr Matrix3(const Matrix2 &mat);
-
-		/*!
-		Constructs a matrix by filling this matrix with the upper-left portion
-		of the input matrix.
-
-		@param mat A matrix.
-		*/
 		explicit constexpr Matrix3(const Matrix4 &mat);
 
-		constexpr const float &operator[](size_t index) const
-		{
-			return mat[index];
-		}
-
-		constexpr float &operator[](size_t index)
-		{
-			return mat[index];
-		}
+		constexpr const float &operator[](size_t index) const { return mat[index]; }
+		constexpr float &operator[](size_t index) { return mat[index]; }
 
 		constexpr float determinant() const;
 		constexpr Matrix3 transpose() const;
@@ -309,9 +204,6 @@ namespace mutil
 	class Matrix4
 	{
 	public:
-		/*!
-		The matrix's columns.
-		*/
 		union
 		{
 			Vector4 columns[4];
@@ -325,35 +217,15 @@ namespace mutil
 			float mat[16];
 		};
 
-		/*!
-		Constructs the identity matrix.
-		*/
 		constexpr Matrix4() : Matrix4(1.0f) {}
-
-		/*!
-		Constructs a matrix with a value along its diagnol, and all elements being
-		0.
-
-		@param The value of the diagnol.
-		*/
 		explicit constexpr Matrix4(const float diagonal) : _11(diagonal), _12(0.0f), _13(0.0f), _14(0.0f),
 														   _21(0.0f), _22(diagonal), _23(0.0f), _24(0.0f),
 														   _31(0.0f), _32(0.0f), _33(diagonal), _34(0.0f),
 														   _41(0.0f), _42(0.0f), _43(0.0f), _44(diagonal) {}
-
-		/*!
-		Constructs a matrix with four explicitly given columns.
-
-		@param column1 The first column.
-		@param column2 The second column.
-		@param column3 The third column.
-		@param column4 The fourth column.
-		*/
 		explicit constexpr Matrix4(const Vector4 &column1, const Vector4 &column2, const Vector4 &column3, const Vector4 &column4) : _11(column1.x), _12(column2.x), _13(column3.x), _14(column4.x),
 																																	 _21(column1.y), _22(column2.y), _23(column3.y), _24(column4.y),
 																																	 _31(column1.z), _32(column2.z), _33(column3.z), _34(column4.z),
 																																	 _41(column1.w), _42(column2.w), _43(column3.w), _44(column4.w) {}
-
 		explicit constexpr Matrix4(
 			float _11, float _12, float _13, float _14,
 			float _21, float _22, float _23, float _24,
@@ -362,39 +234,12 @@ namespace mutil
 														  _21(_21), _22(_22), _23(_23), _24(_24),
 														  _31(_31), _32(_32), _33(_33), _34(_34),
 														  _41(_41), _42(_42), _43(_43), _44(_44) {}
-
-		/*!
-		Constructs a matrix by casting it from a 32-bit integer matrix.
-
-		@param mat4 The matrix to cast from.
-		*/
 		explicit constexpr Matrix4(const IntMatrix4 &mat);
-
-		/*!
-		Constructs a matrix by filling the upper left portion with input input matrix and
-		sets the remaining diagnol to 1 and the rest of the values to 0.
-
-		@param mat A matrix.
-		*/
 		explicit constexpr Matrix4(const Matrix2 &mat);
-
-		/*!
-		Constructs a matrix by filling the upper left portion with input input matrix and
-		sets the remaining diagnol to 1 and the rest of the values to 0.
-
-		@param mat A matrix.
-		*/
 		explicit constexpr Matrix4(const Matrix3 &mat);
 
-		constexpr const float &operator[](size_t index) const
-		{
-			return mat[index];
-		}
-
-		constexpr float &operator[](size_t index)
-		{
-			return mat[index];
-		}
+		constexpr const float &operator[](size_t index) const { return mat[index]; }
+		constexpr float &operator[](size_t index) { return mat[index]; }
 
 		constexpr float determinant() const;
 		constexpr Matrix4 transpose() const;
@@ -411,7 +256,7 @@ namespace mutil
 		return Matrix4(first.columns[0] - second.columns[0], first.columns[1] - second.columns[1], first.columns[2] - second.columns[2], first.columns[3] - second.columns[3]);
 	}
 
-	inline Matrix4 operator*(const Matrix4 &first, const Matrix4 &second)
+	inline Matrix4 MUTIL_VECTORCALL operator*(const Matrix4 &first, const Matrix4 &second)
 	{
 #if MUTIL_USE_SSE
 		constexpr int MASK0 = 0xf1, MASK1 = 0xf2, MASK2 = 0xf4, MASK3 = 0xf8;
@@ -536,9 +381,6 @@ namespace mutil
 	class IntMatrix2
 	{
 	public:
-		/*!
-		The matrix's columns.
-		*/
 		union
 		{
 			IntVector2 columns[2];
@@ -550,26 +392,9 @@ namespace mutil
 			int32_t mat[4];
 		};
 
-		/*!
-		Constructs the identity matrix.
-		*/
 		constexpr IntMatrix2() : IntMatrix2(1) {}
-
-		/*!
-		Constructs a matrix with a value along its diagnol, and all elements being
-		0.
-
-		@param The value of the diagnol.
-		*/
 		explicit constexpr IntMatrix2(const int32_t diagonal) : _11(diagonal), _12(0),
 																_21(0), _22(diagonal) {}
-
-		/*!
-		Constructs a matrix with two explicitly given columns.
-
-		@param column1 The first column.
-		@param column2 The second column.
-		*/
 		explicit constexpr IntMatrix2(const IntVector2 &column1, const IntVector2 &column2) : _11(column1.x), _12(column2.x),
 																							  _21(column1.y), _22(column2.y) {}
 
@@ -577,39 +402,12 @@ namespace mutil
 			int32_t _11, int32_t _12,
 			int32_t _21, int32_t _22) : _11(_11), _12(_12),
 										_21(_21), _22(_22) {}
-
-		/*!
-		Constructs a matrix by casting it from a floating point matrix.
-
-		@param mat2 The matrix to cast from.
-		*/
 		explicit constexpr IntMatrix2(const Matrix2 &mat);
-
-		/*!
-		Constructs a matrix by filling this matrix with the upper-left portion
-		of the input matrix.
-
-		@param mat A matrix.
-		*/
 		explicit constexpr IntMatrix2(const IntMatrix3 &mat);
-
-		/*!
-		Constructs a matrix by filling this matrix with the upper-left portion
-		of the input matrix.
-
-		@param mat A matrix.
-		*/
 		explicit constexpr IntMatrix2(const IntMatrix4 &mat);
 
-		constexpr const int32_t &operator[](size_t index) const
-		{
-			return mat[index];
-		}
-
-		constexpr int32_t &operator[](size_t index)
-		{
-			return mat[index];
-		}
+		constexpr const int32_t &operator[](size_t index) const { return mat[index]; }
+		constexpr int32_t &operator[](size_t index) { return mat[index]; }
 	};
 
 	constexpr IntMatrix2 operator+(const IntMatrix2 &first, const IntMatrix2 &second)
@@ -661,9 +459,6 @@ namespace mutil
 	class IntMatrix3
 	{
 	public:
-		/*!
-		The matrix's columns.
-		*/
 		union
 		{
 			IntVector3 columns[3];
@@ -676,71 +471,25 @@ namespace mutil
 			int32_t mat[9];
 		};
 
-		/*!
-		Constructs the identity matrix.
-		*/
 		constexpr IntMatrix3() : IntMatrix3(1) {}
-
-		/*!
-		Constructs a matrix with a value along its diagnol, and all elements being
-		0.
-
-		@param The value of the diagnol.
-		*/
 		explicit constexpr IntMatrix3(const int32_t diagonal) : _11(diagonal), _12(0), _13(0),
 																_21(0), _22(diagonal), _23(0),
 																_31(0), _32(0), _33(diagonal) {}
-
-		/*!
-		Constructs a matrix with three explicitly given columns.
-
-		@param column1 The first column.
-		@param column2 The second column.
-		@param column3 The third column.
-		*/
 		explicit constexpr IntMatrix3(const IntVector3 &column1, const IntVector3 &column2, const IntVector3 &column3) : _11(column1.x), _12(column2.x), _13(column3.x),
 																														 _21(column1.y), _22(column2.y), _23(column3.y),
 																														 _31(column1.z), _32(column2.z), _33(column3.z) {}
-
 		explicit constexpr IntMatrix3(
 			int32_t _11, int32_t _12, int32_t _13,
 			int32_t _21, int32_t _22, int32_t _23,
 			int32_t _31, int32_t _32, int32_t _33) : _11(_11), _12(_12), _13(_13),
 													 _21(_21), _22(_22), _23(_23),
 													 _31(_31), _32(_32), _33(_33) {}
-
-		/*!
-		Constructs a matrix by casting it from a floating point matrix.
-
-		@param mat3 The matrix to cast from.
-		*/
 		explicit constexpr IntMatrix3(const Matrix3 &mat);
-
-		/*!
-		Constructs a matrix by filling the upper left portion with input input matrix and
-		sets the remaining diagnol to 1 and the rest of the values to 0.
-
-		@param mat A matrix.
-		*/
 		explicit constexpr IntMatrix3(const IntMatrix2 &mat);
-
-		/*!
-		Constructs a matrix by filling this matrix with the upper-left portion
-		of the input matrix.
-
-		@param mat A matrix.
-		*/
 		explicit constexpr IntMatrix3(const IntMatrix4 &mat);
 
-		constexpr const int32_t &operator[](size_t index) const
-		{
-			return mat[index];
-		}
-
-		constexpr int32_t &operator[](size_t index)
-		{
-			return mat[index];
-		}
+		constexpr const int32_t &operator[](size_t index) const { return mat[index]; }
+		constexpr int32_t &operator[](size_t index) { return mat[index]; }
 	};
 
 	constexpr IntMatrix3 operator+(const IntMatrix3 &first, const IntMatrix3 &second)
@@ -802,9 +551,6 @@ namespace mutil
 	class IntMatrix4
 	{
 	public:
-		/*!
-		The matrix's columns.
-		*/
 		union
 		{
 			IntVector4 columns[4];
@@ -818,35 +564,15 @@ namespace mutil
 			int32_t mat[16];
 		};
 
-		/*!
-		Constructs the identity matrix.
-		*/
 		constexpr IntMatrix4() : IntMatrix4(1) {}
-
-		/*!
-		Constructs a matrix with a value along its diagnol, and all elements being
-		0.
-
-		@param The value of the diagnol.
-		*/
 		explicit constexpr IntMatrix4(const int32_t diagonal) : _11(diagonal), _12(0), _13(0), _14(0),
 																_21(0), _22(diagonal), _23(0), _24(0),
 																_31(0), _32(0), _33(diagonal), _34(0),
 																_41(0), _42(0), _43(0), _44(diagonal) {}
-
-		/*!
-		Constructs a matrix with four explicitly given columns.
-
-		@param column1 The first column.
-		@param column2 The second column.
-		@param column3 The third column.
-		@param column4 The fourth column.
-		*/
 		explicit constexpr IntMatrix4(const IntVector4 &column1, const IntVector4 &column2, const IntVector4 &column3, const IntVector4 &column4) : _11(column1.x), _12(column2.x), _13(column3.x), _14(column4.x),
 																																					_21(column1.y), _22(column2.y), _23(column3.y), _24(column4.y),
 																																					_31(column1.z), _32(column2.z), _33(column3.z), _34(column4.z),
 																																					_41(column1.w), _42(column2.w), _43(column3.w), _44(column4.w) {}
-
 		explicit constexpr IntMatrix4(
 			int32_t _11, int32_t _12, int32_t _13, int32_t _14,
 			int32_t _21, int32_t _22, int32_t _23, int32_t _24,
@@ -855,39 +581,12 @@ namespace mutil
 																  _21(_21), _22(_22), _23(_23), _24(_24),
 																  _31(_31), _32(_32), _33(_33), _34(_34),
 																  _41(_41), _42(_42), _43(_43), _44(_44) {}
-
-		/*!
-		Constructs a matrix by casting it from a floating point matrix.
-
-		@param mat4 The matrix to cast from.
-		*/
 		explicit constexpr IntMatrix4(const Matrix4 &mat);
-
-		/*!
-		Constructs a matrix by filling the upper left portion with input input matrix and
-		sets the remaining diagnol to 1 and the rest of the values to 0.
-
-		@param mat A matrix.
-		*/
 		explicit constexpr IntMatrix4(const IntMatrix2 &mat);
-
-		/*!
-		Constructs a matrix by filling the upper left portion with input input matrix and
-		sets the remaining diagnol to 1 and the rest of the values to 0.
-
-		@param mat A matrix.
-		*/
 		explicit constexpr IntMatrix4(const IntMatrix3 &mat);
 
-		constexpr const int32_t &operator[](size_t index) const
-		{
-			return mat[index];
-		}
-
-		constexpr int32_t &operator[](size_t index)
-		{
-			return mat[index];
-		}
+		constexpr const int32_t &operator[](size_t index) const { return mat[index]; }
+		constexpr int32_t &operator[](size_t index) { return mat[index]; }
 	};
 
 	constexpr IntMatrix4 operator+(const IntMatrix4 &first, const IntMatrix4 &second)
@@ -1029,5 +728,3 @@ namespace mutil
 															  _31(mat._31), _32(mat._32), _33(mat._33), _34(0),
 															  _41(0), _42(0), _43(0), _44(1) {}
 }
-
-#endif
