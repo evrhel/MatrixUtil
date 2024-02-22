@@ -265,12 +265,12 @@ namespace mutil
 			const float x10 = x5 * x5;
 			const float x11 = x10 * x;
 
-			float32x2_t t1 = __makev2(x, 1.0f);
-			t1 = vadd_f32(t1, __makev2(x3 * _n3fact, x2 * _n2fact));
-			t1 = vadd_f32(t1, __makev2(x5 * _5fact, x4 * _4fact));
-			t1 = vadd_f32(t1, __makev2(x7 * _n7fact, x6 * _n6fact));
-			t1 = vadd_f32(t1, __makev2(x9 * _9fact, x8 * _8fact));
-			t1 = vadd_f32(t1, __makev2(x11 * _n11fact, x10 * _n10fact));
+			float32x2_t t1 = makev2(x, 1.0f);
+			t1 = vadd_f32(t1, makev2(x3 * _n3fact, x2 * _n2fact));
+			t1 = vadd_f32(t1, makev2(x5 * _5fact, x4 * _4fact));
+			t1 = vadd_f32(t1, makev2(x7 * _n7fact, x6 * _n6fact));
+			t1 = vadd_f32(t1, makev2(x9 * _9fact, x8 * _8fact));
+			t1 = vadd_f32(t1, makev2(x11 * _n11fact, x10 * _n10fact));
 
 			return t1;
 		}

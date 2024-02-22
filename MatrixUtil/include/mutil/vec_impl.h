@@ -362,8 +362,8 @@ namespace mutil
 		return _mm_cvtss_f32(_mm_sqrt_ss(_mm_dp_ps(_mm_loadu_ps((float *)&a), _mm_loadu_ps((float *)&a), MASK)));
 #elif MUTIL_USE_NEON
 		float32_t result = dot(a, a);
-		float32x2_t a = vsqrt_f32(vld1_f32(&result));
-		return vget_lane_f32(a, 0);
+		float32x2_t r = vsqrt_f32(vld1_f32(&result));
+		return vget_lane_f32(r, 0);
 #else
 		return sqrtf(dot(a, a));
 #endif
