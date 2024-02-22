@@ -4,9 +4,9 @@
 
 ## About
 
-MatrixUtil is a header-only library written in C++ designed for handling vector and matrix computations. It is especially designed with graphics programming in mind and features functions to create transform, rotation, and scaling matrices alongside perspective and orthographic projections.
+MatrixUtil is a header-only library written in C++ 14 designed for handling vector and matrix computations. It is especially designed with graphics programming in mind and features functions to create transform, rotation, and scaling matrices alongside perspective and orthographic projections.
 
-Additionally, the library is designed to be high performance, with minimal copying of data alongside the use of intrinsics and algorithms such as the fast inverse square root.
+Additionally, the library is designed to be high-performance, with minimal copying of data alongside the use of intrinsics and algorithms such as the fast inverse square root.
 
 ## Installing
 
