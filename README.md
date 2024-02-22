@@ -1,5 +1,7 @@
 # MatrixUtil
 
+[![.github/workflows/ci.yaml](https://github.com/evrhel/MatrixUtil/actions/workflows/ci.yaml/badge.svg)](https://github.com/evrhel/MatrixUtil/actions/workflows/ci.yaml)
+
 ## About
 
 MatrixUtil is a header-only library written in C++ designed for handling vector and matrix computations. It is especially designed with graphics programming in mind and features functions to create transform, rotation, and scaling matrices alongside perspective and orthographic projections.
