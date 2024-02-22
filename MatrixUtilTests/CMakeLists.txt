@@ -10,6 +10,7 @@ add_executable(MatrixUtilTests
 	src/test.h
 	src/test.cpp
 
+	src/test_f_math.cpp
 	src/test_quaternion.cpp
 	src/test_vector2.cpp
 	src/test_vector3.cpp
@@ -58,5 +59,35 @@ add_test(NAME "QuaternionLengthSq" COMMAND MatrixUtilTests QuaternionLengthSq)
 add_test(NAME "QuaternionNormalize" COMMAND MatrixUtilTests QuaternionNormalize)
 add_test(NAME "QuaternionConjugate" COMMAND MatrixUtilTests QuaternionConjugate)
 add_test(NAME "QuaternionRotateAxis" COMMAND MatrixUtilTests QuaternionRotateAxis)
+
+# Float Math
+add_test(NAME "FMathConstants" COMMAND MatrixUtilTests FMathConstants)
+add_test(NAME "FMathRadians" COMMAND MatrixUtilTests FMathRadians)
+add_test(NAME "FMathDegrees" COMMAND MatrixUtilTests FMathDegrees)
+add_test(NAME "FMathSgn" COMMAND MatrixUtilTests FMathSgn)
+add_test(NAME "FMathMin" COMMAND MatrixUtilTests FMathMin)
+add_test(NAME "FMathMax" COMMAND MatrixUtilTests FMathMax)
+add_test(NAME "FMathSqrt" COMMAND MatrixUtilTests FMathSqrt)
+add_test(NAME "FMathInverseSqrt" COMMAND MatrixUtilTests FMathInverseSqrt)
+add_test(NAME "FMathFastInverseSqrt" COMMAND MatrixUtilTests FMathFastInverseSqrt)
+add_test(NAME "FMathAbs" COMMAND MatrixUtilTests FMathAbs)
+add_test(NAME "FMathClamp" COMMAND MatrixUtilTests FMathClamp)
+add_test(NAME "FMathCeil" COMMAND MatrixUtilTests FMathCeil)
+add_test(NAME "FMathFloor" COMMAND MatrixUtilTests FMathFloor)
+add_test(NAME "FMathTrunc" COMMAND MatrixUtilTests FMathTrunc)
+add_test(NAME "FMathMod" COMMAND MatrixUtilTests FMathMod)
+add_test(NAME "FMathRound" COMMAND MatrixUtilTests FMathRound)
+add_test(NAME "FMathLerp" COMMAND MatrixUtilTests FMathLerp)
+add_test(NAME "FMathSmoothStep" COMMAND MatrixUtilTests FMathSmoothStep)
+add_test(NAME "FMathSmootherStep" COMMAND MatrixUtilTests FMathSmootherStep)
+add_test(NAME "FMathSin" COMMAND MatrixUtilTests FMathSin)
+add_test(NAME "FMathCos" COMMAND MatrixUtilTests FMathCos)
+add_test(NAME "FMathTan" COMMAND MatrixUtilTests FMathTan)
+add_test(NAME "FMathAsin" COMMAND MatrixUtilTests FMathAsin)
+add_test(NAME "FMathAcos" COMMAND MatrixUtilTests FMathAcos)
+add_test(NAME "FMathAtan" COMMAND MatrixUtilTests FMathAtan)
+add_test(NAME "FMathLog2" COMMAND MatrixUtilTests FMathLog2)
+add_test(NAME "FMathLog" COMMAND MatrixUtilTests FMathLog)
+add_test(NAME "FmahtLog10" COMMAND MatrixUtilTests FMathLog10)
 
 # TODO: Add more tests
