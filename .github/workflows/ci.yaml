@@ -8,27 +8,6 @@ jobs:
       pull-requests: write
 
     steps:
-      # Checkout the repository
       - uses: actions/checkout@v4
-
-      # Make the project with CMake
-      - name: Make
-        run: cmake -B build -S . && cmake --build build
-
-      # Run the tests
-      - name: Test
-        run: ctest --test-dir build --output-on-failure
-
-      # Upload the test results
-      - name: Upload test results
-        uses: actions/upload-artifact@v2
-        with:
-          name: test-results
-          path: build/Testing/Temporary
-
-      # Upload the build log
-      - name: Upload build log
-        uses: actions/upload-artifact@v2
-        with:
-          name: build-log
-          path: build/Testing/Temporary/LastTest.log
+      - name: Run tests
+        uses: HorstBaerbel/action-ctest@1.1
