@@ -12,6 +12,7 @@ add_executable(MatrixUtilTests
 
 	src/test_f_math.cpp
 	src/test_i_math.cpp
+	src/test_matrix2.cpp
 	src/test_quaternion.cpp
 	src/test_vector2.cpp
 	src/test_vector3.cpp
@@ -98,5 +99,19 @@ add_test(NAME "IMathMin" COMMAND MatrixUtilTests IMathMin)
 add_test(NAME "IMathMax" COMMAND MatrixUtilTests IMathMax)
 add_test(NAME "IMathAbs" COMMAND MatrixUtilTests IMathAbs)
 add_test(NAME "IMathSgn" COMMAND MatrixUtilTests IMathSgn)
+
+# Matrix2
+add_test(NAME "Matrix2Basic" COMMAND MatrixUtilTests Matrix2Basic)
+add_test(NAME "Matrix2Add" COMMAND MatrixUtilTests Matrix2Add)
+add_test(NAME "Matrix2Sub" COMMAND MatrixUtilTests Matrix2Sub)
+add_test(NAME "Matrix2MulScalar" COMMAND MatrixUtilTests Matrix2MulScalar)
+add_test(NAME "Matrix2MulVector" COMMAND MatrixUtilTests Matrix2MulVector)
+add_test(NAME "Matrix2MulMatrix" COMMAND MatrixUtilTests Matrix2MulMatrix)
+add_test(NAME "Matrix2Determinant" COMMAND MatrixUtilTests Matrix2Determinant)
+add_test(NAME "Matrix2Transpose" COMMAND MatrixUtilTests Matrix2Transpose)
+add_test(NAME "Matrix2Cofactor" COMMAND MatrixUtilTests Matrix2Cofactor)
+add_test(NAME "Matrix2Adjugate" COMMAND MatrixUtilTests Matrix2Adjugate)
+add_test(NAME "Matrix2Inverse" COMMAND MatrixUtilTests Matrix2Inverse)
+add_test(NAME "Matrix2Clamp" COMMAND MatrixUtilTests Matrix2Clamp)
 
 # TODO: Add more tests
