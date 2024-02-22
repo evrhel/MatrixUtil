@@ -16,3 +16,5 @@ Base include file, containing every needed type and function.
 #include "fmat_transform.h"
 
 #include "quaternion.h"
+
+#include "vec_impl.h"

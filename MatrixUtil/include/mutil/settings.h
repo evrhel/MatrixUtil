@@ -41,3 +41,6 @@
 
 #include <cmath>
 #include <cstdint>
+#include <cstdlib>
+
+#include "types.h"

@@ -1,9 +1,4 @@
-release
+build
+out
 .vs
 .vscode
-x64
-Debug
-release
-.log
-
-*.user
