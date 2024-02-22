@@ -11,6 +11,7 @@ void setEpsilon(float epsilon);
 
 bool equals(bool a, bool b);
 bool equals(int a, int b);
+bool equals(unsigned int a, unsigned int b);
 bool equals(float a, float b);
 bool equals(const Vector2 &a, const Vector2 &b);
 bool equals(const Vector3 &a, const Vector3 &b);
@@ -28,6 +29,7 @@ bool equals(const Quaternion &a, const Quaternion &b);
 
 std::string tostring(bool x);
 std::string tostring(int x);
+std::string tostring(unsigned int x);
 std::string tostring(float x);
 std::string tostring(const Vector2 &v);
 std::string tostring(const Vector3 &v);

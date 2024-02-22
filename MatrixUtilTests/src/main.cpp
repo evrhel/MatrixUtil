@@ -8,6 +8,7 @@ extern Test getVector3Test(const std::string &test);
 extern Test getVector4Test(const std::string &test);
 extern Test getQuaternionTest(const std::string &test);
 extern Test getFMathTest(const std::string &test);
+extern Test getIMathTest(const std::string &test);
 
 static Test findTest(const std::string &test)
 {
@@ -26,6 +27,9 @@ static Test findTest(const std::string &test)
 	if (r) return r;
 
 	r = getFMathTest(test);
+	if (r) return r;
+
+	r = getIMathTest(test);
 	if (r) return r;
 
 	return nullptr;

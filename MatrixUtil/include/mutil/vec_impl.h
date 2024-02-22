@@ -15,6 +15,7 @@
 #include "fvec_math.h"
 #include "ivec_math.h"
 #include "f_math.h"
+#include "i_math.h"
 
 namespace mutil
 {

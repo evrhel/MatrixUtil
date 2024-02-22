@@ -11,6 +11,7 @@ add_executable(MatrixUtilTests
 	src/test.cpp
 
 	src/test_f_math.cpp
+	src/test_i_math.cpp
 	src/test_quaternion.cpp
 	src/test_vector2.cpp
 	src/test_vector3.cpp
@@ -88,6 +89,14 @@ add_test(NAME "FMathAcos" COMMAND MatrixUtilTests FMathAcos)
 add_test(NAME "FMathAtan" COMMAND MatrixUtilTests FMathAtan)
 add_test(NAME "FMathLog2" COMMAND MatrixUtilTests FMathLog2)
 add_test(NAME "FMathLog" COMMAND MatrixUtilTests FMathLog)
-add_test(NAME "FmahtLog10" COMMAND MatrixUtilTests FMathLog10)
+add_test(NAME "FMathLog10" COMMAND MatrixUtilTests FMathLog10)
+
+# Integer Math
+add_test(NAME "IMathConstants" COMMAND MatrixUtilTests IMathConstants)
+add_test(NAME "IMathClamp" COMMAND MatrixUtilTests IMathClamp)
+add_test(NAME "IMathMin" COMMAND MatrixUtilTests IMathMin)
+add_test(NAME "IMathMax" COMMAND MatrixUtilTests IMathMax)
+add_test(NAME "IMathAbs" COMMAND MatrixUtilTests IMathAbs)
+add_test(NAME "IMathSgn" COMMAND MatrixUtilTests IMathSgn)
 
 # TODO: Add more tests
