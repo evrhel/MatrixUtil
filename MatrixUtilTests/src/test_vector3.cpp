@@ -129,22 +129,14 @@ static void testVector3Reflect()
 
 Test getVector3Test(const std::string &test)
 {
-	if (test == "Vector3Basic")
-		return &testVector3Basic;
-	else if (test == "Vector3Dot")
-		return &testVector3Dot;
-    else if (test == "Vector3Cross")
-        return &testVector3Cross;
-	else if (test == "Vector3Length")
-		return &testVector3Length;
-	else if (test == "Vector3LengthSq")
-		return &testVector3LengthSq;
-	else if (test == "Vector3Distance")
-		return &testVector3Distance;
-	else if (test == "Vector3Normalize")
-		return &testVector3Normalize;
-	else if (test == "Vector3Reflect")
-		return &testVector3Reflect;
+	if (test == "Vector3Basic") return &testVector3Basic;
+	if (test == "Vector3Dot") return &testVector3Dot;
+    if (test == "Vector3Cross") return &testVector3Cross;
+	if (test == "Vector3Length") return &testVector3Length;
+	if (test == "Vector3LengthSq") return &testVector3LengthSq;
+	if (test == "Vector3Distance") return &testVector3Distance;
+	if (test == "Vector3Normalize") return &testVector3Normalize;
+	if (test == "Vector3Reflect") return &testVector3Reflect;
 
 	return nullptr;
 }

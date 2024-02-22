@@ -95,20 +95,13 @@ static void testVector2Reflect()
 
 Test getVector2Test(const std::string &test)
 {
-	if (test == "Vector2Basic")
-		return &testVector2Basic;
-	else if (test == "Vector2Dot")
-		return &testVector2Dot;
-	else if (test == "Vector2Length")
-		return &testVector2Length;
-	else if (test == "Vector2LengthSq")
-		return &testVector2LengthSq;
-	else if (test == "Vector2Distance")
-		return &testVector2Distance;
-	else if (test == "Vector2Normalize")
-		return &testVector2Normalize;
-	else if (test == "Vector2Reflect")
-		return &testVector2Reflect;
+	if (test == "Vector2Basic") return &testVector2Basic;
+	if (test == "Vector2Dot") return &testVector2Dot;
+	if (test == "Vector2Length") return &testVector2Length;
+	if (test == "Vector2LengthSq") return &testVector2LengthSq;
+	if (test == "Vector2Distance") return &testVector2Distance;
+	if (test == "Vector2Normalize") return &testVector2Normalize;
+	if (test == "Vector2Reflect") return &testVector2Reflect;
 
 	return nullptr;
 }

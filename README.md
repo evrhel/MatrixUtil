@@ -10,7 +10,25 @@ Additionally, the library is designed to be high performance, with minimal copyi
 
 ## Installing
 
-To use the library in your program, simply copy all the header files in `./MatrixUtil` to a directory in which your project can see them (such as in an include folder or directly into your project). To include the files, only including `mutil.h` is necessary.
+There are a few options for installing MatrixUtil. The preferred method is to use CMake.
+
+### Using CMake
+
+Obtain the library using CMake, or add it as a submodule in your project. You may then use `add_subdirectory` to include the library in your project.
+
+```cmake
+add_subdirectory(MatrixUtil)
+```
+
+Then, link the library to your target.
+
+```cmake
+target_link_libraries(your_target PUBLIC MatrixUtil)
+```
+
+### Other Build Systems
+
+MatrixUtil can be added by adding `MatrixUtil/include` as an include directory, or by directly copying the files into your project.
 
 ## Types
 

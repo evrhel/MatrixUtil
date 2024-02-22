@@ -68,10 +68,11 @@ namespace mutil
 
 		constexpr Quaternion &operator*=(const Quaternion &a)
 		{
-			w = w * a.w - x * a.x - y * a.y - z * a.z;
-			x = w * a.x + x * a.w + y * a.z - z * a.y;
-			y = w * a.y + y * a.w + z * a.x - x * a.z;
-			z = w * a.z + z * a.w + x * a.y - y * a.x;
+			Quaternion tmp = *this;
+			w = tmp.w * a.w - tmp.x * a.x - tmp.y * a.y - tmp.z * a.z;
+			x = tmp.w * a.x + tmp.x * a.w + tmp.y * a.z - tmp.z * a.y;
+			y = tmp.w * a.y + tmp.y * a.w + tmp.z * a.x - tmp.x * a.z;
+			z = tmp.w * a.z + tmp.z * a.w + tmp.x * a.y - tmp.y * a.x;
 			return *this;
 		}
 
