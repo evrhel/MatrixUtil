@@ -20,18 +20,15 @@ namespace mutil
 			{
 				float a, i, j, k;
 			};
-			struct
-			{
-				float real;
-				Vector3 imag;
-			};
 			Vector4 v4;
 			float q[4];
 		};
 
 		constexpr Quaternion() : w(1.0f), x(0.0f), y(0.0f), z(0.0f) {}
 		constexpr Quaternion(float w, float x, float y, float z) : w(w), x(x), y(y), z(z) {}
-		constexpr Quaternion(float real, const Vector3 &imag) : real(real), imag(imag) {}
+		constexpr Quaternion(float real, const Vector3 &imag) : w(real), x(imag.x), y(imag.y), z(imag.z) {}
+
+		constexpr Vector3 imag() const { return Vector3(x, y, z); }
 
 		constexpr Quaternion &operator+=(const Quaternion &a)
 		{
@@ -71,10 +68,11 @@ namespace mutil
 
 		constexpr Quaternion &operator*=(const Quaternion &a)
 		{
-			w = w * a.w - x * a.x - y * a.y - z * a.z;
-			x = w * a.x + x * a.w + y * a.z - z * a.y;
-			y = w * a.y + y * a.w + z * a.x - x * a.z;
-			z = w * a.z + z * a.w + x * a.y - y * a.x;
+			Quaternion tmp = *this;
+			w = tmp.w * a.w - tmp.x * a.x - tmp.y * a.y - tmp.z * a.z;
+			x = tmp.w * a.x + tmp.x * a.w + tmp.y * a.z - tmp.z * a.y;
+			y = tmp.w * a.y + tmp.y * a.w + tmp.z * a.x - tmp.x * a.z;
+			z = tmp.w * a.z + tmp.z * a.w + tmp.x * a.y - tmp.y * a.x;
 			return *this;
 		}
 
@@ -107,6 +105,8 @@ namespace mutil
 			a.w * b.y + a.y * b.w + a.z * b.x - a.x * b.z,
 			a.w * b.z + a.z * b.w + a.x * b.y - a.y * b.x);
 	}
+
+	constexpr Vector3 imag(const Quaternion &q) { return Vector3(q.x, q.y, q.z); }
 
 	/*!
 	Returns the length of a quaternion.
@@ -237,7 +237,7 @@ namespace mutil
 	{
 		// q * p * q'
 		Quaternion r = q * Quaternion(0.0f, p) * conjugate(q);
-		return r.imag;
+		return imag(r);
 	}
 
 	/*!
@@ -363,32 +363,29 @@ namespace mutil
 	inline Quaternion sqrt(const Quaternion &a)
 	{
 		const float mag = length(a);
-		const float coeff1 = mutil::sqrt((mag + a.real) / 2.0f);
-		const float coeff2 = mutil::sqrt((mag - a.real) / 2.0f);
-		return Quaternion(coeff1, normalize(a.imag) * coeff2);
+		const float coeff1 = mutil::sqrt((mag + a.a) / 2.0f);
+		const float coeff2 = mutil::sqrt((mag - a.a) / 2.0f);
+		return Quaternion(coeff1, normalize(imag(a)) * coeff2);
 	}
 
 	inline Quaternion exp(const Quaternion &a)
 	{
-		const float ea = expf(a.real);
+		const float ea = expf(a.a);
 		const float mag = length(a);
 
 		const float cosmag = mutil::cos(mag);
 		const float sinmag = mutil::sin(mag);
 
-		return ea * Quaternion(cosmag, normalize(a.imag) * sinmag);
+		return ea * Quaternion(cosmag, normalize(imag(a)) * sinmag);
 	}
 
 	inline Quaternion log(const Quaternion &a)
 	{
 		const float mag = length(a);
 		const float lnmag = logf(mag);
-		return Quaternion(lnmag, normalize(a.imag) * acosf(a.real / lnmag));
+		return Quaternion(lnmag, normalize(imag(a))) * acosf(a.a / lnmag);
 	}
 
-	/*!
-	Geodesic distance.
-	*/
 	inline float geodistance(const Quaternion &a, const Quaternion &b)
 	{
 		const float d = dot(a, b);
