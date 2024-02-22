@@ -8,6 +8,14 @@ jobs:
       pull-requests: write
 
     steps:
-      - uses: actions/checkout@v4
-      - name: Run tests
-        uses: HorstBaerbel/action-ctest@1.1
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure
+        uses: threeal/cmake-action@v1.3.0
+
+      - name: Build
+        run: cmake --build build
+
+      - name: Test
+        run: ctest --test-dir build
