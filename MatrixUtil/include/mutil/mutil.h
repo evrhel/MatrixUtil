@@ -1,21 +1,14 @@
-/*!
-\file
-Base include file, containing every needed type and function.
-*/
-
 #pragma once
 
-#include "f_math.h"
-#include "i_math.h"
+// This is the only header that should be included by the user.
 
-#include "vec_types.h"
-#include "fvec_math.h"
-#include "ivec_math.h"
+#include "settings.h"
 
-#include "mat_types.h"
-#include "fmat_math.h"
-#include "fmat_transform.h"
+#include "math/math.h"
+#include "vec/vec.h"
+#include "mat/mat.h"
+#include "quat/quaternion.h"
 
-#include "quaternion.h"
-
-#include "vec_impl.h"
+#include "vec/vec_impl.h"
+#include "mat/mat_impl.h"
+#include "quat/quaternion_impl.h"

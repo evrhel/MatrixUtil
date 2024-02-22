@@ -3,6 +3,8 @@
 #include <cstdint>
 #include <cstdlib>
 
+#include "../settings.h"
+
 namespace mutil
 {
 	template <typename T, size_t N>

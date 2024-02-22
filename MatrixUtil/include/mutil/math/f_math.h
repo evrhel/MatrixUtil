@@ -5,7 +5,7 @@ Contains methods for performing floating-point math operations.
 
 #pragma once
 
-#include "settings.h"
+#include "../settings.h"
 
 #define MUTIL_INFINITY ((float)(1e+300 * 1e+300))
 #define MUTIL_NEG_INFINITY (-MUTIL_INFINITY)

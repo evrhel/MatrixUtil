@@ -1,21 +1,8 @@
 #pragma once
 
-#include "settings.h"
+// Don't include this file directly, include mutil.h instead
 
-#include "vec_types.h"
-
-#include "vector2.h"
-#include "vector3.h"
-#include "vector4.h"
-
-#include "intvector2.h"
-#include "intvector3.h"
-#include "intvector4.h"
-
-#include "fvec_math.h"
-#include "ivec_math.h"
-#include "f_math.h"
-#include "i_math.h"
+#include "vec.h"
 
 namespace mutil
 {

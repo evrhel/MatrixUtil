@@ -5,8 +5,7 @@ Contains classes for handling different types of matrices.
 
 #pragma once
 
-#include "settings.h"
-#include "vec_impl.h"
+#include "../vec/vec.h"
 
 #include <memory>
 
