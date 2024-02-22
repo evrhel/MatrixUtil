@@ -8,14 +8,19 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(MUTIL "include/mutil")
 
 add_library(MatrixUtil INTERFACE
-	${MUTIL}/mat/fmat_math_defs.h
-	${MUTIL}/mat/fmat_transform.h
+	${MUTIL}/mat/intmatrix2.h
+	${MUTIL}/mat/intmatrix3.h
+	${MUTIL}/mat/intmatrix4.h
 	${MUTIL}/mat/mat_impl.h
 	${MUTIL}/mat/mat_types.h
+	${MUTIL}/mat/matrix2.h
+	${MUTIL}/mat/matrix3.h
+	${MUTIL}/mat/matrix4.h
 
 	${MUTIL}/math/f_math.h
+	${MUTIL}/math/fmat_math_defs.h
 	${MUTIL}/math/fmat_math.h
-	${MUTIL}/math/fvec_math.h
+	${MUTIL}/math/fmat_transform.h
 	${MUTIL}/math/i_math.h
 
 	${MUTIL}/quat/quaternion.h

@@ -13,14 +13,25 @@ namespace mutil
 	class BasicMatrix
 	{
 	public:
-		union
-		{
-			BasicVector<T, M> columns[N];
-			T mat[N * M];
-		};
+		T mat[N * M];
 
-		constexpr BasicMatrix() : BasicMatrix(T(1)) {}
-		explicit constexpr BasicMatrix(const T diagonal) : BasicMatrix(BasicVector<T, M>(diagonal)) {}
+		constexpr BasicMatrix()
+		{
+			for (size_t i = 0; i < N * M; i++)
+				mat[i] = T(0);
+		
+			for (size_t i = 0; i < N; i++)
+				mat[i * M + i] = T(1);
+		}
+		
+		explicit constexpr BasicMatrix(T diag)
+		{
+			for (size_t i = 0; i < N * M; i++)
+				mat[i] = T(0);
+			for (size_t i = 0; i < N; i++)
+				mat[i * M + i] = diag;
+		}
+
 		constexpr BasicMatrix(const BasicMatrix<T, N, M> &a)
 		{
 			for (size_t i = 0; i < N * M; i++)

@@ -21,26 +21,26 @@ namespace mutil
 
 	
 		constexpr BasicMatrix();
-		explicit constexpr BasicMatrix(float diagonal);
+		explicit constexpr BasicMatrix(float diag);
 		explicit constexpr BasicMatrix(const Vector2 &col1, const Vector2 &col2);
 		explicit constexpr BasicMatrix(float _11, float _12, float _21, float _22);
-		explicit constexpr BasicMatrix(const IntMatrix2 &mat);
-		explicit constexpr BasicMatrix(const Matrix3 &mat);
-		explicit constexpr BasicMatrix(const Matrix4 &mat);
+		explicit constexpr BasicMatrix(const IntMatrix2 &a);
+		explicit constexpr BasicMatrix(const Matrix3 &a);
+		explicit constexpr BasicMatrix(const Matrix4 &a);
 
-		constexpr const float &operator[](size_t index) const { return mat[index]; }
-		constexpr float &operator[](size_t index) { return mat[index]; }
+		constexpr const float &operator[](size_t i) const { return mat[i]; }
+		constexpr float &operator[](size_t i) { return mat[i]; }
 
 		constexpr float determinant() const;
 		constexpr Matrix2 transpose() const;
 		constexpr Matrix2 inverse() const;
 	};
 
-	constexpr Matrix2 operator+(const Matrix2 &first, const Matrix2 &second);
-	constexpr Matrix2 operator-(const Matrix2 &first, const Matrix2 &second);
-	constexpr Matrix2 operator*(const Matrix2 &first, const Matrix2 &second);
-	constexpr Vector2 operator*(const Matrix2 &first, const Vector2 &second);
-	constexpr Matrix2 operator*(const Matrix2 &first, float second);
-	constexpr Matrix2 operator/(const Matrix2 &first, float second);
-	constexpr bool operator==(const Matrix2 &first, const Matrix2 &second);
+	constexpr Matrix2 operator+(const Matrix2 &a, const Matrix2 &b);
+	constexpr Matrix2 operator-(const Matrix2 &a, const Matrix2 &b);
+	constexpr Matrix2 operator*(const Matrix2 &a, const Matrix2 &b);
+	constexpr Vector2 operator*(const Matrix2 &a, const Vector2 &b);
+	constexpr Matrix2 operator*(const Matrix2 &a, float b);
+	constexpr Matrix2 operator/(const Matrix2 &a, float b);
+	constexpr bool operator==(const Matrix2 &a, const Matrix2 &b);
 }

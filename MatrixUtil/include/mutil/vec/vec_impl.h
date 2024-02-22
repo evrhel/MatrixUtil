@@ -1,13 +1,11 @@
 #pragma once
 
-// Don't include this file directly, include mutil.h instead
-
 #include "vec.h"
 
 namespace mutil
 {
 	/////////////////////////////////////////////////////////////////
-	// Vector
+	// BasicVector
 
 	template <typename T, size_t N>
 	constexpr BasicVector<T, N> operator+(const BasicVector<T, N> &a, const BasicVector<T, N> &b)

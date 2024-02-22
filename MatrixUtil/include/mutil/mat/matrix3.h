@@ -22,25 +22,27 @@ namespace mutil
 
 		constexpr BasicMatrix();
 		explicit constexpr BasicMatrix(const float diagonal);
-		explicit constexpr BasicMatrix(const Vector3 &column1, const Vector3 &column2, const Vector3 &column3);
-		explicit constexpr BasicMatrix(float _11, float _12, float _13, float _21, float _22, float _23, float _31, float _32, float _33);
-		explicit constexpr BasicMatrix(const IntMatrix3 &mat);
-		explicit constexpr BasicMatrix(const Matrix2 &mat);
-		explicit constexpr BasicMatrix(const Matrix4 &mat);
+		explicit constexpr BasicMatrix(const Vector3 &col1, const Vector3 &col2, const Vector3 &col3);
+		explicit constexpr BasicMatrix(float _11, float _12, float _13,
+				float _21,float _22, float _23,
+				float _31, float _32, float _33);
+		explicit constexpr BasicMatrix(const IntMatrix3 &a);
+		explicit constexpr BasicMatrix(const Matrix2 &a);
+		explicit constexpr BasicMatrix(const Matrix4 &a);
 
-		constexpr const float &operator[](size_t index) const { return mat[index]; }
-		constexpr float &operator[](size_t index) { return mat[index]; }
+		constexpr const float &operator[](size_t i) const { return mat[i]; }
+		constexpr float &operator[](size_t i) { return mat[i]; }
 
 		constexpr float determinant() const;
 		constexpr Matrix3 transpose() const;
 		constexpr Matrix3 inverse() const;
 	};
 
-	constexpr Matrix3 operator+(const Matrix3 &first, const Matrix3 &second);
-	constexpr Matrix3 operator-(const Matrix3 &first, const Matrix3 &second);
-	constexpr Matrix3 operator*(const Matrix3 &first, const Matrix3 &second);
-	constexpr Vector3 operator*(const Matrix3 &first, const Vector3 &second);
-	constexpr Matrix3 operator*(const Matrix3 &first, float second);
-	constexpr Matrix3 operator/(const Matrix3 &first, float second);
-	constexpr bool operator==(const Matrix3 &first, const Matrix3 &second);
+	constexpr Matrix3 operator+(const Matrix3 &a, const Matrix3 &b);
+	constexpr Matrix3 operator-(const Matrix3 &a, const Matrix3 &b);
+	constexpr Matrix3 operator*(const Matrix3 &a, const Matrix3 &b);
+	constexpr Vector3 operator*(const Matrix3 &a, const Vector3 &b);
+	constexpr Matrix3 operator*(const Matrix3 &a, float b);
+	constexpr Matrix3 operator/(const Matrix3 &a, float b);
+	constexpr bool operator==(const Matrix3 &a, const Matrix3 &b);
 }
