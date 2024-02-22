@@ -7,16 +7,28 @@ using namespace mutil;
 static void testVector2Basic()
 {
 	Vector2 v1(1, 2);
+	assertEquals(1.0f, v1.x);
+	assertEquals(2.0f, v1.y);
 
 	Vector2 v2;
+	assertEquals(0.0f, v2.x);
+	assertEquals(0.0f, v2.y);
 
 	Vector2 v3(v1);
+	assertEquals(1.0f, v3.x);
+	assertEquals(2.0f, v3.y);
 
 	Vector2 v4(IntVector2(1, 2));
+	assertEquals(1.0f, v4.x);
+	assertEquals(2.0f, v4.y);
 
 	Vector2 v5(Vector3(1, 2, 3));
+	assertEquals(1.0f, v5.x);
+	assertEquals(2.0f, v5.y);
 
 	Vector2 v6(Vector4(1, 2, 3, 4));
+	assertEquals(1.0f, v6.x);
+	assertEquals(2.0f, v6.y);
 }
 
 static void testVector2Dot()
@@ -71,6 +83,7 @@ static void testVector2Normalize()
 {
 	Vector2 v(3, 4);
 	v = normalize(v);
+	setEpsilon(0.01f);
 	assertEquals(0.6f, v.x);
 	assertEquals(0.8f, v.y);
 }

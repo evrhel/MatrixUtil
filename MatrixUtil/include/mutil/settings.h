@@ -17,10 +17,12 @@
 
 #if !MUTIL_NO_INTRINSICS
 #if MUTIL_IA32 || MUTIL_X86_64
+#if __SSE4_1__ || _M_IX86_FP >= 1
 #define MUTIL_USE_SSE 1
 #include <xmmintrin.h>
 #include <emmintrin.h>
 #include <immintrin.h>
+#endif
 #elif MUTIL_ARM || MUTIL_ARM64
 #if __ARM_NEON__
 #define MUTIL_USE_NEON 1
