@@ -6,6 +6,7 @@ Base include file, containing every needed type and function.
 #pragma once
 
 #include "f_math.h"
+#include "i_math.h"
 
 #include "vec_types.h"
 #include "fvec_math.h"

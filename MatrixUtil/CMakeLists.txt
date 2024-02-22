@@ -13,6 +13,7 @@ add_library(MatrixUtil INTERFACE
 	${MUTIL}/fmat_math_defs.h
 	${MUTIL}/fmat_transform.h
 	${MUTIL}/fvec_math.h
+	${MUTIL}/i_math.h
 	${MUTIL}/intvector2.h
 	${MUTIL}/intvector3.h
 	${MUTIL}/intvector4.h

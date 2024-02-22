@@ -7,9 +7,9 @@ Contains methods for performing floating-point math operations.
 
 #include "settings.h"
 
-#define MUTIL_INFINITY ((float)(1e+300*1e+300))
+#define MUTIL_INFINITY ((float)(1e+300 * 1e+300))
 #define MUTIL_NEG_INFINITY (-MUTIL_INFINITY)
-#define MUTIL_NAN (MUTIL_INFINITY*0.0f)
+#define MUTIL_NAN (MUTIL_INFINITY * 0.0f)
 
 #define MUTIL_PI (3.14159265358979323846f)
 #define MUTIL_1_PI (1.0f / 3.14159265358979323846f)
@@ -22,6 +22,8 @@ Contains methods for performing floating-point math operations.
 
 #define MUTIL_D2R (MUTIL_PI / 180.0f)
 #define MUTIL_R2D (180.0f / MUTIL_PI)
+
+#define MUTIL_SQRT2 (1.41421356237309504880f)
 
 #define MUTIL_E (2.71828182845904523536f)
 
@@ -178,7 +180,7 @@ namespace mutil
 	{
 #if MUTIL_USE_SSE
 		return _mm_cvtss_f32(_mm_round_ss(_mm_set_ss(0.0f), _mm_set_ss(x), _MM_FROUND_TO_NEAREST_INT));
-#elif MUTIL_ARM
+#elif MUTIL_USE_NEON
 		float32x2_t f = vcvt_f32_s32(vcvt_s32_f32(vdup_n_f32(x)));
 		return vget_lane_f32(vsub_f32(vdup_n_f32(x), f), 0);
 #else
@@ -190,9 +192,6 @@ namespace mutil
 	{
 #if MUTIL_USE_SSE
 		return _mm_cvtss_f32(_mm_round_ss(_mm_set_ss(0.0f), _mm_set_ss(val), _MM_FROUND_TO_NEAREST_INT));
-#elif MUTIL_USE_NEON
-		float32x2_t result = vcvt_f32_s32(vcvt_s32_f32(vdup_n_f32(val)));
-		return vget_lane_f32(vsub_f32(vdup_n_f32(val), result), 0);
 #else
 		return roundf(val);
 #endif
@@ -265,12 +264,12 @@ namespace mutil
 			const float x10 = x5 * x5;
 			const float x11 = x10 * x;
 
-			float32x2_t t1 = __makev2(x, 1.0f);
-			t1 = vadd_f32(t1, __makev2(x3 * _n3fact, x2 * _n2fact));
-			t1 = vadd_f32(t1, __makev2(x5 * _5fact, x4 * _4fact));
-			t1 = vadd_f32(t1, __makev2(x7 * _n7fact, x6 * _n6fact));
-			t1 = vadd_f32(t1, __makev2(x9 * _9fact, x8 * _8fact));
-			t1 = vadd_f32(t1, __makev2(x11 * _n11fact, x10 * _n10fact));
+			float32x2_t t1 = makev2(x, 1.0f);
+			t1 = vadd_f32(t1, makev2(x3 * _n3fact, x2 * _n2fact));
+			t1 = vadd_f32(t1, makev2(x5 * _5fact, x4 * _4fact));
+			t1 = vadd_f32(t1, makev2(x7 * _n7fact, x6 * _n6fact));
+			t1 = vadd_f32(t1, makev2(x9 * _9fact, x8 * _8fact));
+			t1 = vadd_f32(t1, makev2(x11 * _n11fact, x10 * _n10fact));
 
 			return t1;
 		}
@@ -281,10 +280,11 @@ namespace mutil
 #if MUTIL_USE_SSE
 			return _mm_cvtsi128_si32(_mm_castps_si128(_mm_set_ss(x)));
 #else
-			union {
+			union
+			{
 				float f;
 				uint32_t i;
-			} u = { x };
+			} u = {x};
 			return u.i;
 #endif
 		}
@@ -294,10 +294,11 @@ namespace mutil
 #if MUTIL_USE_SSE
 			return _mm_cvtss_f32(_mm_castsi128_ps(_mm_set1_epi32(x)));
 #else
-			union {
+			union
+			{
 				uint32_t i;
 				float f;
-			} u = { x };
+			} u = {x};
 			return u.f;
 #endif
 		}
@@ -306,8 +307,10 @@ namespace mutil
 		MUTIL_FORCEINLINE float MUTIL_VECTORCALL wrapnpipi(float x)
 		{
 			x = mod(x, MUTIL_2PI);
-			if (x > MUTIL_PI) x -= MUTIL_2PI;
-			else if (x < -MUTIL_PI) x += MUTIL_2PI;
+			if (x > MUTIL_PI)
+				x -= MUTIL_2PI;
+			else if (x < -MUTIL_PI)
+				x += MUTIL_2PI;
 			return x;
 		}
 
@@ -343,7 +346,7 @@ namespace mutil
 			__m128 v = _mm_dp_ps(v1r, v2r, 0xf1);
 
 			return _mm_add_ss(v, E);
-	}
+		}
 #elif MUTIL_USE_NEON
 #else
 		constexpr float cos_impl(float x)
@@ -361,7 +364,7 @@ namespace mutil
 	{
 		// https://mooooo.ooo/chebyshev-sine-approximation/
 
-		constexpr float	c1 = -0.10132118f;
+		constexpr float c1 = -0.10132118f;
 		constexpr float c2 = 0.0066208798f;
 		constexpr float c3 = -0.00017350505f;
 		constexpr float c4 = 0.0000025222919f;
@@ -489,7 +492,7 @@ namespace mutil
 
 	inline float MUTIL_VECTORCALL atan(float x)
 	{
-		//https://journalofinequalitiesandapplications.springeropen.com/articles/10.1186/s13660-018-1734-7
+		// https://journalofinequalitiesandapplications.springeropen.com/articles/10.1186/s13660-018-1734-7
 
 #if MUTIL_USE_SSE
 		const __m128 pisq = _mm_set_ss(MUTIL_PI * MUTIL_PI);
@@ -505,9 +508,20 @@ namespace mutil
 		__m128 result = _mm_mul_ss(top, _mm_rcp_ss(bottom));
 		return _mm_cvtss_f32(result);
 #else
-		constexpr float pisq = MUTIL_PI * MUTIL_PI;
+		float r;
+		float s = sgn(x);
+		x = abs(x);
+
+		if (x <= 1)
+			r = MUTIL_PI4 * x - x * (x - 1) * (0.2447f + 0.0663f * x);
+		else
+			r = MUTIL_PI2 - (1.0f / x);
+
+		return s * r;
+
+		/*constexpr float pisq = MUTIL_PI * MUTIL_PI;
 		const float pi2x = sqrt(MUTIL_2PI * x);
-		return (pisq * x) / (4.0f + pi2x * pi2x);
+		return (pisq * x) / (4.0f + pi2x * pi2x);*/
 #endif
 	}
 

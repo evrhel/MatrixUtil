@@ -6,6 +6,7 @@ void setEpsilon(float epsilon) { _epsilon = epsilon; }
 
 bool equals(bool a, bool b) { return a == b; }
 bool equals(int a, int b) { return a == b; }
+bool equals(unsigned int a, unsigned int b) { return a == b; }
 bool equals(float a, float b) { return fabs(a - b) <= _epsilon; }
 
 bool equals(const Vector2 &a, const Vector2 &b)
@@ -101,6 +102,7 @@ bool equals(const Quaternion &a, const Quaternion &b)
 }
 
 std::string tostring(int x) { return std::to_string(x); }
+std::string tostring(unsigned int x) { return std::to_string(x); }
 std::string tostring(float x) { return std::to_string(x); }
 
 std::string tostring(const Vector2 &v)

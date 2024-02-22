@@ -15,12 +15,13 @@
 #include "fvec_math.h"
 #include "ivec_math.h"
 #include "f_math.h"
+#include "i_math.h"
 
 namespace mutil
 {
 	/////////////////////////////////////////////////////////////////
 	// Vector
-	
+
 	template <typename T, size_t N>
 	constexpr BasicVector<T, N> operator+(const BasicVector<T, N> &a, const BasicVector<T, N> &b)
 	{
@@ -112,6 +113,21 @@ namespace mutil
 	}
 
 	template <typename T, size_t N>
+	constexpr BasicVector<T, N> dot(const BasicVector<T, N> &a, const BasicVector<T, N> &b)
+	{
+		BasicVector<T, N> result;
+		for (size_t i = 0; i < N; i++)
+			result[i] = a[i] * b[i];
+		return result;
+	}
+
+	template <size_t N>
+	constexpr Vector<N> normalize(const Vector<N> &a)
+	{
+		return a / sqrtf(dot(a, a));
+	}
+
+	template <typename T, size_t N>
 	constexpr BasicVector<T, N> abs(const BasicVector<T, N> &a)
 	{
 		BasicVector<T, N> result;
@@ -121,45 +137,45 @@ namespace mutil
 	}
 
 	template <size_t N>
-	MUTIL_FORCEINLINE BasicVector<float, N> MUTIL_VECTORCALL fract(const BasicVector<float, N> &a)
+	MUTIL_FORCEINLINE Vector<N> MUTIL_VECTORCALL fract(const Vector<N> &a)
 	{
-		BasicVector<float, N> result;
+		Vector<N> result;
 		for (size_t i = 0; i < N; i++)
 			result[i] = fract(a[i]);
 		return result;
 	}
 
 	template <size_t N>
-	MUTIL_FORCEINLINE BasicVector<float, N> MUTIL_VECTORCALL mod(const BasicVector<float, N> &a, float b)
+	MUTIL_FORCEINLINE Vector<N> MUTIL_VECTORCALL mod(const Vector<N> &a, float b)
 	{
-		BasicVector<float, N> result;
+		Vector<N> result;
 		for (size_t i = 0; i < N; i++)
 			result[i] = fmodf(a[i], b);
 		return result;
 	}
 
 	template <size_t N>
-	MUTIL_FORCEINLINE BasicVector<float, N> MUTIL_VECTORCALL mod(const BasicVector<float, N> &a, const BasicVector<float, N> &b)
+	MUTIL_FORCEINLINE Vector<N> MUTIL_VECTORCALL mod(const Vector<N> &a, const Vector<N> &b)
 	{
-		BasicVector<float, N> result;
+		Vector<N> result;
 		for (size_t i = 0; i < N; i++)
 			result[i] = fmodf(a[i], b[i]);
 		return result;
 	}
 
 	template <size_t N>
-	constexpr BasicVector<int32_t, N> mod(const BasicVector<int32_t, N> &a, int32_t b)
+	constexpr IntVector<N> mod(const IntVector<N> &a, int32_t b)
 	{
-		BasicVector<int32_t, N> result;
+		IntVector<N> result;
 		for (size_t i = 0; i < N; i++)
 			result[i] = a[i] % b;
 		return result;
 	}
 
 	template <size_t N>
-	constexpr BasicVector<int32_t, N> mod(const BasicVector<int32_t, N> &a, const BasicVector<int32_t, N> &b)
+	constexpr IntVector<N> mod(const IntVector<N> &a, const IntVector<N> &b)
 	{
-		BasicVector<int32_t, N> result;
+		IntVector<N> result;
 		for (size_t i = 0; i < N; i++)
 			result[i] = a[i] % b[i];
 		return result;
@@ -184,54 +200,54 @@ namespace mutil
 	}
 
 	template <size_t N>
-	constexpr BasicVector<float, N> lerp(const BasicVector<float, N> &a, const BasicVector<float, N> &b, float t)
+	constexpr Vector<N> lerp(const Vector<N> &a, const Vector<N> &b, float t)
 	{
-		BasicVector<float, N> result;
+		Vector<N> result;
 		for (size_t i = 0; i < N; i++)
 			result[i] = lerp(a[i], b[i], t);
 		return result;
 	}
 
 	template <size_t N>
-	constexpr BasicVector<float, N> lerp(const BasicVector<float, N> &a, const BasicVector<float, N> &b, const BasicVector<float, N> &t)
+	constexpr Vector<N> lerp(const Vector<N> &a, const Vector<N> &b, const Vector<N> &t)
 	{
-		BasicVector<float, N> result;
+		Vector<N> result;
 		for (size_t i = 0; i < N; i++)
 			result[i] = lerp(a[i], b[i], t[i]);
 		return result;
 	}
 
 	template <size_t N>
-	constexpr BasicVector<float, N> smoothstep(const BasicVector<float, N> &a, const BasicVector<float, N> &b, float t)
+	constexpr Vector<N> smoothstep(const Vector<N> &a, const Vector<N> &b, float t)
 	{
-		BasicVector<float, N> result;
+		Vector<N> result;
 		for (size_t i = 0; i < N; i++)
 			result[i] = smoothstep(a[i], b[i], t);
 		return result;
 	}
 
 	template <size_t N>
-	constexpr BasicVector<float, N> smoothstep(const BasicVector<float, N> &a, const BasicVector<float, N> &b, const BasicVector<float, N> &t)
+	constexpr Vector<N> smoothstep(const Vector<N> &a, const Vector<N> &b, const Vector<N> &t)
 	{
-		BasicVector<float, N> result;
+		Vector<N> result;
 		for (size_t i = 0; i < N; i++)
 			result[i] = smoothstep(a[i], b[i], t[i]);
 		return result;
 	}
 
 	template <size_t N>
-	constexpr BasicVector<float, N> smootherstep(const BasicVector<float, N> &a, const BasicVector<float, N> &b, float t)
+	constexpr Vector<N> smootherstep(const Vector<N> &a, const Vector<N> &b, float t)
 	{
-		BasicVector<float, N> result;
+		Vector<N> result;
 		for (size_t i = 0; i < N; i++)
 			result[i] = smootherstep(a[i], b[i], t);
 		return result;
 	}
 
 	template <size_t N>
-	constexpr BasicVector<float, N> smootherstep(const BasicVector<float, N> &a, const BasicVector<float, N> &b, const BasicVector<float, N> &t)
+	constexpr Vector<N> smootherstep(const Vector<N> &a, const Vector<N> &b, const Vector<N> &t)
 	{
-		BasicVector<float, N> result;
+		Vector<N> result;
 		for (size_t i = 0; i < N; i++)
 			result[i] = smootherstep(a[i], b[i], t[i]);
 		return result;
@@ -247,12 +263,42 @@ namespace mutil
 	constexpr Vector2::BasicVector(const Vector3 &a) : x(a.x), y(a.y) {}
 	constexpr Vector2::BasicVector(const Vector4 &a) : x(a.x), y(a.y) {}
 
-	constexpr Vector2 &Vector2::operator+=(const Vector2 &a) { x += a.x; y += a.y; return *this; }
-	constexpr Vector2 &Vector2::operator-=(const Vector2 &a) { x -= a.x; y -= a.y; return *this; }
-	constexpr Vector2 &Vector2::operator*=(const Vector2 &a) { x *= a.x; y *= a.y; return *this; }
-	constexpr Vector2 &Vector2::operator*=(float a) { x *= a; y *= a; return *this; }
-	constexpr Vector2 &Vector2::operator/=(const Vector2 &a) { x /= a.x; y /= a.y; return *this; }
-	constexpr Vector2 &Vector2::operator/=(float a) { x /= a; y /= a; return *this; }
+	constexpr Vector2 &Vector2::operator+=(const Vector2 &a)
+	{
+		x += a.x;
+		y += a.y;
+		return *this;
+	}
+	constexpr Vector2 &Vector2::operator-=(const Vector2 &a)
+	{
+		x -= a.x;
+		y -= a.y;
+		return *this;
+	}
+	constexpr Vector2 &Vector2::operator*=(const Vector2 &a)
+	{
+		x *= a.x;
+		y *= a.y;
+		return *this;
+	}
+	constexpr Vector2 &Vector2::operator*=(float a)
+	{
+		x *= a;
+		y *= a;
+		return *this;
+	}
+	constexpr Vector2 &Vector2::operator/=(const Vector2 &a)
+	{
+		x /= a.x;
+		y /= a.y;
+		return *this;
+	}
+	constexpr Vector2 &Vector2::operator/=(float a)
+	{
+		x /= a;
+		y /= a;
+		return *this;
+	}
 
 	constexpr const float &Vector2::operator[](size_t i) const { return (&x)[i]; }
 	constexpr float &Vector2::operator[](size_t i) { return (&x)[i]; }
@@ -312,12 +358,48 @@ namespace mutil
 	constexpr Vector3::BasicVector(const Vector2 &xy) : x(xy.x), y(xy.y), z(0) {}
 	constexpr Vector3::BasicVector(const Vector4 &a) : x(a.x), y(a.y), z(a.z) {}
 
-	constexpr Vector3 &Vector3::operator+=(const Vector3 &a) { x += a.x; y += a.y; z += a.z; return *this; }
-	constexpr Vector3 &Vector3::operator-=(const Vector3 &a) { x -= a.x; y -= a.y; z -= a.z; return *this; }
-	constexpr Vector3 &Vector3::operator*=(const Vector3 &a) { x *= a.x; y *= a.y; z *= a.z; return *this; }
-	constexpr Vector3 &Vector3::operator*=(float a) { x *= a; y *= a; z *= a; return *this; }
-	constexpr Vector3 &Vector3::operator/=(const Vector3 &a) { x /= a.x; y /= a.y; z /= a.z; return *this; }
-	constexpr Vector3 &Vector3::operator/=(float a) { x /= a; y /= a; z /= a; return *this; }
+	constexpr Vector3 &Vector3::operator+=(const Vector3 &a)
+	{
+		x += a.x;
+		y += a.y;
+		z += a.z;
+		return *this;
+	}
+	constexpr Vector3 &Vector3::operator-=(const Vector3 &a)
+	{
+		x -= a.x;
+		y -= a.y;
+		z -= a.z;
+		return *this;
+	}
+	constexpr Vector3 &Vector3::operator*=(const Vector3 &a)
+	{
+		x *= a.x;
+		y *= a.y;
+		z *= a.z;
+		return *this;
+	}
+	constexpr Vector3 &Vector3::operator*=(float a)
+	{
+		x *= a;
+		y *= a;
+		z *= a;
+		return *this;
+	}
+	constexpr Vector3 &Vector3::operator/=(const Vector3 &a)
+	{
+		x /= a.x;
+		y /= a.y;
+		z /= a.z;
+		return *this;
+	}
+	constexpr Vector3 &Vector3::operator/=(float a)
+	{
+		x /= a;
+		y /= a;
+		z /= a;
+		return *this;
+	}
 
 	constexpr const float &Vector3::operator[](size_t i) const { return (&x)[i]; }
 	constexpr float &Vector3::operator[](size_t i) { return (&x)[i]; }
@@ -362,8 +444,8 @@ namespace mutil
 		return _mm_cvtss_f32(_mm_sqrt_ss(_mm_dp_ps(_mm_loadu_ps((float *)&a), _mm_loadu_ps((float *)&a), MASK)));
 #elif MUTIL_USE_NEON
 		float32_t result = dot(a, a);
-		float32x2_t a = vsqrt_f32(vld1_f32(&result));
-		return vget_lane_f32(a, 0);
+		float32x2_t r = vsqrt_f32(vld1_f32(&result));
+		return vget_lane_f32(r, 0);
 #else
 		return sqrtf(dot(a, a));
 #endif
@@ -389,7 +471,6 @@ namespace mutil
 #endif
 	}
 
-
 	/////////////////////////////////////////////////////////////////
 	// Vector4
 
@@ -406,12 +487,54 @@ namespace mutil
 	constexpr Vector4::BasicVector(const Vector2 &a) : x(a.x), y(a.y), z(0), w(0) {}
 	constexpr Vector4::BasicVector(const Vector3 &a) : x(a.x), y(a.y), z(a.z), w(0) {}
 
-	constexpr Vector4 &Vector4::operator+=(const Vector4 &a) { x += a.x; y += a.y; z += a.z; w += a.w; return *this; }
-	constexpr Vector4 &Vector4::operator-=(const Vector4 &a) { x -= a.x; y -= a.y; z -= a.z; w -= a.w; return *this; }
-	constexpr Vector4 &Vector4::operator*=(const Vector4 &a) { x *= a.x; y *= a.y; z *= a.z; w *= a.w; return *this; }
-	constexpr Vector4 &Vector4::operator*=(float a) { x *= a; y *= a; z *= a; w *= a; return *this; }
-	constexpr Vector4 &Vector4::operator/=(const Vector4 &a) { x /= a.x; y /= a.y; z /= a.z; w /= a.w; return *this; }
-	constexpr Vector4 &Vector4::operator/=(float a) { x /= a; y /= a; z /= a; w /= a; return *this; }
+	constexpr Vector4 &Vector4::operator+=(const Vector4 &a)
+	{
+		x += a.x;
+		y += a.y;
+		z += a.z;
+		w += a.w;
+		return *this;
+	}
+	constexpr Vector4 &Vector4::operator-=(const Vector4 &a)
+	{
+		x -= a.x;
+		y -= a.y;
+		z -= a.z;
+		w -= a.w;
+		return *this;
+	}
+	constexpr Vector4 &Vector4::operator*=(const Vector4 &a)
+	{
+		x *= a.x;
+		y *= a.y;
+		z *= a.z;
+		w *= a.w;
+		return *this;
+	}
+	constexpr Vector4 &Vector4::operator*=(float a)
+	{
+		x *= a;
+		y *= a;
+		z *= a;
+		w *= a;
+		return *this;
+	}
+	constexpr Vector4 &Vector4::operator/=(const Vector4 &a)
+	{
+		x /= a.x;
+		y /= a.y;
+		z /= a.z;
+		w /= a.w;
+		return *this;
+	}
+	constexpr Vector4 &Vector4::operator/=(float a)
+	{
+		x /= a;
+		y /= a;
+		z /= a;
+		w /= a;
+		return *this;
+	}
 
 	constexpr const float &Vector4::operator[](size_t i) const { return (&x)[i]; }
 	constexpr float &Vector4::operator[](size_t i) { return (&x)[i]; }
@@ -471,12 +594,42 @@ namespace mutil
 	constexpr IntVector2::BasicVector(const IntVector3 &a) : x(a.x), y(a.y) {}
 	constexpr IntVector2::BasicVector(const IntVector4 &a) : x(a.x), y(a.y) {}
 
-	constexpr IntVector2 &IntVector2::operator+=(const IntVector2 &a) { x += a.x; y += a.y; return *this; }
-	constexpr IntVector2 &IntVector2::operator-=(const IntVector2 &a) { x -= a.x; y -= a.y; return *this; }
-	constexpr IntVector2 &IntVector2::operator*=(const IntVector2 &a) { x *= a.x; y *= a.y; return *this; }
-	constexpr IntVector2 &IntVector2::operator*=(int32_t a) { x *= a; y *= a; return *this; }
-	constexpr IntVector2 &IntVector2::operator/=(const IntVector2 &a) { x /= a.x; y /= a.y; return *this; }
-	constexpr IntVector2 &IntVector2::operator/=(int32_t a) { x /= a; y /= a; return *this; }
+	constexpr IntVector2 &IntVector2::operator+=(const IntVector2 &a)
+	{
+		x += a.x;
+		y += a.y;
+		return *this;
+	}
+	constexpr IntVector2 &IntVector2::operator-=(const IntVector2 &a)
+	{
+		x -= a.x;
+		y -= a.y;
+		return *this;
+	}
+	constexpr IntVector2 &IntVector2::operator*=(const IntVector2 &a)
+	{
+		x *= a.x;
+		y *= a.y;
+		return *this;
+	}
+	constexpr IntVector2 &IntVector2::operator*=(int32_t a)
+	{
+		x *= a;
+		y *= a;
+		return *this;
+	}
+	constexpr IntVector2 &IntVector2::operator/=(const IntVector2 &a)
+	{
+		x /= a.x;
+		y /= a.y;
+		return *this;
+	}
+	constexpr IntVector2 &IntVector2::operator/=(int32_t a)
+	{
+		x /= a;
+		y /= a;
+		return *this;
+	}
 
 	constexpr const int32_t &IntVector2::operator[](size_t i) const { return (&x)[i]; }
 	constexpr int32_t &IntVector2::operator[](size_t i) { return (&x)[i]; }
@@ -496,12 +649,48 @@ namespace mutil
 	constexpr IntVector3::BasicVector(const IntVector2 &xy, int32_t z) : x(xy.x), y(xy.y), z(z) {}
 	constexpr IntVector3::BasicVector(const IntVector4 &a) : x(a.x), y(a.y), z(a.z) {}
 
-	constexpr IntVector3 &IntVector3::operator+=(const IntVector3 &a) { x += a.x; y += a.y; z += a.z; return *this; }
-	constexpr IntVector3 &IntVector3::operator-=(const IntVector3 &a) { x -= a.x; y -= a.y; z -= a.z; return *this; }
-	constexpr IntVector3 &IntVector3::operator*=(const IntVector3 &a) { x *= a.x; y *= a.y; z *= a.z; return *this; }
-	constexpr IntVector3 &IntVector3::operator*=(int32_t a) { x *= a; y *= a; z *= a; return *this; }
-	constexpr IntVector3 &IntVector3::operator/=(const IntVector3 &a) { x /= a.x; y /= a.y; z /= a.z; return *this; }
-	constexpr IntVector3 &IntVector3::operator/=(int32_t a) { x /= a; y /= a; z /= a; return *this; }
+	constexpr IntVector3 &IntVector3::operator+=(const IntVector3 &a)
+	{
+		x += a.x;
+		y += a.y;
+		z += a.z;
+		return *this;
+	}
+	constexpr IntVector3 &IntVector3::operator-=(const IntVector3 &a)
+	{
+		x -= a.x;
+		y -= a.y;
+		z -= a.z;
+		return *this;
+	}
+	constexpr IntVector3 &IntVector3::operator*=(const IntVector3 &a)
+	{
+		x *= a.x;
+		y *= a.y;
+		z *= a.z;
+		return *this;
+	}
+	constexpr IntVector3 &IntVector3::operator*=(int32_t a)
+	{
+		x *= a;
+		y *= a;
+		z *= a;
+		return *this;
+	}
+	constexpr IntVector3 &IntVector3::operator/=(const IntVector3 &a)
+	{
+		x /= a.x;
+		y /= a.y;
+		z /= a.z;
+		return *this;
+	}
+	constexpr IntVector3 &IntVector3::operator/=(int32_t a)
+	{
+		x /= a;
+		y /= a;
+		z /= a;
+		return *this;
+	}
 
 	constexpr const int32_t &IntVector3::operator[](size_t i) const { return (&x)[i]; }
 	constexpr int32_t &IntVector3::operator[](size_t i) { return (&x)[i]; }
@@ -535,12 +724,54 @@ namespace mutil
 	constexpr IntVector4::BasicVector(const IntVector2 &a) : x(a.x), y(a.y), z(0), w(0) {}
 	constexpr IntVector4::BasicVector(const IntVector3 &a) : x(a.x), y(a.y), z(a.z), w(0) {}
 
-	constexpr IntVector4 &IntVector4::operator+=(const IntVector4 &a) { x += a.x; y += a.y; z += a.z; w += a.w; return *this; }
-	constexpr IntVector4 &IntVector4::operator-=(const IntVector4 &a) { x -= a.x; y -= a.y; z -= a.z; w -= a.w; return *this; }
-	constexpr IntVector4 &IntVector4::operator*=(const IntVector4 &a) { x *= a.x; y *= a.y; z *= a.z; w *= a.w; return *this; }
-	constexpr IntVector4 &IntVector4::operator*=(int32_t a) { x *= a; y *= a; z *= a; w *= a; return *this; }
-	constexpr IntVector4 &IntVector4::operator/=(const IntVector4 &a) { x /= a.x; y /= a.y; z /= a.z; w /= a.w; return *this; }
-	constexpr IntVector4 &IntVector4::operator/=(int32_t a) { x /= a; y /= a; z /= a; w /= a; return *this; }
+	constexpr IntVector4 &IntVector4::operator+=(const IntVector4 &a)
+	{
+		x += a.x;
+		y += a.y;
+		z += a.z;
+		w += a.w;
+		return *this;
+	}
+	constexpr IntVector4 &IntVector4::operator-=(const IntVector4 &a)
+	{
+		x -= a.x;
+		y -= a.y;
+		z -= a.z;
+		w -= a.w;
+		return *this;
+	}
+	constexpr IntVector4 &IntVector4::operator*=(const IntVector4 &a)
+	{
+		x *= a.x;
+		y *= a.y;
+		z *= a.z;
+		w *= a.w;
+		return *this;
+	}
+	constexpr IntVector4 &IntVector4::operator*=(int32_t a)
+	{
+		x *= a;
+		y *= a;
+		z *= a;
+		w *= a;
+		return *this;
+	}
+	constexpr IntVector4 &IntVector4::operator/=(const IntVector4 &a)
+	{
+		x /= a.x;
+		y /= a.y;
+		z /= a.z;
+		w /= a.w;
+		return *this;
+	}
+	constexpr IntVector4 &IntVector4::operator/=(int32_t a)
+	{
+		x /= a;
+		y /= a;
+		z /= a;
+		w /= a;
+		return *this;
+	}
 
 	constexpr const int32_t &IntVector4::operator[](size_t i) const { return (&x)[i]; }
 	constexpr int32_t &IntVector4::operator[](size_t i) { return (&x)[i]; }
