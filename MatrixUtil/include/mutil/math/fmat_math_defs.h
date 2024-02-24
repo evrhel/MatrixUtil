@@ -1,16 +1,6 @@
-/*!
-\file
-This file contains macros used in fmat_math.h to cut
-down on copy constructor calls for matrices during
-expensive matrix operations.
-*/
-
 #pragma once
 
-#ifndef FMAT_MATH_DEFS_H
-#define FMAT_MATH_DEFS_H
-
-#include "mat_types.h"
+// Don't directly include this file. Include fmat_math.h instead.
 
 // 2x2 determinant
 #define __determinant2x2(	\
@@ -290,5 +280,3 @@ mutil::Matrix3(				\
 		_31, _32, _33, _34,		\
 		_41, _42, _43, _44		\
 	))
-
-#endif

@@ -8,7 +8,7 @@ Contains methods for performing operations on floating-point matrices.
 #ifndef FMAT_MATH_H
 #define FMAT_MATH_H
 
-#include "settings.h"
+#include "../mat/mat.h"
 #include "fmat_math_defs.h"
 
 namespace mutil

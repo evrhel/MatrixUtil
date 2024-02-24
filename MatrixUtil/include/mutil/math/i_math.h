@@ -1,6 +1,6 @@
 #pragma once
 
-#include "settings.h"
+#include "../settings.h"
 
 #define MUTIL_INTMAX ((int32_t)0x7fffffff)
 #define MUTIL_INTMIN ((int32_t)0x80000000)

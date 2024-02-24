@@ -5,7 +5,7 @@ Contains methods for performing floating-point math operations.
 
 #pragma once
 
-#include "settings.h"
+#include "../settings.h"
 
 #define MUTIL_INFINITY ((float)(1e+300 * 1e+300))
 #define MUTIL_NEG_INFINITY (-MUTIL_INFINITY)
@@ -26,6 +26,11 @@ Contains methods for performing floating-point math operations.
 #define MUTIL_SQRT2 (1.41421356237309504880f)
 
 #define MUTIL_E (2.71828182845904523536f)
+
+#define MUTIL_LOG2E (1.44269504088896340736f)
+#define MUTIL_1_LOG2E (0.69314718055994530942f)
+#define MUTIL_LOG2_10 (3.32192809488736234787f)
+#define MUTIL_1_LOG2_10 (0.30102999566398119521f)
 
 namespace mutil
 {
@@ -228,138 +233,6 @@ namespace mutil
 		return x * x * x * (x * (x * 6.0f - 15.0f) + 10.f);
 	}
 
-	// utility
-	namespace __1
-	{
-#if MUTIL_USE_SSE
-#elif MUTIL_USE_NEON
-		inline float32x2_t makev2(float x, float y)
-		{
-			float32x2_t result = vdup_n_f32(x);
-			return vset_lane_f32(y, result, 1);
-		}
-
-		// return sin(x), cos(x), x [-pi, pi]
-		inline float32x2_t sincos(float x)
-		{
-			constexpr float _n2fact = -1.0f / 2.0f;
-			constexpr float _n3fact = -1.0f / 6.0f;
-			constexpr float _4fact = 1.0f / 24.0f;
-			constexpr float _5fact = 1.0f / 120.0f;
-			constexpr float _n6fact = -1.0f / 720.0f;
-			constexpr float _n7fact = -1.0f / 5040.0f;
-			constexpr float _8fact = 1.0f / 40320.0f;
-			constexpr float _9fact = 1.0f / 362880.0f;
-			constexpr float _n10fact = -1.0f / 3628800.0f;
-			constexpr float _n11fact = -1.0f / 39916800.0f;
-
-			const float x2 = x * x;
-			const float x3 = x2 * x;
-			const float x4 = x2 * x2;
-			const float x5 = x4 * x;
-			const float x6 = x3 * x3;
-			const float x7 = x6 * x;
-			const float x8 = x4 * x4;
-			const float x9 = x8 * x;
-			const float x10 = x5 * x5;
-			const float x11 = x10 * x;
-
-			float32x2_t t1 = makev2(x, 1.0f);
-			t1 = vadd_f32(t1, makev2(x3 * _n3fact, x2 * _n2fact));
-			t1 = vadd_f32(t1, makev2(x5 * _5fact, x4 * _4fact));
-			t1 = vadd_f32(t1, makev2(x7 * _n7fact, x6 * _n6fact));
-			t1 = vadd_f32(t1, makev2(x9 * _9fact, x8 * _8fact));
-			t1 = vadd_f32(t1, makev2(x11 * _n11fact, x10 * _n10fact));
-
-			return t1;
-		}
-#endif
-
-		MUTIL_FORCEINLINE uint32_t MUTIL_VECTORCALL f2i(float x)
-		{
-#if MUTIL_USE_SSE
-			return _mm_cvtsi128_si32(_mm_castps_si128(_mm_set_ss(x)));
-#else
-			union
-			{
-				float f;
-				uint32_t i;
-			} u = {x};
-			return u.i;
-#endif
-		}
-
-		MUTIL_FORCEINLINE float MUTIL_VECTORCALL i2f(uint32_t x)
-		{
-#if MUTIL_USE_SSE
-			return _mm_cvtss_f32(_mm_castsi128_ps(_mm_set1_epi32(x)));
-#else
-			union
-			{
-				uint32_t i;
-				float f;
-			} u = {x};
-			return u.f;
-#endif
-		}
-
-		// wrap x to [-pi, pi]
-		MUTIL_FORCEINLINE float MUTIL_VECTORCALL wrapnpipi(float x)
-		{
-			x = mod(x, MUTIL_2PI);
-			if (x > MUTIL_PI)
-				x -= MUTIL_2PI;
-			else if (x < -MUTIL_PI)
-				x += MUTIL_2PI;
-			return x;
-		}
-
-#if MUTIL_USE_SSE
-		MUTIL_FORCEINLINE __m128 MUTIL_VECTORCALL cos_impl(__m128 x)
-		{
-			const __m128 pi2 = _mm_set_ss(MUTIL_PI * MUTIL_PI);
-			__m128 x2 = _mm_mul_ss(x, x);
-			__m128 lhs = _mm_add_ss(pi2, _mm_mul_ss(_mm_set_ss(-4.0f), x2));
-			__m128 rhs = _mm_rcp_ss(_mm_add_ss(pi2, x2));
-			return _mm_mul_ss(lhs, rhs);
-		}
-
-		MUTIL_FORCEINLINE __m128 MUTIL_VECTORCALL log2_impl(__m128 x)
-		{
-			constexpr float t1 = 0.584963f;
-			constexpr float t2 = 0.961797f;
-			constexpr float t3 = -0.320599f;
-			constexpr float t4 = 0.142488f;
-
-			constexpr float _1lhs23 = 1.0f / (1 << 23);
-
-			__m128i i = _mm_castps_si128(x);
-			__m128 M = _mm_cvtepi32_ps(_mm_and_si128(i, _mm_set1_epi32(0x7fffff)));
-			__m128 E = _mm_cvtepi32_ps(_mm_add_epi32(_mm_srli_epi32(i, 23), _mm_set1_epi32(-127)));
-
-			float a = _mm_cvtss_f32(_mm_add_ss(_mm_mul_ss(M, _mm_set_ss(_1lhs23)), _mm_set_ss(-0.5f)));
-			float a2 = a * a;
-			float a3 = a2 * a;
-
-			const __m128 v1r = _mm_set_ps(t4, t3, t2, t1);
-			__m128 v2r = _mm_set_ps(a3, a2, a, 1.0f);
-			__m128 v = _mm_dp_ps(v1r, v2r, 0xf1);
-
-			return _mm_add_ss(v, E);
-		}
-#elif MUTIL_USE_NEON
-#else
-		constexpr float cos_impl(float x)
-		{
-			constexpr float pi2 = MUTIL_PI * MUTIL_PI;
-			const float x2 = x * x;
-			float top = pi2 - 4.0f * x2;
-			float bottom = pi2 + x2;
-			return top / bottom;
-		}
-#endif
-	};
-
 	inline float MUTIL_VECTORCALL sin(float x)
 	{
 		// https://mooooo.ooo/chebyshev-sine-approximation/
@@ -376,7 +249,11 @@ namespace mutil
 		constexpr float npimajmpimin = -pimaj - pimin;
 		constexpr float pimajpimin = pimaj + pimin;
 
-		x = __1::wrapnpipi(x);
+		x = mod(x, MUTIL_2PI);
+		if (x > MUTIL_PI)
+			x -= MUTIL_2PI;
+		else if (x < -MUTIL_PI)
+			x += MUTIL_2PI;
 
 #if MUTIL_USE_SSE
 		__m128 xr = _mm_set_ss(x);
@@ -396,7 +273,6 @@ namespace mutil
 
 		__m128 result = _mm_mul_ss(a, _mm_mul_ss(b, c));
 		return _mm_cvtss_f32(result);
-#elif MUIL_USE_NEON
 #else
 		const float x2 = x * x;
 		float p11 = c6;
@@ -492,22 +368,6 @@ namespace mutil
 
 	inline float MUTIL_VECTORCALL atan(float x)
 	{
-		// https://journalofinequalitiesandapplications.springeropen.com/articles/10.1186/s13660-018-1734-7
-
-#if MUTIL_USE_SSE
-		const __m128 pisq = _mm_set_ss(MUTIL_PI * MUTIL_PI);
-		const __m128 twopi = _mm_set_ss(MUTIL_2PI);
-		__m128 xr = _mm_set_ss(x);
-
-		__m128 top = _mm_mul_ss(pisq, xr);
-
-		__m128 tmp = _mm_mul_ss(twopi, xr);
-		tmp = _mm_mul_ss(tmp, tmp);
-		__m128 bottom = _mm_add_ss(_mm_set_ss(4.0f), _mm_sqrt_ss(_mm_add_ss(_mm_set_ss(32.0f), tmp)));
-
-		__m128 result = _mm_mul_ss(top, _mm_rcp_ss(bottom));
-		return _mm_cvtss_f32(result);
-#else
 		float r;
 		float s = sgn(x);
 		x = abs(x);
@@ -518,39 +378,20 @@ namespace mutil
 			r = MUTIL_PI2 - (1.0f / x);
 
 		return s * r;
-
-		/*constexpr float pisq = MUTIL_PI * MUTIL_PI;
-		const float pi2x = sqrt(MUTIL_2PI * x);
-		return (pisq * x) / (4.0f + pi2x * pi2x);*/
-#endif
 	}
 
 	inline float MUTIL_VECTORCALL log2(float x)
 	{
-#if MUTIL_USE_SSE
-		return _mm_cvtss_f32(__1::log2_impl(_mm_set_ss(x)));
-#else
 		return log2f(x);
-#endif
 	}
 
 	inline float MUTIL_VECTORCALL log(float x)
 	{
-#if MUTIL_USE_SSE
-		constexpr float _log2e = 1.0f / 1.442695f;
-		return _mm_cvtss_f32(_mm_mul_ss(__1::log2_impl(_mm_set_ss(x)), _mm_set_ss(_log2e)));
-#else
 		return logf(x);
-#endif
 	}
 
 	inline float MUTIL_VECTORCALL log10(float x)
 	{
-#if MUTIL_USE_SSE
-		constexpr float _log210 = 1.0f / 3.32192809f;
-		return _mm_cvtss_f32(_mm_mul_ss(__1::log2_impl(_mm_set_ss(x)), _mm_set_ss(_log210)));
-#else
 		return log10f(x);
-#endif
 	}
 }

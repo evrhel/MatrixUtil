@@ -429,6 +429,12 @@ static void testFMathLog2()
 
     r = mutil::log2(4.0f);
     assertEquals(2.0f, r);
+
+    r = mutil::log2(MUTIL_E);
+    assertEquals(MUTIL_LOG2E, r);
+
+    r = mutil::log2(10);
+    assertEquals(MUTIL_LOG2_10, r);
 }
 
 static void testFMathLog()

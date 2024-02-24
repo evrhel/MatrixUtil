@@ -9,6 +9,7 @@ extern Test getVector4Test(const std::string &test);
 extern Test getQuaternionTest(const std::string &test);
 extern Test getFMathTest(const std::string &test);
 extern Test getIMathTest(const std::string &test);
+extern Test getMatrix2Test(const std::string &test);
 
 static Test findTest(const std::string &test)
 {
@@ -30,6 +31,9 @@ static Test findTest(const std::string &test)
 	if (r) return r;
 
 	r = getIMathTest(test);
+	if (r) return r;
+
+	r = getMatrix2Test(test);
 	if (r) return r;
 
 	return nullptr;

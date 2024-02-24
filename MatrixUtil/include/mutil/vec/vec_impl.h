@@ -1,26 +1,11 @@
 #pragma once
 
-#include "settings.h"
-
-#include "vec_types.h"
-
-#include "vector2.h"
-#include "vector3.h"
-#include "vector4.h"
-
-#include "intvector2.h"
-#include "intvector3.h"
-#include "intvector4.h"
-
-#include "fvec_math.h"
-#include "ivec_math.h"
-#include "f_math.h"
-#include "i_math.h"
+#include "vec.h"
 
 namespace mutil
 {
 	/////////////////////////////////////////////////////////////////
-	// Vector
+	// BasicVector
 
 	template <typename T, size_t N>
 	constexpr BasicVector<T, N> operator+(const BasicVector<T, N> &a, const BasicVector<T, N> &b)

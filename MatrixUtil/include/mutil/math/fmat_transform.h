@@ -6,11 +6,8 @@ matrices, and transformation matrices.
 
 #pragma once
 
-#include "settings.h"
+#include "../vec/vec.h"
 #include "fmat_math.h"
-#include "vec_types.h"
-
-#include "fvec_math.h"
 
 namespace mutil
 {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "settings.h"
+#include "vec_types.h"
 
 namespace mutil
 {
