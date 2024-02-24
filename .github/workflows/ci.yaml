@@ -7,14 +7,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Configure
-        uses: threeal/cmake-action@v1.3.0
+      - name: Configure and build the project
+        uses: threeal/cmake-action@v1.2.0
+        with:
+          run-build: true
 
-      - name: Build
-        run: cmake --build build
-
-      - name: Test
-        run: ctest --test-dir build
+      - name: Test the project
+        uses: threeal/ctest-action@main
 
   macOS:
     runs-on: macos-latest
@@ -22,14 +21,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Configure
-        uses: threeal/cmake-action@v1.3.0
+      - name: Configure and build the project
+        uses: threeal/cmake-action@v1.2.0
+        with:
+          run-build: true
 
-      - name: Build
-        run: cmake --build build
-
-      - name: Test
-        run: ctest --test-dir build
+      - name: Test the project
+        uses: threeal/ctest-action@main
 
   Windows:
     runs-on: windows-latest
@@ -37,11 +35,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Configure
-        uses: threeal/cmake-action@v1.3.0
+      - name: Configure and build the project
+        uses: threeal/cmake-action@v1.2.0
+        with:
+          run-build: true
 
-      - name: Build
-        run: cmake --build build
-
-      - name: Test
-        run: ctest --test-dir build
+      - name: Test the project
+        uses: threeal/ctest-action@main
