@@ -3,7 +3,6 @@ cmake_minimum_required(VERSION 3.10)
 project(MatrixUtilTests LANGUAGES CXX)
 
 include(CTest)
-enable_testing()
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
@@ -118,3 +117,5 @@ add_test(NAME "Matrix2Inverse" COMMAND MatrixUtilTests Matrix2Inverse)
 add_test(NAME "Matrix2Clamp" COMMAND MatrixUtilTests Matrix2Clamp)
 
 # TODO: Add more tests
+
+enable_testing()
