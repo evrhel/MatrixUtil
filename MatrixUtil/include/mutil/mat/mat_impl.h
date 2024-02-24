@@ -4,6 +4,138 @@
 
 namespace mutil
 {
+	/////////////////////////////////////////////////////////////
+	// BasicMatrix
+
+	template <typename T, size_t N, size_t M>
+	constexpr BasicMatrix<T, N, M> operator+(const BasicMatrix<T, N, M> &a, const BasicMatrix<T, N, M> &b)
+	{
+		BasicMatrix<T, N, M> result;
+		for (size_t i = 0; i < N * M; i++)
+			result[i] = a[i] + b[i];
+		return result;
+	}
+
+	template <typename T, size_t N, size_t M>
+	constexpr BasicMatrix<T, N, M> operator-(const BasicMatrix<T, N, M> &a, const BasicMatrix<T, N, M> &b)
+	{
+		BasicMatrix<T, N, M> result;
+		for (size_t i = 0; i < N * M; i++)
+			result[i] = a[i] - b[i];
+		return result;
+	}
+
+	template <typename T, size_t N, size_t M, size_t P>
+	constexpr BasicMatrix<T, N, P> operator*(const BasicMatrix<T, N, M> &a, const BasicMatrix<T, M, P> &b)
+	{
+		BasicMatrix<T, N, P> result;
+		for (size_t i = 0; i < N; i++)
+		{
+			for (size_t j = 0; j < P; j++)
+			{
+				T sum = T(0);
+				for (size_t k = 0; k < M; k++)
+					sum += a.mat[i * M + k] * b.mat[k * P + j];
+				result.mat[i * P + j] = sum;
+			}
+		}
+		return result;
+	}
+
+	template <typename T, size_t N, size_t M>
+	constexpr BasicVector<T, N> operator*(const BasicMatrix<T, N, M> &a, const BasicVector<T, M> &b)
+	{
+		BasicVector<T, N> result;
+		for (size_t i = 0; i < N; i++)
+		{
+			T sum = T(0);
+			for (size_t j = 0; j < M; j++)
+				sum += a.mat[i * M + j] * b[j];
+			result[i] = sum;
+		}
+		return result;
+	}
+
+	template <typename T, size_t N, size_t M>
+	constexpr BasicMatrix<T, N, M> operator*(const BasicMatrix<T, N, M> &a, T b)
+	{
+		BasicMatrix<T, N, M> result;
+		for (size_t i = 0; i < N * M; i++)
+			result[i] = a[i] * b;
+		return result;
+	}
+
+	template <typename T, size_t N, size_t M>
+	constexpr BasicMatrix<T, N, M> operator/(const BasicMatrix<T, N, M> &a, T b)
+	{
+		BasicMatrix<T, N, M> result;
+		for (size_t i = 0; i < N * M; i++)
+			result[i] = a[i] / b;
+		return result;
+	}
+
+	template <typename T, size_t N, size_t M>
+	constexpr bool operator==(const BasicMatrix<T, N, M> &a, const BasicMatrix<T, N, M> &b)
+	{
+		for (size_t i = 0; i < N * M; i++)
+		{
+			if (a[i] != b[i])
+				return false;
+		}
+		return true;
+	
+	}
+
+	template <typename T, size_t N, size_t M>
+	constexpr bool operator!=(const BasicMatrix<T, N, M> &a, const BasicMatrix<T, N, M> &b)
+	{
+		for (size_t i = 0; i < N * M; i++)
+		{
+			if (a[i] != b[i])
+				return true;
+		}
+		return false;
+	}
+
+	template <typename T, size_t N, size_t M>
+	constexpr BasicMatrix<T, N, M> &BasicMatrix<T, N, M>::operator+=(const BasicMatrix<T, N, M> &a)
+	{
+		for (size_t i = 0; i < N * M; i++)
+			mat[i] += a[i];
+		return *this;
+	}
+
+	template <typename T, size_t N, size_t M>
+	constexpr BasicMatrix<T, N, M> &BasicMatrix<T, N, M>::operator-=(const BasicMatrix<T, N, M> &a)
+	{
+		for (size_t i = 0; i < N * M; i++)
+			mat[i] -= a[i];
+		return *this;
+	}
+
+	template <typename T, size_t N, size_t M>
+	constexpr BasicMatrix<T, N, M> &BasicMatrix<T, N, M>::operator*=(const BasicMatrix<T, N, M> &a)
+	{
+		*this = *this * a;
+		return *this;
+	}
+
+	template <typename T, size_t N, size_t M>
+	constexpr BasicMatrix<T, N, M> &BasicMatrix<T, N, M>::operator*=(T a)
+	{
+		for (size_t i = 0; i < N * M; i++)
+			mat[i] *= a;
+		return *this;
+	}
+
+	template <typename T, size_t N, size_t M>
+	constexpr BasicMatrix<T, N, M> &BasicMatrix<T, N, M>::operator/=(T a)
+	{
+		for (size_t i = 0; i < N * M; i++)
+			mat[i] /= a;
+		return *this;
+	}
+
     /////////////////////////////////////////////////////////////////
     // Matrix2
 
