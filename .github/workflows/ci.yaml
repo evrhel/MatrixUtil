@@ -8,12 +8,10 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Configure and build the project
-        uses: threeal/cmake-action@v1.2.0
-        with:
-          run-build: true
+        run: mkdir build && cd build && cmake .. && make
 
       - name: Test the project
-        uses: threeal/ctest-action@main
+        run: cd build && ctest -C Debug --output-on-failure
 
   macOS:
     runs-on: macos-latest
@@ -22,12 +20,10 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Configure and build the project
-        uses: threeal/cmake-action@v1.2.0
-        with:
-          run-build: true
+        run: mkdir build && cd build && cmake .. && make
 
       - name: Test the project
-        uses: threeal/ctest-action@main
+        run: cd build && ctest -C Debug --output-on-failure
 
   Windows:
     runs-on: windows-latest
@@ -36,9 +32,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Configure and build the project
-        uses: threeal/cmake-action@v1.2.0
-        with:
-          run-build: true
+        run: mkdir build && cd build && cmake .. && cmake --build .
 
       - name: Test the project
-        uses: threeal/ctest-action@main
+        run: cd build && ctest -C Debug --output-on-failure
