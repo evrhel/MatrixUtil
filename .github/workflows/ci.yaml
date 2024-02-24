@@ -6,36 +6,39 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Run tests
-        uses: HorstBaerbel/action-ctest@1.1
+
+      - name: Configure and build the project
+        uses: threeal/cmake-action@v1.2.0
         with:
-          sourcedir: '.'
-          builddir: 'build'
-          cmakeoptions: '--config Release'
-          ctestoptions: ''
+          run-build: true
+
+      - name: Test the project
+        uses: threeal/ctest-action@main
 
   macOS:
     runs-on: macos-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Run tests
-        uses: HorstBaerbel/action-ctest@1.1
+
+      - name: Configure and build the project
+        uses: threeal/cmake-action@v1.2.0
         with:
-          sourcedir: '.'
-          builddir: 'build'
-          cmakeoptions: '--config Release'
-          ctestoptions: ''
+          run-build: true
+
+      - name: Test the project
+        uses: threeal/ctest-action@main
 
   Windows:
     runs-on: windows-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Run tests
-        uses: HorstBaerbel/action-ctest@1.1
+
+      - name: Configure and build the project
+        uses: threeal/cmake-action@v1.2.0
         with:
-          sourcedir: '.'
-          builddir: 'build'
-          cmakeoptions: '--config Release'
-          ctestoptions: ''
+          run-build: true
+
+      - name: Test the project
+        uses: threeal/ctest-action@main
