@@ -1,8 +1,3 @@
-/*!
-\file
-Contains classes for handling different types of matrices.
-*/
-
 #pragma once
 
 #include "../vec/vec.h"
@@ -13,7 +8,11 @@ namespace mutil
 	class BasicMatrix
 	{
 	public:
-		T mat[N * M];
+		union
+		{
+			T mat[N * M];
+			BasicVector<T, M> columns[N];
+		};
 
 		constexpr BasicMatrix()
 		{
@@ -38,9 +37,39 @@ namespace mutil
 				mat[i] = a.mat[i];
 		}
 
+		constexpr BasicMatrix<T, N, M> &operator+=(const BasicMatrix<T, N, M> &a);
+		constexpr BasicMatrix<T, N, M> &operator-=(const BasicMatrix<T, N, M> &a);
+		constexpr BasicMatrix<T, N, M> &operator*=(const BasicMatrix<T, N, M> &a);
+		constexpr BasicMatrix<T, N, M> &operator*=(T a);
+		constexpr BasicMatrix<T, N, M> &operator/=(T a);
+
 		constexpr const T &operator[](size_t i) const { return mat[i]; }
 		constexpr T &operator[](size_t i) { return mat[i]; }
 	};
+
+	template <typename T, size_t N, size_t M>
+	constexpr BasicMatrix<T, N, M> operator+(const BasicMatrix<T, N, M> &a, const BasicMatrix<T, N, M> &b);
+
+	template <typename T, size_t N, size_t M>
+	constexpr BasicMatrix<T, N, M> operator-(const BasicMatrix<T, N, M> &a, const BasicMatrix<T, N, M> &b);
+
+	template <typename T, size_t N, size_t M, size_t P>
+	constexpr BasicMatrix<T, N, P> operator*(const BasicMatrix<T, N, M> &a, const BasicMatrix<T, M, P> &b);
+
+	template <typename T, size_t N, size_t M>
+	constexpr BasicVector<T, N> operator*(const BasicMatrix<T, N, M> &a, const BasicVector<T, M> &b);
+
+	template <typename T, size_t N, size_t M>
+	constexpr BasicMatrix<T, N, M> operator*(const BasicMatrix<T, N, M> &a, T b);
+	
+	template <typename T, size_t N, size_t M>
+	constexpr BasicMatrix<T, N, M> operator/(const BasicMatrix<T, N, M> &a, T b);
+
+	template <typename T, size_t N, size_t M>
+	constexpr bool operator==(const BasicMatrix<T, N, M> &a, const BasicMatrix<T, N, M> &b);
+
+	template <typename T, size_t N, size_t M>
+	constexpr bool operator!=(const BasicMatrix<T, N, M> &a, const BasicMatrix<T, N, M> &b);
 
 	template <size_t N, size_t M>
 	using Matrix = BasicMatrix<float, N, M>;
