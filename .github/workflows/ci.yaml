@@ -12,12 +12,15 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Configure and build
-        uses: threeal/cmake-action@v1.2.0
-        with:
-          run-build: true
+        run: |
+          mkdir build
+          cd build
+          cmake .. --config Release
+          cmake --build . --config Release
 
       - name: Test
-        uses: threeal/ctest-action@main
+        run: ctest -C Release
+
 
   macOS:
     runs-on: macos-latest
@@ -30,12 +33,15 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Configure and build
-        uses: threeal/cmake-action@v1.2.0
-        with:
-          run-build: true
+        run: |
+          mkdir build
+          cd build
+          cmake .. --config Release
+          cmake --build . --config Release
 
       - name: Test
-        uses: threeal/ctest-action@main
+        run: ctest -C Release
+
 
   Windows:
     runs-on: windows-latest
@@ -48,9 +54,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Configure and build
-        uses: threeal/cmake-action@v1.2.0
-        with:
-          run-build: true
+        run: |
+          mkdir build
+          cd build
+          cmake .. --config Release
+          cmake --build . --config Release
 
       - name: Test
-        uses: threeal/ctest-action@main
+        run: ctest -C Release
+
