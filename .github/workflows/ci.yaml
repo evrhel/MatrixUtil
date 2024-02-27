@@ -1,4 +1,4 @@
-on: [pull_request]
+on: pull_request
 
 jobs:
   Linux:
@@ -7,32 +7,60 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Configure and build the project
-        run: mkdir build && cd build && cmake .. && make
+      - name: Configure and build
+        run: |
+          mkdir build
+          cd build
+          cmake ..
+          cmake --build . --config Release
 
-      - name: Test the project
-        run: cd build && ctest -C Debug --output-on-failure
+      - name: Test
+        run: |
+          cd build
+          ctest -C Release
 
   macOS:
     runs-on: macos-latest
+    permissions:
+      checks: write
+      pull-requests: write
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Configure and build the project
-        run: mkdir build && cd build && cmake .. && make
+      - name: Configure and build
+        run: |
+          mkdir build
+          cd build
+          cmake ..
+          cmake --build . --config Release
 
-      - name: Test the project
-        run: cd build && ctest -C Debug --output-on-failure
+      - name: Test
+        run: |
+          cd build
+          ctest -C Release
+
 
   Windows:
     runs-on: windows-latest
+    permissions:
+      checks: write
+      pull-requests: write
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Configure and build the project
-        run: mkdir build && cd build && cmake .. && cmake --build .
+      - name: Configure and build
+        run: |
+          mkdir build
+          cd build
+          cmake ..
+          cmake --build . --config Release
 
-      - name: Test the project
-        run: cd build && ctest -C Debug --output-on-failure
+      - name: Test
+        run: |
+          cd build
+          ctest -C Release
+

@@ -1,10 +1,5 @@
 #pragma once
 
-#define MUTIL_VERSION_MAJOR 1
-#define MUTIL_VERSION_MINOR 2
-#define MUTIL_VERSION_REVISION 0
-#define MUTIL_VERSION "1.3"
-
 #if __amd64__ || __amd64 || __x86_64__ || __x86_64 || _M_X64 || _M_AMD64
 #define MUTIL_X86_64 1
 #elif __i386__ || __i386 || _M_IX86
