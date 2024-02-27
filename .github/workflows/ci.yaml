@@ -19,7 +19,9 @@ jobs:
           cmake --build . --config Release
 
       - name: Test
-        run: ctest -C Release
+        run: |
+          cd build
+          ctest -C Release
 
 
   macOS:
@@ -40,7 +42,9 @@ jobs:
           cmake --build . --config Release
 
       - name: Test
-        run: ctest -C Release
+        run: |
+          cd build
+          ctest -C Release
 
 
   Windows:
@@ -61,5 +65,7 @@ jobs:
           cmake --build . --config Release
 
       - name: Test
-        run: ctest -C Release
+        run: |
+          cd build
+          ctest -C Release
 
