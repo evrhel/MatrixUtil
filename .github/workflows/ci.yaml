@@ -1,4 +1,4 @@
-on: [pull_request]
+on: [pull_request, push]
 
 jobs:
   Linux:
@@ -11,14 +11,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Configure
-        uses: threeal/cmake-action@v1.3.0
-
-      - name: Build
-        run: cmake --build build
+      - name: Configure and build
+        uses: threeal/cmake-action@v1.2.0
+        with:
+          run-build: true
 
       - name: Test
-        run: ctest --test-dir build
+        uses: threeal/ctest-action@main
 
   macOS:
     runs-on: macos-latest
@@ -30,14 +29,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Configure
-        uses: threeal/cmake-action@v1.3.0
-
-      - name: Build
-        run: cmake --build build
+      - name: Configure and build
+        uses: threeal/cmake-action@v1.2.0
+        with:
+          run-build: true
 
       - name: Test
-        run: ctest --test-dir build
+        uses: threeal/ctest-action@main
 
   Windows:
     runs-on: windows-latest
@@ -49,11 +47,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Configure
-        uses: threeal/cmake-action@v1.3.0
-
-      - name: Build
-        run: cmake --build build
+      - name: Configure and build
+        uses: threeal/cmake-action@v1.2.0
+        with:
+          run-build: true
 
       - name: Test
-        run: ctest --test-dir build
+        uses: threeal/ctest-action@main
