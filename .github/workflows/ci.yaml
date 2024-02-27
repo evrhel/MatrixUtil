@@ -15,7 +15,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake .. --config Release
+          cmake ..
           cmake --build . --config Release
 
       - name: Test
@@ -36,7 +36,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake .. --config Release
+          cmake ..
           cmake --build . --config Release
 
       - name: Test
@@ -57,7 +57,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake .. --config Release
+          cmake ..
           cmake --build . --config Release
 
       - name: Test
