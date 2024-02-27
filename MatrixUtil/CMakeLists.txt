@@ -1,11 +1,16 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(MatrixUtil)
+project(MatrixUtil VERSION 2.1.0)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 set(MUTIL "include/mutil")
+
+add_definitions(-DMUTIL_VERSION_MAJOR=${MatrixUtil_VERSION_MAJOR})
+add_definitions(-DMUTIL_VERSION_MINOR=${MatrixUtil_VERSION_MINOR})
+add_definitions(-DMUTIL_VERSION_REVISION=${MatrixUtil_VERSION_PATCH})
+add_definitions(-DMUTIL_VERSION="${MatrixUtil_VERSION}")
 
 add_library(MatrixUtil INTERFACE
 	${MUTIL}/mat/intmatrix2.h
