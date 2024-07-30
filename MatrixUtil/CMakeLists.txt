@@ -27,6 +27,7 @@ add_library(MatrixUtil INTERFACE
 	${MUTIL}/math/fmat_math.h
 	${MUTIL}/math/fmat_transform.h
 	${MUTIL}/math/i_math.h
+	${MUTIL}/math/noise.h
 
 	${MUTIL}/quat/quaternion.h
 

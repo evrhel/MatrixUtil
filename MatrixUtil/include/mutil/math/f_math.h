@@ -216,8 +216,9 @@ namespace mutil
 	*/
 	constexpr float smoothstep(float a, float b, float x)
 	{
-		x = clamp((x - a) / (b - a), 0.0f, 1.0f);
-		return x * x * (3.0f - 2.0f * x);
+		if (x <= 0.0f) return a;
+		if (x >= 1.0f) return b;
+		return (b - a) * (3.0f - x * 2.0f) * x * x + a;
 	}
 
 	/*!
@@ -229,8 +230,9 @@ namespace mutil
 	*/
 	constexpr float smootherstep(float a, float b, float x)
 	{
-		x = clamp((x - a) / (b - a), 0.0f, 1.0f);
-		return x * x * x * (x * (x * 6.0f - 15.0f) + 10.f);
+		if (x <= 0.0f) return a;
+		if (x >= 1.0f) return b;
+		return (b - a) * (x * x * x * (x * (x * 6.0f - 15.0f) + 10.f)) + a;
 	}
 
 	inline float MUTIL_VECTORCALL sin(float x)
@@ -393,5 +395,24 @@ namespace mutil
 	inline float MUTIL_VECTORCALL log10(float x)
 	{
 		return log10f(x);
+	}
+
+	inline float MUTIL_VECTORCALL logistic(float k, float x)
+	{
+		return 1.0f / (1.0f + expf(-k * x));
+	}
+	
+	inline float MUTIL_VECTORCALL sinstep(float a, float b, float x)
+	{
+		if (x <= 0.0f) return a;
+		if (x >= 1.0f) return b;
+
+		const float u = 0.5f - 0.5f * cos(MUTIL_PI * x);
+		return a + (b - a) * u;
+	}
+
+	constexpr float step(float edge, float x)
+	{
+		return x < edge ? 0.0f : 1.0f;
 	}
 }

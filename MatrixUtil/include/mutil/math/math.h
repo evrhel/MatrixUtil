@@ -6,3 +6,4 @@
 #include "i_math.h"
 #include "fmat_math.h"
 #include "fmat_transform.h"
+#include "noise.h"
